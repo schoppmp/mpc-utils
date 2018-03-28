@@ -1,8 +1,10 @@
 
+LIB := libmpc-utils.a
 SOURCES := $(shell find . -type f -name '*.cpp')
 OBJECTS := $(patsubst %.cpp, %.o, $(SOURCES))
 
-all: $(OBJECTS)
+$(LIB): $(OBJECTS)
+	ar rcs $@ $^
 
 # extract dependencies
 %.d: %.cpp $(LIBRARIES)
@@ -13,4 +15,4 @@ all: $(OBJECTS)
 
 .PHONY: clean
 clean:
-	$(RM) $(OBJECTS) $(OBJECTS:.o=.d)
+	$(RM) $(OBJECTS) $(OBJECTS:.o=.d) $(LIB)
