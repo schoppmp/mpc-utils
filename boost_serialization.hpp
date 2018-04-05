@@ -1,9 +1,9 @@
 #include <boost/serialization/vector.hpp>
 
-
+// optional headers
 #ifdef MPC_UTILS_USE_NTL
 #include <NTL/ZZ.h>
-#endif
+#endif // MPC_UTILS_USE_NTL
 
 namespace boost { namespace serialization {
 
@@ -29,6 +29,44 @@ inline void load(
   ar & buf;
   NTL::ZZFromBytes(z, buf.data(), buf.size());
 }
+
+// NTL::ZZ_p
+template<class Archive>
+inline void save(
+	Archive & ar,
+	const NTL::ZZ_p & zp,
+	const unsigned int /* file_version */
+){
+  ar & NTL::conv<NTL::ZZ>(zp);
+}
+template<class Archive>
+inline void load(
+	Archive & ar,
+	NTL::ZZ_p & zp,
+	const unsigned int /* file_version */
+){
+  NTL::ZZ z;
+  ar & z;
+  NTL::conv(zp, z);
+}
+
+// NTL::ZZ_pX
+template<class Archive>
+inline void serialize(
+	Archive & ar,
+	NTL::ZZ_pX & p,
+	const unsigned int /* file_version */
+){
+  long n = NTL::deg(p);
+  ar & n;
+  p.SetLength(n + 1);
+  if(n >= 0) {
+    for(long i = 0; i <= n; i++) {
+      ar & p[i];
+    }
+  }
+}
+
 // NTL::Vec
 template<class Archive, class T>
 inline void serialize(
@@ -47,4 +85,8 @@ inline void serialize(
 
 }}
 
+// register optional splits
+#ifdef MPC_UTILS_USE_NTL
 BOOST_SERIALIZATION_SPLIT_FREE(NTL::ZZ)
+BOOST_SERIALIZATION_SPLIT_FREE(NTL::ZZ_p)
+#endif // MPC_UTILS_USE_NTL
