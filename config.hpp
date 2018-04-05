@@ -12,7 +12,7 @@
 
 class config {
 protected:
-  std::string default_filename = "config.ini";
+  std::string default_filename = "";
   boost::program_options::options_description desc_cmd_only;
   boost::program_options::options_description desc_general;
   std::vector<std::string> config_files;
@@ -28,5 +28,6 @@ public:
 
   boost::program_options::options_description_easy_init add_options(bool cmd_only = false);
   void add_options_description(boost::program_options::options_description& desc, bool cmd_only = false);
-  void set_default_filename(const std::string filename);
+  void set_default_filename(const std::string& filename);
+  std::string& get_default_filename();
 };

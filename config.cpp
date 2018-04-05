@@ -8,6 +8,9 @@ void config::init() {
   this->add_options(false)
     ("config,c", boost::program_options::value(&config_files)->composing(),
       "Configuration file. May be passed multiple times.");
+  if(get_default_filename() == "") {
+    set_default_filename("config.ini");
+  }
 }
 
 config::config() : desc_cmd_only("Command-line-only options"), desc_general("General options") {
@@ -50,7 +53,7 @@ void config::parse(int argc, const char *argv[]) {
     config_files = vm["config"].as<std::vector<std::string>>();
   }
   if(config_files.empty()) { // try default config file
-    const char* config_file_name = default_filename.c_str();
+    const char* config_file_name = get_default_filename().c_str();
     try {
       po::store(
           po::parse_config_file<char>(config_file_name, desc_general), vm);
@@ -71,6 +74,10 @@ void config::parse(int argc, const char *argv[]) {
   validate();
 }
 
-void config::set_default_filename(const std::string filename) {
+void config::set_default_filename(const std::string& filename) {
   default_filename = filename;
+}
+
+std::string& config::get_default_filename() {
+  return default_filename;
 }
