@@ -1,3 +1,5 @@
+#pragma once
+
 #include <boost/serialization/vector.hpp>
 
 // optional headers
