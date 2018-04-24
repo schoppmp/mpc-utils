@@ -57,14 +57,14 @@ public:
     size_t read(byte* buffer, int size);
 #endif
     // send and receive objects via boost serialization
-    template<typename T> void send(T &obj) {
+    template<typename T> void send(T&& obj) {
         need_flush = true;
         COMM_CHANNEL_WRAP_EXCEPTION(
             *oarchive & obj,
             boost::archive::archive_exception
         );
     }
-    template<typename T> void recv(T &obj) {
+    template<typename T> void recv(T&& obj) {
         flush_if_needed();
         COMM_CHANNEL_WRAP_EXCEPTION(
             *iarchive & obj,
@@ -72,7 +72,7 @@ public:
         );
     }
     // send from `to_send` and receive into `to_recv` simultaneously
-    template<typename S, typename T> void send_recv(S& to_send, T& to_recv) {
+    template<typename S, typename T> void send_recv(S&& to_send, T&& to_recv) {
         if(!twin) {
           twin = std::unique_ptr<comm_channel>(new comm_channel(clone()));
         }
