@@ -19,6 +19,8 @@ class comm_channel;
 // represents a participant in an MPC protocol
 class party {
 public:
+    const static int DEFAULT_SLEEP_TIME = 500;
+    const static int DEFAULT_NUM_TRIES = -1;
     party(mpc_config& conf) : servers(conf.servers), id(conf.party_id),
         io_thread(boost::bind(&boost::asio::io_service::run, &io_service)),
         resolver(io_service), io_guard(io_thread), pending(servers.size() + 1)
@@ -29,10 +31,12 @@ public:
      * object representing that connection.
      * Suitable for passing to SCAPI calls
      */
-    comm_channel connect_to(int peer_id, bool tcp_nodelay = true, int sleep_time = 500, int num_tries = -1);
+    comm_channel connect_to(int peer_id, bool tcp_nodelay = true,
+      int sleep_time = DEFAULT_SLEEP_TIME, int num_tries = DEFAULT_NUM_TRIES);
 
 #ifdef MPC_UTILS_USE_OBLIVC
-    int connect_to_oblivc(ProtocolDesc &pd, int peer_id, int sleep_time = 500, int num_tries = -1);
+    int connect_to_oblivc(ProtocolDesc &pd, int peer_id,
+      int sleep_time = DEFAULT_SLEEP_TIME, int num_tries = DEFAULT_NUM_TRIES);
 #endif
 
     /**

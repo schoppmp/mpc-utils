@@ -104,8 +104,11 @@ public:
     comm_channel clone();
 
 #ifdef MPC_UTILS_USE_OBLIVC
-    int connect_to_oblivc(ProtocolDesc& pd) {
-      return p.connect_to_oblivc(pd, peer_id);
+    int connect_to_oblivc(ProtocolDesc& pd,
+      int sleep_time = party::DEFAULT_SLEEP_TIME,
+      int num_tries = party::DEFAULT_NUM_TRIES
+    ) {
+      return p.connect_to_oblivc(pd, peer_id, sleep_time, num_tries);
     }
 #endif
 
