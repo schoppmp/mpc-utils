@@ -1,15 +1,9 @@
 #pragma once
 
 #include <boost/serialization/vector.hpp>
-
-// optional headers
-#ifdef MPC_UTILS_USE_NTL
 #include <NTL/ZZ.h>
-#endif // MPC_UTILS_USE_NTL
 
 namespace boost { namespace serialization {
-
-#ifdef MPC_UTILS_USE_NTL
 // NTL::ZZ
 template<class Archive>
 inline void save(
@@ -83,12 +77,9 @@ inline void serialize(
     ar & el;
   }
 }
-#endif // MPC_UTILS_USE_NTL
 
-}}
+}} // namespace boost::serialization
 
 // register optional splits
-#ifdef MPC_UTILS_USE_NTL
 BOOST_SERIALIZATION_SPLIT_FREE(NTL::ZZ)
 BOOST_SERIALIZATION_SPLIT_FREE(NTL::ZZ_p)
-#endif // MPC_UTILS_USE_NTL
