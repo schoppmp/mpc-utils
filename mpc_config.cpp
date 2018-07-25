@@ -1,6 +1,6 @@
 #include "mpc_config.hpp"
 
-mpc_config::mpc_config() {
+mpc_config::mpc_config() : config() {
   namespace po = boost::program_options;
   this->add_options()
     ("party,p", po::value(&party_id)->required(), "Party ID of this process");
