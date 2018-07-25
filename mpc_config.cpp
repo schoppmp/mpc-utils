@@ -19,6 +19,9 @@ void mpc_config::validate() {
     BOOST_THROW_EXCEPTION(po::error("'server.host' and 'server.port' have to be"
         " passed the same number of times"));
   }
+  if (server_hosts.size() == 0) {
+    BOOST_THROW_EXCEPTION(po::error("At least one server is needed"));
+  }
   if (party_id < 0) {
       BOOST_THROW_EXCEPTION(po::error("'party' must be non-negative"));
   }
