@@ -1,5 +1,6 @@
 #include "config.hpp"
 #include <boost/throw_exception.hpp>
+#include <boost/program_options/errors.hpp>
 #include <cstdlib>
 
 void config::init() {
@@ -58,7 +59,7 @@ void config::parse(int argc, const char *argv[]) {
       po::store(
           po::parse_config_file<char>(config_file_name, desc_general), vm);
       po::notify(vm);
-    } catch (po::error& e) {
+    } catch (po::reading_file& e) {
       // ignore exceptions if default file name was not specified by user
     }
   }
