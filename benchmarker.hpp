@@ -10,6 +10,7 @@
 #include <unordered_map>
 
 class Benchmarker {
+ public:
   Benchmarker() {}
 
   // Benchmarker is not copyable or movable.
@@ -24,9 +25,8 @@ class Benchmarker {
   // Starts a timer and returns a handle for it.
   time_point StartTimer() const;
 
-  // Adds the time spent since start_time to the measurements with the given
-  // key.
-  void AddTimeSinceStart(const std::string& key, const time_point& start_time);
+  // Adds the number of seconds spent since start_time to the measurements with the given key.
+  void AddSecondsSinceStart(const std::string& key, const time_point& start_time);
 
   // Adds a user-defined amount to the given key.
   void AddAmount(const std::string& key, double amount);
@@ -35,7 +35,7 @@ class Benchmarker {
   double GetTotal(const std::string& key) const;
 
 
-private:
+ private:
   // Maps keys to aggregated measurements.
   std::unordered_map<std::string, double> measurements_;
 };
