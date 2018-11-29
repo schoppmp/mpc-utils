@@ -2,14 +2,14 @@
 #include "config.hpp"
 
 class mpc_config : public virtual config {
-private:
+ private:
   std::vector<std::string> server_hosts;
   std::vector<uint16_t> server_ports;
 
-protected:
+ protected:
   virtual void validate();
 
-public:
+ public:
   std::vector<server_info> servers;
   int party_id;
 

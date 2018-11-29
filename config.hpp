@@ -11,7 +11,7 @@
 #include "server_info.hpp"
 
 class config {
-protected:
+ protected:
   std::string default_filename = "";
   boost::program_options::options_description desc_cmd_only;
   boost::program_options::options_description desc_general;
@@ -19,15 +19,16 @@ protected:
 
   void init();
 
-  virtual void validate() {};
+  virtual void validate(){};
 
-
-public:
+ public:
   config();
-  void parse(int argc, const char *argv[]);
+  void parse(int argc, const char* argv[]);
 
-  boost::program_options::options_description_easy_init add_options(bool cmd_only = false);
-  void add_options_description(boost::program_options::options_description& desc, bool cmd_only = false);
+  boost::program_options::options_description_easy_init add_options(
+      bool cmd_only = false);
+  void add_options_description(
+      boost::program_options::options_description& desc, bool cmd_only = false);
   void set_default_filename(const std::string& filename);
   std::string& get_default_filename();
 };

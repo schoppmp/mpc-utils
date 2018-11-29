@@ -1,32 +1,35 @@
 #include "config.hpp"
-#include <boost/throw_exception.hpp>
 #include <boost/program_options/errors.hpp>
+#include <boost/throw_exception.hpp>
 #include <cstdlib>
 
 void config::init() {
-  this->add_options(true)
-    ("help", "Show help message");
-  this->add_options(false)
-    ("config,c", boost::program_options::value(&config_files)->composing(),
+  this->add_options(true)("help", "Show help message");
+  this->add_options(false)(
+      "config,c", boost::program_options::value(&config_files)->composing(),
       "Configuration file. May be passed multiple times.");
-  if(get_default_filename() == "") {
+  if (get_default_filename() == "") {
     set_default_filename("config.ini");
   }
 }
 
-config::config() : desc_cmd_only("Command-line-only options"), desc_general("General options") {
+config::config()
+    : desc_cmd_only("Command-line-only options"),
+      desc_general("General options") {
   init();
 }
 
-boost::program_options::options_description_easy_init config::add_options(bool cmd_only) {
+boost::program_options::options_description_easy_init config::add_options(
+    bool cmd_only) {
   return (cmd_only ? this->desc_cmd_only : this->desc_general).add_options();
 }
 
-void config::add_options_description(boost::program_options::options_description& desc, bool cmd_only) {
+void config::add_options_description(
+    boost::program_options::options_description& desc, bool cmd_only) {
   (cmd_only ? this->desc_cmd_only : this->desc_general).add(desc);
 }
 
-void config::parse(int argc, const char *argv[]) {
+void config::parse(int argc, const char* argv[]) {
   namespace po = boost::program_options;
   boost::program_options::variables_map vm;
 
@@ -41,7 +44,7 @@ void config::parse(int argc, const char *argv[]) {
       std::cout << desc_all << "\n";
       std::exit(0);
     }
-  } catch(po::required_option& e) {
+  } catch (po::required_option& e) {
     if (vm.count("help")) {
       std::cout << desc_all << "\n";
       std::exit(0);
@@ -50,24 +53,24 @@ void config::parse(int argc, const char *argv[]) {
   }
 
   // parse config files
-  if(vm.count("config")) {
+  if (vm.count("config")) {
     config_files = vm["config"].as<std::vector<std::string>>();
   }
-  if(config_files.empty()) { // try default config file
+  if (config_files.empty()) {  // try default config file
     const char* config_file_name = get_default_filename().c_str();
     try {
-      po::store(
-          po::parse_config_file<char>(config_file_name, desc_general), vm);
+      po::store(po::parse_config_file<char>(config_file_name, desc_general),
+                vm);
       po::notify(vm);
     } catch (po::reading_file& e) {
       // ignore exceptions if default file name was not specified by user
     }
   }
   // iterate over config files
-  for(size_t i = 0; i < config_files.size(); i++) { // config_files may be extended inside this loop
+  for (size_t i = 0; i < config_files.size();
+       i++) {  // config_files may be extended inside this loop
     const char* config_file_name = config_files[i].c_str();
-    po::store(
-        po::parse_config_file<char>(config_file_name, desc_general), vm);
+    po::store(po::parse_config_file<char>(config_file_name, desc_general), vm);
     // update config file array if any new files were found
     config_files = vm["config"].as<std::vector<std::string>>();
   }
@@ -79,6 +82,4 @@ void config::set_default_filename(const std::string& filename) {
   default_filename = filename;
 }
 
-std::string& config::get_default_filename() {
-  return default_filename;
-}
+std::string& config::get_default_filename() { return default_filename; }
