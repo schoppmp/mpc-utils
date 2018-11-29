@@ -1,4 +1,10 @@
 cc_library(
+  name = "benchmarker",
+  srcs = ["benchmarker.cpp"],
+  hdrs = ["benchmarker.hpp"],
+)
+
+cc_library(
   name = "server_info",
   srcs = ["server_info.cpp"],
   hdrs = ["server_info.hpp"],
