@@ -25,15 +25,16 @@ class Benchmarker {
   // Starts a timer and returns a handle for it.
   time_point StartTimer() const;
 
-  // Adds the number of seconds spent since start_time to the measurements with the given key.
-  void AddSecondsSinceStart(const std::string& key, const time_point& start_time);
+  // Adds the number of seconds spent since start_time to the measurements with
+  // the given key.
+  void AddSecondsSinceStart(const std::string& key,
+                            const time_point& start_time);
 
   // Adds a user-defined amount to the given key.
   void AddAmount(const std::string& key, double amount);
 
   // Returns the sum of the measurements with the given key.
   double GetTotal(const std::string& key) const;
-
 
  private:
   // Maps keys to aggregated measurements.

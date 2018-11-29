@@ -21,3 +21,10 @@ git_repository(
 load("@io_rules_oblivc//oblivc:deps.bzl", "oblivc_deps")
 
 oblivc_deps()
+
+
+git_repository(
+    name = "googletest",
+    remote = "https://github.com/abseil/googletest",
+    commit = "8fbf9d16a63a8b0cd629b24089f9470deef75120",
+)
