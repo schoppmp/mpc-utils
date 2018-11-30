@@ -9,4 +9,4 @@ test_all:
     - opam install -y camlp4 ocamlfind ocamlbuild batteries
     - pacman --noconfirm -Syu bazel
     - pacman --noconfirm -Syu git
-    - bazel build //:all
+    - bazel test //:all
