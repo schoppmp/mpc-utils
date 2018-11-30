@@ -1,14 +1,5 @@
 test_all:
-  image: base/devel
+  image: gitlab.informatik.hu-berlin.de:4567/ti/software/bazel-builder:latest
   stage: build
-  tags:
-    - dockerimage
   script:
-    - pacman --noconfirm -Syu ocaml ocaml-findlib opam
-    - opam init --disable-sandboxing -y
-    - opam switch create -y 4.06.0
-    - eval `opam config env`
-    - opam install -y camlp4 ocamlfind ocamlbuild batteries
-    - pacman --noconfirm -Syu bazel
-    - pacman --noconfirm -Syu git
     - bazel test //:all
