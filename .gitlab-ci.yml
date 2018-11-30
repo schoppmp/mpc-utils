@@ -1,6 +1,8 @@
 test_all:
   image: base/devel
   stage: build
+  tags:
+    - dockerimage
   script:
     - pacman --noconfirm -Syu ocaml ocaml-findlib opam
     - opam init --disable-sandboxing -y
