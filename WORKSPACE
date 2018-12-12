@@ -21,12 +21,11 @@ http_archive(
 )
 
 load("@com_github_schoppmp_rules_oblivc//oblivc:deps.bzl", "oblivc_deps")
-
 oblivc_deps()
 
-
-git_repository(
+http_archive(
     name = "googletest",
-    remote = "https://github.com/abseil/googletest",
-    commit = "8fbf9d16a63a8b0cd629b24089f9470deef75120",
+    url = "https://github.com/abseil/googletest/archive/6cbd3753dc195595689a0fbb99e7297128a2ed26.zip",
+    sha256 = "61598b28fda40dbe0cc0294a61fe0878d4045fa9afe6bdbaf4b3e4f6e1d9a31e",
+    strip_prefix = "googletest-6cbd3753dc195595689a0fbb99e7297128a2ed26",
 )
