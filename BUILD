@@ -78,6 +78,6 @@ cc_library(
     "@boost//:asio",
     "@boost//:thread",
     "@boost//:serialization",
-    "@io_rules_oblivc//oblivc",
+    "@oblivc//:runtime",
   ]
 )
