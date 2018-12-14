@@ -1,4 +1,19 @@
 cc_library(
+  name = "benchmarker",
+  srcs = ["benchmarker.cpp"],
+  hdrs = ["benchmarker.hpp"],
+)
+
+cc_test(
+  name = "benchmarker_test",
+  srcs = ["benchmarker_test.cpp"],
+  deps = [
+    "benchmarker",
+    "@googletest//:gtest_main",
+  ],
+)
+
+cc_library(
   name = "server_info",
   srcs = ["server_info.cpp"],
   hdrs = ["server_info.hpp"],

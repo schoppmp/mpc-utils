@@ -2,9 +2,21 @@
 LIB := libmpc-utils.a
 SOURCES := $(shell find . -type f -name '*.cpp')
 OBJECTS := $(patsubst %.cpp, %.o, $(SOURCES))
+TEST_SOURCES := $(shell find . -type f -name '*_test.cpp')
+TEST_OBJECTS := $(patsubst %.cpp, %.o, $(TEST_SOURCES))
+TESTS := $(basename $(TEST_OBJECTS))
 
 $(LIB): $(OBJECTS)
 	ar rcs $@ $^
+
+$(TESTS): $(TEST_OBJECTS) $(LIB)
+	$(CC) -o $@ $^ -lgtest -lgtest_main -lstdc++
+
+.PHONY: test
+test: $(TESTS) $(LIB)
+	@set -e; for test_binary in $(TESTS); do \
+		./$${test_binary}; \
+	done
 
 # extract dependencies
 %.d: %.cpp $(LIBRARIES)
@@ -15,4 +27,5 @@ $(LIB): $(OBJECTS)
 
 .PHONY: clean
 clean:
-	$(RM) $(OBJECTS) $(OBJECTS:.o=.d) $(LIB)
+	$(RM) $(OBJECTS) $(OBJECTS:.o=.d) $(LIB) $(TEST_OBJECTS) \
+	$(TEST_OBJECTS:.o=.d) $(TESTS)
