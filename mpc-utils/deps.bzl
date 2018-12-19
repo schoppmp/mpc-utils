@@ -79,6 +79,7 @@ def mpc_utils_deps():
       build_file_content = all_content,
       strip_prefix = "OpenBLAS-0.3.4",
       urls = ["https://github.com/xianyi/OpenBLAS/archive/v0.3.4.tar.gz"],
+      sha256 = "4b4b4453251e9edb5f57465bf2b3cf67b19d811d50c8588cdf2ea1f201bb834f",
     )
 
   if "org_bitbucket_eigen" not in native.existing_rules():
@@ -87,4 +88,5 @@ def mpc_utils_deps():
       build_file_content = all_content,
       strip_prefix = "eigen-eigen-323c052e1731",
       urls = ["https://bitbucket.org/eigen/eigen/get/3.3.7.tar.gz"],
+      sha256 = "7e84ef87a07702b54ab3306e77cea474f56a40afa1c0ab245bb11725d006d0da",
     )
