@@ -54,6 +54,7 @@ def mpc_utils_deps():
         url = "https://ftp.gnu.org/gnu/gmp/gmp-6.1.2.tar.xz",
         strip_prefix = "gmp-6.1.2",
         build_file_content = all_content,
+        sha256 = "87b565e89a9a684fe4ebeeddb8399dce2599f9c9049854ca8c0dfbdea0e21912",
     )
 
   if "net_shoup_ntl" not in native.existing_rules():
