@@ -6,11 +6,13 @@ TEST_SOURCES := $(shell find . -type f -name '*_test.cpp')
 TEST_OBJECTS := $(patsubst %.cpp, %.o, $(TEST_SOURCES))
 TESTS := $(basename $(TEST_OBJECTS))
 
+CXXFLAGS += -I/usr/include/eigen3
+
 $(LIB): $(OBJECTS)
 	ar rcs $@ $^
 
 $(TESTS): $(TEST_OBJECTS) $(LIB)
-	$(CC) -o $@ $^ -lgtest -lgtest_main -lstdc++
+	$(CC) -o $@ $^ -lgtest -lgtest_main -lstdc++ -lboost_serialization -lntl -lgmp
 
 .PHONY: test
 test: $(TESTS) $(LIB)
