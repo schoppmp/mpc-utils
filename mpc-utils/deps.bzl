@@ -56,7 +56,7 @@ def mpc_utils_deps():
         build_file_content = all_content,
     )
 
-  if "ntl" not in native.existing_rules():
+  if "net_shoup_ntl" not in native.existing_rules():
     http_archive(
         name = "net_shoup_ntl",
         url = "https://shoup.net/ntl/ntl-11.3.2.tar.gz",
@@ -71,4 +71,20 @@ def mpc_utils_deps():
         url = "https://github.com/abseil/googletest/archive/6cbd3753dc195595689a0fbb99e7297128a2ed26.zip",
         sha256 = "61598b28fda40dbe0cc0294a61fe0878d4045fa9afe6bdbaf4b3e4f6e1d9a31e",
         strip_prefix = "googletest-6cbd3753dc195595689a0fbb99e7297128a2ed26",
+    )
+
+  if "com_github_xianyi_openblas" not in native.existing_rules():
+    http_archive(
+      name = "com_github_xianyi_openblas",
+      build_file_content = all_content,
+      strip_prefix = "OpenBLAS-0.3.4",
+      urls = ["https://github.com/xianyi/OpenBLAS/archive/v0.3.4.tar.gz"],
+    )
+
+  if "org_bitbucket_eigen" not in native.existing_rules():
+    http_archive(
+      name = "org_bitbucket_eigen",
+      build_file_content = all_content,
+      strip_prefix = "eigen-eigen-323c052e1731",
+      urls = ["https://bitbucket.org/eigen/eigen/get/3.3.7.tar.gz"],
     )
