@@ -12,6 +12,7 @@ cmake_external(
    },
    headers_only = True,
    lib_source = "@org_bitbucket_eigen//:all",
+   out_include_dir = "include/eigen3",
    deps = ["//third_party/openblas:openblas"],
    visibility = ["//visibility:public"],
 )

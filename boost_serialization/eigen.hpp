@@ -7,32 +7,43 @@
 namespace boost {
 namespace serialization {
 // Dense matrices
-// From Stackoverflow by Shmuel Levine, Licensed CC-BY-SA 3.0
+// Adapted from Stackoverflow by Shmuel Levine, Licensed CC-BY-SA 3.0
 // https://stackoverflow.com/a/22903063
-template <class Archive, class S, int Rows_, int Cols_, int Ops_, int MaxRows_,
+template <class Archive, class S, int Rows_, int Cols_, int Options, int MaxRows_,
           int MaxCols_>
 inline void save(
     Archive& ar,
-    const Eigen::Matrix<S, Rows_, Cols_, Ops_, MaxRows_, MaxCols_>& g,
+    const Eigen::Matrix<S, Rows_, Cols_, Options, MaxRows_, MaxCols_>& g,
     const unsigned int version) {
-  int rows = g.rows();
-  int cols = g.cols();
+  bool col_major = (Options | Eigen::ColMajor) ? true : false;
+  Eigen::Index rows = g.rows();
+  Eigen::Index cols = g.cols();
 
+  ar & col_major;
   ar& rows;
   ar& cols;
   ar& boost::serialization::make_array(g.data(), rows * cols);
 }
 
-template <class Archive, class S, int Rows_, int Cols_, int Ops_, int MaxRows_,
+template <class Archive, class S, int Rows_, int Cols_, int Options, int MaxRows_,
           int MaxCols_>
 inline void load(Archive& ar,
-                 Eigen::Matrix<S, Rows_, Cols_, Ops_, MaxRows_, MaxCols_>& g,
+                 Eigen::Matrix<S, Rows_, Cols_, Options, MaxRows_, MaxCols_>& g,
                  const unsigned int version) {
-  int rows, cols;
+  bool col_major;
+  Eigen::Index rows, cols;
+
+  ar & col_major;
   ar& rows;
   ar& cols;
+  if (col_major != (Options | Eigen::ColMajor)) {
+    std::swap(rows, cols);
+  }
   g.resize(rows, cols);
   ar& boost::serialization::make_array(g.data(), rows * cols);
+  if (col_major != (Options | Eigen::ColMajor)) {
+    g.transposeInPlace();
+  }
 }
 
 template <class Archive, class S, int Rows_, int Cols_, int Ops_, int MaxRows_,
@@ -44,24 +55,28 @@ inline void serialize(
 }
 
 // sparse matrices
-template <typename Archive, typename T, typename Index>
-inline void serialize(Archive& ar, Eigen::Triplet<T, Index>& triplet,
+template <typename Archive, typename T, typename StorageIndex>
+inline void serialize(Archive& ar, Eigen::Triplet<T, StorageIndex>& triplet,
                       const unsigned int version) {
-  Index i = triplet.row(), j = triplet.col();
+  StorageIndex i = triplet.row(), j = triplet.col();
   T val = triplet.value();
   ar& i;
   ar& j;
   ar& val;
-  triplet = Eigen::Triplet<T, Index>(i, j, val);
+  triplet = Eigen::Triplet<T, StorageIndex>(i, j, val);
 }
 
 template <typename Archive, typename T, int Ops_, typename StorageIndex_>
 inline void save(Archive& ar,
                  const Eigen::SparseMatrix<T, Ops_, StorageIndex_>& mat,
                  const unsigned int version) {
+   Eigen::Index rows = mat.rows();
+   Eigen::Index cols = mat.cols();
+   ar & rows;
+   ar & cols;
   // TODO: maybe there's a way to save the intermediate copy?
   std::vector<Eigen::Triplet<T, StorageIndex_>> triplets;
-  for (size_t k = 0; k < mat.outerSize(); k++) {
+  for (Eigen::Index k = 0; k < mat.outerSize(); k++) {
     for (typename Eigen::SparseMatrix<T, Ops_, StorageIndex_>::InnerIterator it(
              mat, k);
          it; ++it) {
@@ -72,11 +87,15 @@ inline void save(Archive& ar,
   ar& triplets;
 }
 
-template <typename Archive, typename T, int Ops_, typename StorageIndex_>
-inline void load(Archive& ar, Eigen::SparseMatrix<T, Ops_, StorageIndex_>& mat,
+template <typename Archive, typename T, int Ops_, typename StorageIndex>
+inline void load(Archive& ar, Eigen::SparseMatrix<T, Ops_, StorageIndex>& mat,
                  const unsigned int version) {
-  std::vector<Eigen::Triplet<T, StorageIndex_>> triplets;
+  std::vector<Eigen::Triplet<T, StorageIndex>> triplets;
+  Eigen::Index rows, cols;
+  ar& rows;
+  ar & cols;
   ar& triplets;
+  mat.resize(rows, cols);
   mat.setFromTriplets(triplets.begin(), triplets.end());
 }
 
