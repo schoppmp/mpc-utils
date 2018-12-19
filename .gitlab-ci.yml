@@ -2,4 +2,4 @@ test_all:
   image: gitlab.informatik.hu-berlin.de:4567/ti/software/bazel-builder:latest
   stage: build
   script:
-    - bazel test //:all
+    - bazel test ...:all
