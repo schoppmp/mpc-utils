@@ -14,6 +14,7 @@ cc_test(
   srcs = [
     "eigen_test.cpp",
   ],
+  size = "small",
   deps = [
     ":eigen",
     "@googletest//:gtest_main",

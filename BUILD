@@ -7,6 +7,7 @@ cc_library(
 cc_test(
   name = "benchmarker_test",
   srcs = ["benchmarker_test.cpp"],
+  size = "small",
   deps = [
     "benchmarker",
     "@googletest//:gtest_main",
