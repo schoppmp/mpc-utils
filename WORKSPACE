@@ -20,9 +20,9 @@ http_archive(
 
 http_archive(
    name = "rules_foreign_cc",
-   url = "https://github.com/bazelbuild/rules_foreign_cc/archive/42138778e390858c79ea96499e7102d76361f102.zip",
-   strip_prefix = "rules_foreign_cc-42138778e390858c79ea96499e7102d76361f102",
-   sha256 = "83b7d05b779ff4e04c148d3745824066de03e90f8852c20bc0e576f46bf29139",
+   url = "https://github.com/bazelbuild/rules_foreign_cc/archive/99ea1b09fc3fe9a1fbb32d965324d9dc34c31cde.zip",
+   strip_prefix = "rules_foreign_cc-99ea1b09fc3fe9a1fbb32d965324d9dc34c31cde",
+   sha256 = "5ffb7001ae6fe455a1b7baceb0944112183d3523efcdc0a674a964837d4e7312",
 )
 
 # Initialize dependencies
