@@ -31,9 +31,9 @@ def mpc_utils_deps():
   if "com_github_schoppmp_rules_oblivc" not in native.existing_rules():
     http_archive(
         name = "com_github_schoppmp_rules_oblivc",
-        sha256 = "9a48460fc805bf552622663db0e895251fa23da24105bc05d3b15c729bf3f1be",
-        url = "https://github.com/schoppmp/rules_oblivc/archive/b05c9e8ad842757fd57a7262abfb6b15cbb0f564.zip",
-        strip_prefix = "rules_oblivc-b05c9e8ad842757fd57a7262abfb6b15cbb0f564",
+        sha256 = "1b7499c1c08058ce525918e556253863791eeebf268b5c403cef250fb3010aae",
+        url = "https://github.com/schoppmp/rules_oblivc/archive/3e6ac74e027d11f1dbc4d110358ed7cf803e6a3d.zip",
+        strip_prefix = "rules_oblivc-3e6ac74e027d11f1dbc4d110358ed7cf803e6a3d",
     )
 
   oblivc_deps()
@@ -41,9 +41,9 @@ def mpc_utils_deps():
   if "rules_foreign_cc" not in native.existing_rules():
     http_archive(
        name = "rules_foreign_cc",
-       url = "https://github.com/bazelbuild/rules_foreign_cc/archive/b08610b154274940a8b44db53c0f64409fb57878.zip",
-       strip_prefix = "rules_foreign_cc-b08610b154274940a8b44db53c0f64409fb57878",
-       sha256 = "598951746da89adcaf6cdd99b079ee740edb191bbcb8598b0fe82d5a6c2790e5",
+       url = "https://github.com/bazelbuild/rules_foreign_cc/archive/42138778e390858c79ea96499e7102d76361f102.zip",
+       strip_prefix = "rules_foreign_cc-42138778e390858c79ea96499e7102d76361f102",
+       sha256 = "83b7d05b779ff4e04c148d3745824066de03e90f8852c20bc0e576f46bf29139",
     )
 
   rules_foreign_cc_dependencies()
