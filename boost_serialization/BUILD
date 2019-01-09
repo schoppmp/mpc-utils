@@ -31,3 +31,15 @@ cc_library(
     "@boost//:serialization",
   ],
 )
+
+cc_test(
+  name = "ntl_test",
+  srcs = [
+    "ntl_test.cpp",
+  ],
+  size = "small",
+  deps = [
+    ":ntl",
+    "@googletest//:gtest_main",
+  ]
+)
