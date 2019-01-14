@@ -53,10 +53,27 @@ cc_library(
   ],
   deps = [
     ":mpc_config",
+    "@abseil//absl/memory",
     "@boost//:exception",
     "@boost//:asio",
     "@boost//:thread",
     "@boost//:serialization",
+    "@boost//:iostreams",
+  ]
+)
+
+cc_test(
+  name = "comm_channel_test",
+  srcs = [
+    "comm_channel_test.cpp",
+  ],
+  size = "small",
+  deps = [
+    ":comm_channel",
+    ":mpc_config",
+    "@googletest//:gtest_main",
+    "@abseil//absl/memory",
+    "@boost//:thread",
   ]
 )
 
@@ -75,10 +92,30 @@ cc_library(
   ],
   deps = [
     ":mpc_config",
+    "@abseil//absl/memory",
     "@boost//:exception",
     "@boost//:asio",
     "@boost//:thread",
     "@boost//:serialization",
+    "@boost//:iostreams",
     "@oblivc//:runtime",
+  ]
+)
+
+cc_test(
+  name = "comm_channel_oblivc_test",
+  srcs = [
+    "comm_channel_oblivc_test.cpp",
+  ],
+  size = "small",
+  copts = [
+    "-DMPC_UTILS_USE_OBLIVC",
+  ],
+  deps = [
+    ":comm_channel_oblivc",
+    ":mpc_config",
+    "@googletest//:gtest_main",
+    "@abseil//absl/memory",
+    "@boost//:thread",
   ]
 )

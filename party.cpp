@@ -1,6 +1,7 @@
 #include "party.hpp"
 
-comm_channel party::connect_to(int peer_id, bool tcp_nodelay, int sleep_time,
+comm_channel party::connect_to(int peer_id, bool measure_communication,
+                               bool tcp_nodelay, int sleep_time,
                                int num_tries) {
   using tcp = boost::asio::ip::tcp;
   std::unique_lock<std::mutex> lock(connection_mutex);
@@ -31,7 +32,8 @@ comm_channel party::connect_to(int peer_id, bool tcp_nodelay, int sleep_time,
           if (tcp_nodelay) {
             stream->rdbuf()->set_option(tcp::no_delay(true));  // disable nagle
           }
-          comm_channel chan(std::move(stream), *this, -1);
+          comm_channel chan(std::move(stream), *this, -1,
+                            measure_communication);
           int current_id = chan.get_peer_id();
           if (current_id > static_cast<int>(servers.size())) {
             current_id = servers.size();  // not a server -> put into last queue
@@ -70,7 +72,8 @@ comm_channel party::connect_to(int peer_id, bool tcp_nodelay, int sleep_time,
               stream->rdbuf()->set_option(
                   tcp::no_delay(true));  // disable nagle
             }
-            return comm_channel(std::move(stream), *this, peer_id);
+            return comm_channel(std::move(stream), *this, peer_id,
+                                measure_communication);
             // wrap exceptions in a boost::exception
           } catch (boost::system::system_error& ex) {
             BOOST_THROW_EXCEPTION(ex);
@@ -95,19 +98,30 @@ comm_channel party::connect_to(int peer_id, bool tcp_nodelay, int sleep_time,
 }
 
 #ifdef MPC_UTILS_USE_OBLIVC
-int party::connect_to_oblivc(ProtocolDesc& pd, int peer_id, int sleep_time,
+int party::connect_to_oblivc(ProtocolDesc& pd, int peer_id,
+                             bool measure_communication, int sleep_time,
                              int num_tries) {
   std::unique_lock<std::mutex> lock(connection_mutex);
   // TODO: this currently only works for one simultaneous connection
   if (id < peer_id) {
     std::string port(std::to_string(servers[id].port));
-    return protocolAcceptTcp2P(&pd, port.c_str());
+    if (measure_communication) {
+      return protocolAcceptTcp2PProfiled(&pd, port.c_str());
+    } else {
+      return protocolAcceptTcp2P(&pd, port.c_str());
+    }
   } else {
     int result = -1;
     for (int i = 0; i < num_tries || num_tries == -1; i++) {
       std::string port(std::to_string(servers[peer_id].port));
-      int result = protocolConnectTcp2P(&pd, servers[peer_id].host.c_str(),
-                                        port.c_str());
+      int result;
+      if (measure_communication) {
+        result = protocolConnectTcp2PProfiled(
+            &pd, servers[peer_id].host.c_str(), port.c_str());
+      } else {
+        result = protocolConnectTcp2P(&pd, servers[peer_id].host.c_str(),
+                                      port.c_str());
+      }
       if (result != -1) {
         return result;
       }

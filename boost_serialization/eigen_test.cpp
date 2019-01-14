@@ -43,12 +43,13 @@ TEST_F(EigenTest, SerializeDenseColsRows) {
 }
 
 class EigenTestSparse : public EigenTest {
-protected:
-  EigenTestSparse() : triplets({
-    {1, 2, 3},
-    {4, 5, 6},
-    {20, 30, 123},
-  }) {}
+ protected:
+  EigenTestSparse()
+      : triplets({
+            {1, 2, 3},
+            {4, 5, 6},
+            {20, 30, 123},
+        }) {}
 
   std::vector<Eigen::Triplet<int>> triplets;
 };
@@ -58,8 +59,8 @@ TEST_F(EigenTestSparse, Serialize) {
   matrix.setFromTriplets(triplets.begin(), triplets.end());
   oarchive& matrix;
   Eigen::SparseMatrix<int> matrix2;
-  iarchive & matrix2;
-  for(auto& triplet : triplets) {
+  iarchive& matrix2;
+  for (auto& triplet : triplets) {
     EXPECT_EQ(matrix2.coeff(triplet.row(), triplet.col()), triplet.value());
   }
 }
@@ -69,8 +70,8 @@ TEST_F(EigenTestSparse, SerializeRowsCols) {
   matrix.setFromTriplets(triplets.begin(), triplets.end());
   oarchive& matrix;
   Eigen::SparseMatrix<int, Eigen::ColMajor> matrix2;
-  iarchive & matrix2;
-  for(auto& triplet : triplets) {
+  iarchive& matrix2;
+  for (auto& triplet : triplets) {
     EXPECT_EQ(matrix2.coeff(triplet.row(), triplet.col()), triplet.value());
   }
 }
@@ -80,8 +81,8 @@ TEST_F(EigenTestSparse, SerializeColsRows) {
   matrix.setFromTriplets(triplets.begin(), triplets.end());
   oarchive& matrix;
   Eigen::SparseMatrix<int, Eigen::RowMajor> matrix2;
-  iarchive & matrix2;
-  for(auto& triplet : triplets) {
+  iarchive& matrix2;
+  for (auto& triplet : triplets) {
     EXPECT_EQ(matrix2.coeff(triplet.row(), triplet.col()), triplet.value());
   }
 }

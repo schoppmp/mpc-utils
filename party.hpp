@@ -20,8 +20,8 @@ class comm_channel;
 // represents a participant in an MPC protocol
 class party {
  public:
-  const static int DEFAULT_SLEEP_TIME = 500;
-  const static int DEFAULT_NUM_TRIES = -1;
+  static const int DEFAULT_SLEEP_TIME = 500;
+  static const int DEFAULT_NUM_TRIES = -1;
   party(mpc_config& conf)
       : servers(conf.servers),
         id(conf.party_id),
@@ -35,12 +35,14 @@ class party {
    * to an object representing that connection. Suitable for passing to SCAPI
    * calls
    */
-  comm_channel connect_to(int peer_id, bool tcp_nodelay = true,
+  comm_channel connect_to(int peer_id, bool measure_communication = false,
+                          bool tcp_nodelay = true,
                           int sleep_time = DEFAULT_SLEEP_TIME,
                           int num_tries = DEFAULT_NUM_TRIES);
 
 #ifdef MPC_UTILS_USE_OBLIVC
   int connect_to_oblivc(ProtocolDesc& pd, int peer_id,
+                        bool measure_communication = false,
                         int sleep_time = DEFAULT_SLEEP_TIME,
                         int num_tries = DEFAULT_NUM_TRIES);
 #endif
