@@ -13,9 +13,9 @@ http_archive(
 
 http_archive(
     name = "com_github_schoppmp_rules_oblivc",
-    sha256 = "1b7499c1c08058ce525918e556253863791eeebf268b5c403cef250fb3010aae",
-    url = "https://github.com/schoppmp/rules_oblivc/archive/3e6ac74e027d11f1dbc4d110358ed7cf803e6a3d.zip",
-    strip_prefix = "rules_oblivc-3e6ac74e027d11f1dbc4d110358ed7cf803e6a3d",
+    sha256 = "e985073252c21df2b890741c5ad402c6fc6965852336e7f2a07042f3d2797c48",
+    url = "https://github.com/schoppmp/rules_oblivc/archive/8067bf3d918d25b001a853d6a1085cc21be6d6de.zip",
+    strip_prefix = "rules_oblivc-8067bf3d918d25b001a853d6a1085cc21be6d6de",
 )
 
 http_archive(

@@ -31,9 +31,9 @@ def mpc_utils_deps():
   if "com_github_schoppmp_rules_oblivc" not in native.existing_rules():
     http_archive(
         name = "com_github_schoppmp_rules_oblivc",
-        sha256 = "1b7499c1c08058ce525918e556253863791eeebf268b5c403cef250fb3010aae",
-        url = "https://github.com/schoppmp/rules_oblivc/archive/3e6ac74e027d11f1dbc4d110358ed7cf803e6a3d.zip",
-        strip_prefix = "rules_oblivc-3e6ac74e027d11f1dbc4d110358ed7cf803e6a3d",
+        sha256 = "e985073252c21df2b890741c5ad402c6fc6965852336e7f2a07042f3d2797c48",
+        url = "https://github.com/schoppmp/rules_oblivc/archive/8067bf3d918d25b001a853d6a1085cc21be6d6de.zip",
+        strip_prefix = "rules_oblivc-8067bf3d918d25b001a853d6a1085cc21be6d6de",
     )
 
   oblivc_deps()
@@ -90,4 +90,12 @@ def mpc_utils_deps():
       strip_prefix = "eigen-eigen-323c052e1731",
       urls = ["https://bitbucket.org/eigen/eigen/get/3.3.7.tar.gz"],
       sha256 = "7e84ef87a07702b54ab3306e77cea474f56a40afa1c0ab245bb11725d006d0da",
+    )
+
+  if "abseil" not in native.existing_rules():
+    http_archive(
+      name = "abseil",
+      url = "https://github.com/abseil/abseil-cpp/archive/018b4db1d73ec8238e6dc4b17fd9e1fd7468d0ed.zip",
+      strip_prefix = "abseil-cpp-018b4db1d73ec8238e6dc4b17fd9e1fd7468d0ed",
+      sha256 = "da6e451773c2f33755dce4792e89ef5983576ce20026579947961140d907fccd",
     )
