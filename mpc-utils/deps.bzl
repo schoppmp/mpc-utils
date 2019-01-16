@@ -9,7 +9,6 @@ load(
     "rules_foreign_cc_dependencies",
 )
 
-
 all_content = """
 filegroup(
   name = "all",
