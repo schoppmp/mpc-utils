@@ -6,10 +6,10 @@ load(
 )
 
 # Initialize dependencies
-load("//mpc-utils:preload.bzl", "mpc_utils_deps_preload")
+load("//mpc_utils:preload.bzl", "mpc_utils_deps_preload")
 
 mpc_utils_deps_preload()
 
-load("//mpc-utils:deps.bzl", "mpc_utils_deps")
+load("//mpc_utils:deps.bzl", "mpc_utils_deps")
 
 mpc_utils_deps()
