@@ -1,0 +1,43 @@
+diff --git a/configure b/configure
+new file mode 100755
+index 0000000..db91ac5
+---
++++ configure
+@@ -0,0 +1,33 @@
++#!/bin/bash
++
++# Parse prefix, and save all other command line arguments for later.
++POSITIONAL=()
++while [[ $# -gt 0 ]]; do
++key="$1"
++case $key in
++    --prefix=*)  # With equals sign.
++    PREFIX="${key#*=}"
++    shift # past argument=value
++    ;;
++
++    --prefix)  # Without equals sign.
++    PREFIX="$2"
++    shift # past argument
++    shift # past value
++    ;;
++
++    *)
++    POSITIONAL+=("$1") # save it in an array for later
++    shift # past argument
++    ;;
++esac
++done
++set -- "${POSITIONAL[@]}" # Restore positional parameters.
++
++# Copy headers to temporary directory so NTL's configure script can edit them.
++NTL_DIR=$EXT_BUILD_ROOT/external/net_shoup_ntl/
++cp -r $NTL_DIR/src src
++cp -r $NTL_DIR/doc doc
++cp -r -L $NTL_DIR/include include
++
++cd src && ./configure PREFIX="$PREFIX" "$@"
+\ No newline at end of file
+-- 
+2.20.1
+
