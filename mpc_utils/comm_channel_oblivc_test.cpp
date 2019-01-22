@@ -13,8 +13,8 @@ class CommChannelOblivcTest : public ::testing::Test {
   CommChannelOblivcTest() {}
   void SetUp(bool measure_communication) {
     mpc_config conf;
-    conf.servers = {server_info("127.0.0.23", 2342),
-                    server_info("127.0.0.42", 2342)};
+    conf.servers = {server_info("127.0.0.23", 2341),
+                    server_info("127.0.0.42", 2341)};
     conf.party_id = 0;
     party0 = absl::make_unique<party>(conf);
     conf.party_id = 1;
