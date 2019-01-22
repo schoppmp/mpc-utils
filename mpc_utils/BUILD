@@ -89,8 +89,8 @@ cc_library(
         "comm_channel.hpp",
         "party.hpp",
     ],
-    copts = [
-        "-DMPC_UTILS_USE_OBLIVC",
+    defines = [
+        "MPC_UTILS_USE_OBLIVC",
     ],
     deps = [
         ":mpc_config",
@@ -109,9 +109,6 @@ cc_test(
     size = "small",
     srcs = [
         "comm_channel_oblivc_test.cpp",
-    ],
-    copts = [
-        "-DMPC_UTILS_USE_OBLIVC",
     ],
     deps = [
         ":comm_channel_oblivc",
