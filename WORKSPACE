@@ -1,4 +1,4 @@
-workspace(name = "com_github_schoppmp_mpc_utils")
+workspace(name = "mpc_utils")
 
 load(
     "@bazel_tools//tools/build_defs/repo:http.bzl",

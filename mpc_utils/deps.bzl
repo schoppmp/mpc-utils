@@ -38,6 +38,10 @@ def mpc_utils_deps():
             url = "https://shoup.net/ntl/ntl-11.3.2.tar.gz",
             sha256 = "84ba3145abf8d5f3be6832a14c60b3368eb920719ee96e5774587e71ecd66e9d",
             strip_prefix = "ntl-11.3.2",
+            patches = [
+                # Adds a custom configure script to ensure compatibility with rules_foreign_cc.
+                "@mpc_utils//third_party/ntl:configure-script.patch",
+            ],
             build_file_content = all_content,
         )
 
