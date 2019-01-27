@@ -33,6 +33,17 @@ cc_library(
     ],
 )
 
+cc_test(
+    name = "config_test",
+    srcs = ["config_test.cpp"],
+    deps = [
+        ":config",
+        "@googletest//:gtest_main",
+        "@boost//:filesystem",
+        "@boost//:program_options",
+    ]
+)
+
 cc_library(
     name = "mpc_config",
     srcs = ["mpc_config.cpp"],

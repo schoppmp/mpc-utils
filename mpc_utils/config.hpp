@@ -20,6 +20,7 @@ class config {
   void init();
 
   virtual void validate(){};
+  virtual std::string env_map(const std::string& env_var);
 
  public:
   config();
@@ -30,5 +31,5 @@ class config {
   void add_options_description(
       boost::program_options::options_description& desc, bool cmd_only = false);
   void set_default_filename(const std::string& filename);
-  std::string& get_default_filename();
+  const std::string& get_default_filename();
 };

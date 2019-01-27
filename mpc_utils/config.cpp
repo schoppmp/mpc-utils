@@ -37,7 +37,14 @@ void config::parse(int argc, const char* argv[]) {
   po::options_description desc_all;
   desc_all.add(this->desc_cmd_only).add(this->desc_general);
 
-  // parse command line
+  // Parse environment.
+  po::store(po::parse_environment(desc_all,
+                                  [this](const std::string& env_var) {
+                                    return this->env_map(env_var);
+                                  }),
+            vm);
+
+  // Parse command line.
   try {
     po::store(po::parse_command_line(argc, argv, desc_all), vm);
     if (vm.count("help")) {
@@ -51,8 +58,13 @@ void config::parse(int argc, const char* argv[]) {
     }
     throw;
   }
+  for(const auto& file : config_files) {
+    std::cout << "file: " << file << "\n";
+    std::cout << "count: " << vm.count("config") << "\n";
+  }
 
-  // parse config files
+
+  // Parse config files.
   if (vm.count("config")) {
     config_files = vm["config"].as<std::vector<std::string>>();
   }
@@ -82,4 +94,11 @@ void config::set_default_filename(const std::string& filename) {
   default_filename = filename;
 }
 
-std::string& config::get_default_filename() { return default_filename; }
+const std::string& config::get_default_filename() { return default_filename; }
+
+std::string config::env_map(const std::string& env_var) {
+  if (env_var == "MPC_UTILS_CONFIG") {
+    return "config";
+  }
+  return "";
+}
