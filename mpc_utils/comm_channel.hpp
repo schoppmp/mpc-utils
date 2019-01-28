@@ -110,7 +110,8 @@ class comm_channel
                         int sleep_time = party::DEFAULT_SLEEP_TIME,
                         int num_tries = party::DEFAULT_NUM_TRIES) {
     flush_if_needed();
-    return p.connect_to_oblivc(pd, peer_id, measure_communication, sleep_time, num_tries);
+    return p.connect_to_oblivc(pd, peer_id, measure_communication, sleep_time,
+                               num_tries);
   }
 #endif
 

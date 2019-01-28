@@ -58,11 +58,10 @@ void config::parse(int argc, const char* argv[]) {
     }
     throw;
   }
-  for(const auto& file : config_files) {
+  for (const auto& file : config_files) {
     std::cout << "file: " << file << "\n";
     std::cout << "count: " << vm.count("config") << "\n";
   }
-
 
   // Parse config files.
   if (vm.count("config")) {

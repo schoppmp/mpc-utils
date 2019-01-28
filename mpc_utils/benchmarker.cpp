@@ -11,6 +11,13 @@ void Benchmarker::AddSecondsSinceStart(const std::string& key,
   measurements_[key] += duration.count();
 }
 
+void Benchmarker::BenchmarkFunction(const std::string& key,
+                                    std::function<void()> f) {
+  auto start = StartTimer();
+  f();
+  AddSecondsSinceStart(key, start);
+}
+
 void Benchmarker::AddAmount(const std::string& key, double amount) {
   measurements_[key] += amount;
 }

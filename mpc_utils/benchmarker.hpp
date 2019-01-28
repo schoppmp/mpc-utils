@@ -7,6 +7,7 @@
 
 #pragma once
 #include <chrono>
+#include <functional>
 #include <unordered_map>
 
 class Benchmarker {
@@ -29,6 +30,9 @@ class Benchmarker {
   // the given key.
   void AddSecondsSinceStart(const std::string& key,
                             const time_point& start_time);
+
+  // Runs f and adds the number of seconds it takes to the given key.
+  void BenchmarkFunction(const std::string&, std::function<void()> f);
 
   // Adds a user-defined amount to the given key.
   void AddAmount(const std::string& key, double amount);
