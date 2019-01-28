@@ -2,6 +2,9 @@
 #include <thread>
 #include "gtest/gtest.h"
 
+namespace mpc_utils {
+namespace {
+
 TEST(Benchmarker, AddTimeSinceStart) {
   Benchmarker b;
   auto start = b.StartTimer();
@@ -23,3 +26,6 @@ TEST(Benchmarker, AddAmount) {
   b.AddAmount("amount", 5);
   EXPECT_EQ(b.GetTotal("amount"), 5);
 }
+
+}  // namespace
+}  // namespace mpc_utils
