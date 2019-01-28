@@ -1,0 +1,11 @@
+diff --git /src/mfile /src/mfile
+index 75031cc..5f42015 100644
+--- /src/mfile
++++ /src/mfile
+@@ -83,7 +83,7 @@ GMP_LIBDIR=@{GMP_LIBDIR}
+
+ GMP_OPT_INCDIR=@{GMPI}-I$(GMP_INCDIR) # GMPI
+ GMP_OPT_LIBDIR=@{GMPL}-L$(GMP_LIBDIR) # GMPL
+-GMP_OPT_LIB=@{GMP}-lgmp # GMP
++GMP_OPT_LIB=$(GMP_LIBDIR)/libgmp.a
+ # uncomment these if using GMP

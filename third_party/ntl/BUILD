@@ -5,8 +5,7 @@ licenses(["restricted"])
 configure_make(
     name = "ntl",
     configure_options = [
-        "GMP_INCDIR=\"$EXT_BUILD_DEPS/gmp/include/\"",
-        "GMP_LIBDIR=\"$EXT_BUILD_DEPS/gmp/lib/\"",
+        "GMP_PREFIX=\"$EXT_BUILD_DEPS/gmp/\"",
     ],
     lib_source = "@net_shoup_ntl//:all",
     make_commands = [

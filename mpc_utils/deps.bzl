@@ -8,6 +8,7 @@ load(
     "@rules_foreign_cc//:workspace_definitions.bzl",
     "rules_foreign_cc_dependencies",
 )
+load("@mpc_utils//third_party:repo.bzl", "third_party_http_archive")
 
 all_content = """
 filegroup(
@@ -33,15 +34,16 @@ def mpc_utils_deps():
         )
 
     if "net_shoup_ntl" not in native.existing_rules():
-        http_archive(
+        third_party_http_archive(
             name = "net_shoup_ntl",
-            url = "https://shoup.net/ntl/ntl-11.3.2.tar.gz",
+            urls = ["https://shoup.net/ntl/ntl-11.3.2.tar.gz"],
             sha256 = "84ba3145abf8d5f3be6832a14c60b3368eb920719ee96e5774587e71ecd66e9d",
             strip_prefix = "ntl-11.3.2",
-            patches = [
-                # Adds a custom configure script to ensure compatibility with rules_foreign_cc.
-                "@mpc_utils//third_party/ntl:configure-script.patch",
-            ],
+            # We have to patch  NTL's build file in order to link GMP statically.
+            patch_file = "@mpc_utils//third_party/ntl:static_gmp.patch",
+            link_files = {
+                "@mpc_utils//third_party/ntl:configure": "configure",
+            },
             build_file_content = all_content,
         )
 
