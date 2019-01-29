@@ -127,6 +127,9 @@ class comm_channel
   int get_id() { return id; }
   int get_peer_id() { return peer_id; }
 
+  // Returns whether this channel's communication is measured.
+  bool is_measured() { return measure_communication; }
+
   // Returns the number of bytes sent so far.
   //
   // Throws std::invalid_argument if measure_communication was not set to true
