@@ -33,7 +33,7 @@ void Benchmarker::AddAmount(const std::string &key, double amount) {
   measurements_[key] += amount;
 }
 
-double Benchmarker::GetTotal(const std::string &key) const {
+double Benchmarker::Get(const std::string &key) const {
   try {
     return measurements_.at(key);
   } catch (std::out_of_range &_) {

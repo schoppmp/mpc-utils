@@ -44,8 +44,13 @@ class Benchmarker {
   // Adds a user-defined amount to the given key.
   void AddAmount(const std::string &key, double amount);
 
-  // Returns the sum of the measurements with the given key.
-  double GetTotal(const std::string &key) const;
+  // Returns the sum of the measurements with the given key, or 0 if the key was never used with this Benchmarker.
+  double Get(const std::string &key) const;
+
+  // Returns a map of all keys and corresponding measurements.
+  const std::unordered_map<std::string, double>& GetAll() const {
+      return measurements_;
+  }
 
  private:
   // Maps keys to aggregated measurements.
