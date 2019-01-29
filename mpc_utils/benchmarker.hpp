@@ -36,7 +36,10 @@ class Benchmarker {
                             const time_point &start_time);
 
   // Runs f and adds the number of seconds it takes to the given key.
-  void BenchmarkFunction(const std::string &, std::function<void()> f);
+  void BenchmarkFunction(const std::string &key, std::function<void()> f);
+
+  // Runs f and benchmarks it using benchmarker->BenchmarkFunction is benchmarker is not null.
+  static void MaybeBenchmarkFunction(Benchmarker* benchmarker, const std::string &key, std::function<void()> f);
 
   // Adds a user-defined amount to the given key.
   void AddAmount(const std::string &key, double amount);
