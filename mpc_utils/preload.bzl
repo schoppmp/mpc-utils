@@ -17,9 +17,9 @@ def mpc_utils_deps_preload():
     if "com_github_schoppmp_rules_oblivc" not in native.existing_rules():
         http_archive(
             name = "com_github_schoppmp_rules_oblivc",
-            sha256 = "42331fffb8990f1a8297a213fe74af890935abadd2c68912469f946c63f9622d",
-            url = "https://github.com/schoppmp/rules_oblivc/archive/d1a2d3968d4d9387085aed43f5887f44b144901e.zip",
-            strip_prefix = "rules_oblivc-d1a2d3968d4d9387085aed43f5887f44b144901e",
+            sha256 = "52a1370d6ee47d62791a8a3b61f0ef0c93d3465d774f41fa5516c1e2f3541e0d",
+            url = "https://github.com/schoppmp/rules_oblivc/archive/14282988a60fbaa1aa428b1678e07b9d94b8be62.zip",
+            strip_prefix = "rules_oblivc-14282988a60fbaa1aa428b1678e07b9d94b8be62",
         )
     if "rules_foreign_cc" not in native.existing_rules():
         http_archive(
