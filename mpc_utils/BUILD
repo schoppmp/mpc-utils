@@ -38,10 +38,10 @@ cc_test(
     srcs = ["config_test.cpp"],
     deps = [
         ":config",
-        "@googletest//:gtest_main",
         "@boost//:filesystem",
         "@boost//:program_options",
-    ]
+        "@googletest//:gtest_main",
+    ],
 )
 
 cc_library(
@@ -127,5 +127,6 @@ cc_test(
         "@abseil//absl/memory",
         "@boost//:thread",
         "@googletest//:gtest_main",
+        "//mpc_utils/testing:comm_channel_oblivc_test_helper"
     ],
 )
