@@ -27,7 +27,10 @@ def mpc_utils_deps():
     if "org_gmplib" not in native.existing_rules():
         http_archive(
             name = "org_gmplib",
-            url = "https://ftp.gnu.org/gnu/gmp/gmp-6.1.2.tar.xz",
+            urls = [
+                "https://gmplib.org/download/gmp/gmp-6.1.2.tar.xz",
+                "https://ftp.gnu.org/gnu/gmp/gmp-6.1.2.tar.xz",
+            ],
             strip_prefix = "gmp-6.1.2",
             build_file_content = all_content,
             sha256 = "87b565e89a9a684fe4ebeeddb8399dce2599f9c9049854ca8c0dfbdea0e21912",
