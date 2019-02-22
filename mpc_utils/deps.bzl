@@ -74,3 +74,12 @@ def mpc_utils_deps():
             strip_prefix = "abseil-cpp-018b4db1d73ec8238e6dc4b17fd9e1fd7468d0ed",
             sha256 = "da6e451773c2f33755dce4792e89ef5983576ce20026579947961140d907fccd",
         )
+
+    if "com_github_gperftools_gperftools" not in native.existing_rules():
+        http_archive(
+            name = "com_github_gperftools_gperftools",
+            sha256 = "1ee8c8699a0eff6b6a203e59b43330536b22bbcbe6448f54c7091e5efb0763c9",
+            strip_prefix = "gperftools-2.7",
+            urls = ["https://github.com/gperftools/gperftools/releases/download/gperftools-2.7/gperftools-2.7.tar.gz"],
+            build_file_content = all_content,
+        )

@@ -12,7 +12,7 @@ cc_test(
     srcs = ["benchmarker_test.cpp"],
     deps = [
         ":benchmarker",
-        "@googletest//:gtest_main",
+        "//mpc_utils/testing:test_deps",
     ],
 )
 
@@ -40,7 +40,7 @@ cc_test(
         ":config",
         "@boost//:filesystem",
         "@boost//:program_options",
-        "@googletest//:gtest_main",
+        "//mpc_utils/testing:test_deps",
     ],
 )
 
@@ -86,8 +86,8 @@ cc_test(
         ":mpc_config",
         "@abseil//absl/memory",
         "@boost//:thread",
-        "@googletest//:gtest_main",
         "//mpc_utils/testing:comm_channel_test_helper",
+        "//mpc_utils/testing:test_deps",
     ],
 )
 
@@ -127,7 +127,7 @@ cc_test(
         ":mpc_config",
         "@abseil//absl/memory",
         "@boost//:thread",
-        "@googletest//:gtest_main",
         "//mpc_utils/testing:comm_channel_test_helper_oblivc",
+        "//mpc_utils/testing:test_deps",
     ],
 )

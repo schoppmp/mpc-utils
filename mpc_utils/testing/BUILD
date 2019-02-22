@@ -11,7 +11,6 @@ cc_library(
         "//mpc_utils:comm_channel",
         "@abseil//absl/memory",
         "@boost//:thread",
-        "@googletest//:gtest",
     ],
 )
 
@@ -28,7 +27,15 @@ cc_library(
         "//mpc_utils:comm_channel_oblivc",
         "@abseil//absl/memory",
         "@boost//:thread",
-        "@googletest//:gtest",
         "@oblivc//:runtime",
+    ],
+)
+
+cc_library(
+    name = "test_deps",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@googletest//:gtest_main",
+        "//third_party/gperftools",
     ],
 )
