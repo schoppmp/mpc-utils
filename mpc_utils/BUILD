@@ -87,6 +87,7 @@ cc_test(
         "@abseil//absl/memory",
         "@boost//:thread",
         "@googletest//:gtest_main",
+        "//mpc_utils/testing:comm_channel_test_helper",
     ],
 )
 
@@ -127,6 +128,6 @@ cc_test(
         "@abseil//absl/memory",
         "@boost//:thread",
         "@googletest//:gtest_main",
-        "//mpc_utils/testing:comm_channel_oblivc_test_helper"
+        "//mpc_utils/testing:comm_channel_test_helper_oblivc",
     ],
 )
