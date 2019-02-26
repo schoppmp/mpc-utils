@@ -4,6 +4,9 @@ licenses(["notice"])  # BSD 3-clause
 
 configure_make(
     name = "gperftools",
+    binaries = [
+        "pprof",
+    ],
     configure_options = [
         "--enable-shared=no",
         "--enable-frame-pointers",
@@ -13,5 +16,12 @@ configure_make(
     static_libraries = [
         "libtcmalloc_and_profiler.a",
     ],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "pprof",
+    srcs = [":gperftools"],
+    output_group = "pprof",
     visibility = ["//visibility:public"],
 )
