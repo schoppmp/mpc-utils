@@ -32,13 +32,21 @@ cc_library(
 )
 
 cc_library(
-    name = "test_deps",
+    name = "leack_check",
     visibility = ["//visibility:public"],
     data = [
       "@mpc_utils//third_party/gperftools:pprof"
     ],
     deps = [
-        "@googletest//:gtest_main",
         "//third_party/gperftools",
+    ],
+)
+
+cc_library(
+    name = "test_deps",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@googletest//:gtest_main",
+        ":leak_check",
     ],
 )
