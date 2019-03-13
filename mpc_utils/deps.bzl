@@ -18,11 +18,13 @@ filegroup(
 )
 """
 
-def mpc_utils_deps():
+def mpc_utils_deps(
+        enable_oblivc = True):
     # Initialize transitive dependencies.
     boost_deps()
     rules_foreign_cc_dependencies()
-    oblivc_deps()
+    if enable_oblivc:
+        oblivc_deps()
 
     if "org_gmplib" not in native.existing_rules():
         http_archive(
