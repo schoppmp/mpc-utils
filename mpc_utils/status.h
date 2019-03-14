@@ -16,6 +16,20 @@ using namespace ::google::protobuf::util::error;
 
 }
 
+// Define some canonical error helpers.
+inline Status UnimplementedError(google::protobuf::StringPiece message) {
+  return Status(error::UNIMPLEMENTED, message);
+}
+inline Status InternalError(google::protobuf::StringPiece message) {
+  return Status(error::INTERNAL, message);
+}
+inline Status FailedPreconditionError(google::protobuf::StringPiece message) {
+  return Status(error::FAILED_PRECONDITION, message);
+}
+inline Status InvalidArgumentError(google::protobuf::StringPiece message) {
+  return Status(error::INVALID_ARGUMENT, message);
+}
+
 }
 
 #endif //MPC_UTILS_STATUS_H
