@@ -131,3 +131,43 @@ cc_test(
         "//mpc_utils/testing:test_deps",
     ],
 )
+
+cc_library(
+    name = "status",
+    hdrs = [
+        "status.h",
+    ],
+    deps = [
+        # We depend on Protobuf for Status.
+        # TODO: Change this once Status and StatusOr make it into Abseil.
+        "@com_google_protobuf//:protobuf_lite"
+    ],
+)
+
+cc_library(
+    name = "statusor",
+    hdrs = [
+        "statusor.h",
+        "statusor_internals.h",
+        "status_macros.h",
+    ],
+    srcs = [
+        "statusor.cc",
+    ],
+    deps = [
+        ":status",
+        "@com_github_google_glog//:glog",
+    ],
+)
+
+cc_test(
+    name = "statusor_test",
+    size = "small",
+    srcs = [
+        "statusor_test.cc",
+    ],
+    deps = [
+        ":statusor",
+        "//mpc_utils/testing:test_deps",
+    ]
+)

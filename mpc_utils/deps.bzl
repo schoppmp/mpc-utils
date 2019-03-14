@@ -85,3 +85,29 @@ def mpc_utils_deps(
             urls = ["https://github.com/gperftools/gperftools/releases/download/gperftools-2.7/gperftools-2.7.tar.gz"],
             build_file_content = all_content,
         )
+
+    if "com_google_protobuf" not in native.existing_rules():
+        http_archive(
+            name = "com_google_protobuf",
+            url = "https://github.com/schoppmp/protobuf/archive/b9824e9c45c2ddcf57d15fee89be94445e321ddb.zip",
+            sha256 = "cc7b133355ed853da872ec4c7487485df79086a5f903b91b24e3a1d052cc99c2",
+            strip_prefix = "protobuf-b9824e9c45c2ddcf57d15fee89be94445e321ddb",
+        )
+
+    if "com_github_google_glog" not in native.existing_rules():
+        http_archive(
+            name = "com_github_google_glog",
+            url = "https://github.com/google/glog/archive/5c576f78c49b28d89b23fbb1fc80f54c879ec02e.zip",
+            sha256 = "8b30f28514024d9133210ce6c3f7da17b484647e0fd6fc737931c82adc8710d5",
+            strip_prefix = "glog-5c576f78c49b28d89b23fbb1fc80f54c879ec02e",
+        )
+
+    if "com_github_gflags_gflags" not in native.existing_rules():
+        http_archive(
+            name = "com_github_gflags_gflags",
+            strip_prefix = "gflags-2.2.2",
+            urls = [
+                "https://mirror.bazel.build/github.com/gflags/gflags/archive/v2.2.2.tar.gz",
+                "https://github.com/gflags/gflags/archive/v2.2.2.tar.gz",
+            ],
+        )
