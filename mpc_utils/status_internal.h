@@ -27,7 +27,7 @@ struct ErrorCodeHolder {
   explicit ErrorCodeHolder(int code) : error_code(code) {}
 
   template <typename EnumT,
-      typename E = typename absl::enable_if_t<std::is_enum<EnumT>::value>>
+            typename E = typename absl::enable_if_t<std::is_enum<EnumT>::value>>
   operator EnumT() {  // NOLINT(runtime/explicit)
     return static_cast<EnumT>(error_code);
   }
@@ -39,14 +39,14 @@ struct status_type_traits {
  private:
   template <typename StatusU>
   static auto CheckMinimalApi(StatusU* s, int* i, std::string* str, bool* b)
-  -> decltype(StatusU(ErrorCodeHolder(0), ""), *i = s->error_code(),
-                                               *str = s->error_message(), *b = s->ok(), std::true_type());
+      -> decltype(StatusU(ErrorCodeHolder(0), ""), *i = s->error_code(),
+                  *str = s->error_message(), *b = s->ok(), std::true_type());
 
   template <typename StatusU>
   static auto CheckMinimalApi(...) -> decltype(std::false_type());
-  using minimal_api_type = decltype(
-  CheckMinimalApi<StatusT>(static_cast<StatusT*>(0), static_cast<int*>(0),
-                           static_cast<std::string*>(0), static_cast<bool*>(0)));
+  using minimal_api_type = decltype(CheckMinimalApi<StatusT>(
+      static_cast<StatusT*>(0), static_cast<int*>(0),
+      static_cast<std::string*>(0), static_cast<bool*>(0)));
 
  public:
   static constexpr bool is_status = minimal_api_type::value;

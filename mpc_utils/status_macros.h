@@ -23,10 +23,10 @@
 namespace mpc_utils {
 
 // Internal helper for concatenating macro values.
-#define MACROS_IMPL_CONCAT_INNER_(x, y) x##y
-#define MACROS_IMPL_CONCAT(x, y) MACROS_IMPL_CONCAT_INNER_(x, y)
+#define STATUS_MACROS_IMPL_CONCAT_INNER_(x, y) x##y
+#define STATUS_MACROS_IMPL_CONCAT(x, y) STATUS_MACROS_IMPL_CONCAT_INNER_(x, y)
 
-#define RETURN_IF_ERROR(expr)          \
+#define RETURN_IF_ERROR(expr)               \
   do {                                      \
     const auto status = (expr);             \
     if (ABSL_PREDICT_FALSE(!status.ok())) { \
@@ -34,15 +34,15 @@ namespace mpc_utils {
     }                                       \
   } while (0);
 
-#define ASSIGN_OR_RETURN(lhs, rexpr) \
-  ASSIGN_OR_RETURN_IMPL(             \
-      MACROS_IMPL_CONCAT(_statusor, __LINE__), lhs, rexpr)
+#define ASSIGN_OR_RETURN(lhs, rexpr)                                         \
+  ASSIGN_OR_RETURN_IMPL(STATUS_MACROS_IMPL_CONCAT(_statusor, __LINE__), lhs, \
+                        rexpr)
 
 #define ASSIGN_OR_RETURN_IMPL(statusor, lhs, rexpr) \
-  auto statusor = (rexpr);                               \
-  if (ABSL_PREDICT_FALSE(!statusor.ok())) {              \
-    return statusor.status();                            \
-  }                                                      \
+  auto statusor = (rexpr);                          \
+  if (ABSL_PREDICT_FALSE(!statusor.ok())) {         \
+    return statusor.status();                       \
+  }                                                 \
   lhs = std::move(statusor).ValueOrDie();
 
 }  // namespace mpc_utils

@@ -15,19 +15,19 @@
 #ifndef MPC_UTILS_STATUS_MATCHERS_H_
 #define MPC_UTILS_STATUS_MATCHERS_H_
 
-#include "gmock/gmock.h"
 #include "absl/types/optional.h"
+#include "gmock/gmock.h"
 #include "mpc_utils/status.h"
 #include "mpc_utils/status_macros.h"
 #include "mpc_utils/statusor.h"
 
 #define ASSERT_OK_AND_ASSIGN(lhs, rexpr) \
   ASSERT_OK_AND_ASSIGN_IMPL(             \
-      STATUS_MACROS_CONCAT_NAME(_mpc_utils_statusor, __LINE__), lhs, rexpr)
+      STATUS_MACROS_IMPL_CONCAT(_mpc_utils_statusor, __LINE__), lhs, rexpr)
 
 #define ASSERT_OK_AND_ASSIGN_IMPL(statusor, lhs, rexpr) \
-  auto statusor = (rexpr);                                   \
-  ASSERT_THAT(statusor.status(), mpc_utils::IsOk());              \
+  auto statusor = (rexpr);                              \
+  ASSERT_THAT(statusor.status(), mpc_utils::IsOk());    \
   lhs = std::move(statusor).ValueOrDie();
 
 namespace mpc_utils {
@@ -117,4 +117,4 @@ template <typename Enum>
 
 }  // namespace mpc_utils
 
-#endif // MPC_UTILS_STATUS_MATCHERS_H_
+#endif  // MPC_UTILS_STATUS_MATCHERS_H_

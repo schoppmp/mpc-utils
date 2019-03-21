@@ -38,18 +38,22 @@ class Benchmarker {
   // Runs f and adds the number of seconds it takes to the given key.
   void BenchmarkFunction(const std::string &key, std::function<void()> f);
 
-  // Runs f and benchmarks it using benchmarker->BenchmarkFunction is benchmarker is not null.
-  static void MaybeBenchmarkFunction(Benchmarker* benchmarker, const std::string &key, std::function<void()> f);
+  // Runs f and benchmarks it using benchmarker->BenchmarkFunction is
+  // benchmarker is not null.
+  static void MaybeBenchmarkFunction(Benchmarker *benchmarker,
+                                     const std::string &key,
+                                     std::function<void()> f);
 
   // Adds a user-defined amount to the given key.
   void AddAmount(const std::string &key, double amount);
 
-  // Returns the sum of the measurements with the given key, or 0 if the key was never used with this Benchmarker.
+  // Returns the sum of the measurements with the given key, or 0 if the key was
+  // never used with this Benchmarker.
   double Get(const std::string &key) const;
 
   // Returns a map of all keys and corresponding measurements.
-  const std::unordered_map<std::string, double>& GetAll() const {
-      return measurements_;
+  const std::unordered_map<std::string, double> &GetAll() const {
+    return measurements_;
   }
 
  private:

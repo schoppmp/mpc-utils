@@ -20,9 +20,10 @@ void Benchmarker::BenchmarkFunction(const std::string &key,
   AddSecondsSinceStart(key, start);
 }
 
-
-void Benchmarker::MaybeBenchmarkFunction(Benchmarker* benchmarker, const std::string &key, std::function<void()> f) {
-  if(benchmarker) {
+void Benchmarker::MaybeBenchmarkFunction(Benchmarker *benchmarker,
+                                         const std::string &key,
+                                         std::function<void()> f) {
+  if (benchmarker) {
     benchmarker->BenchmarkFunction(key, f);
   } else {
     f();

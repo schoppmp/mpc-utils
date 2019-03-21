@@ -16,7 +16,7 @@ TEST(Benchmarker, AddTimeSinceStart) {
 TEST(Benchmarker, BenchmarkFunction) {
   Benchmarker b;
   b.BenchmarkFunction("sleep", [] {
-      std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
   });
   EXPECT_GT(b.Get("sleep"), 0.1);
 }
@@ -24,7 +24,7 @@ TEST(Benchmarker, BenchmarkFunction) {
 TEST(Benchmarker, MaybeBenchmarkFunction) {
   Benchmarker b;
   Benchmarker::MaybeBenchmarkFunction(&b, "sleep", [] {
-      std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
   });
   EXPECT_GT(b.Get("sleep"), 0.1);
 }
@@ -33,7 +33,7 @@ TEST(Benchmarker, MaybeBenchmarkFunctionNull) {
   Benchmarker b;
   auto start = b.StartTimer();
   Benchmarker::MaybeBenchmarkFunction(nullptr, "sleep_null", [] {
-      std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
   });
   b.AddSecondsSinceStart("sleep", start);
   EXPECT_EQ(b.Get("sleep_null"), 0);

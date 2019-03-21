@@ -16,10 +16,10 @@
 
 #include <string>
 
-#include "gmock/gmock.h"
-#include "gtest/gtest.h"
 #include "absl/memory/memory.h"
 #include "absl/strings/str_cat.h"
+#include "gmock/gmock.h"
+#include "gtest/gtest.h"
 #include "mpc_utils/status.h"
 #include "mpc_utils/status_matchers.h"
 #include "mpc_utils/statusor.h"
@@ -61,8 +61,8 @@ TEST(AssignOrReturn, AssignsMultipleVariablesInSequence) {
     ASSIGN_OR_RETURN(value3, StatusOr<int>(3));
     EXPECT_EQ(3, value3);
     int value4;
-    ASSIGN_OR_RETURN(
-        value4, StatusOr<int>(Status(mpc_utils::StatusCode::kUnknown, "EXPECTED")));
+    ASSIGN_OR_RETURN(value4, StatusOr<int>(Status(
+                                 mpc_utils::StatusCode::kUnknown, "EXPECTED")));
     return Status(mpc_utils::StatusCode::kUnknown,
                   absl::StrCat("ERROR: assigned value ", value4));
   };
@@ -77,8 +77,8 @@ TEST(AssignOrReturn, AssignsRepeatedlyToSingleVariable) {
     EXPECT_EQ(2, value);
     ASSIGN_OR_RETURN(value, StatusOr<int>(3));
     EXPECT_EQ(3, value);
-    ASSIGN_OR_RETURN(
-        value, StatusOr<int>(Status(mpc_utils::StatusCode::kUnknown, "EXPECTED")));
+    ASSIGN_OR_RETURN(value, StatusOr<int>(Status(
+                                mpc_utils::StatusCode::kUnknown, "EXPECTED")));
     return Status(mpc_utils::StatusCode::kUnknown, "ERROR");
   };
 
@@ -88,8 +88,8 @@ TEST(AssignOrReturn, AssignsRepeatedlyToSingleVariable) {
 TEST(AssignOrReturn, MovesUniquePtr) {
   auto func = []() -> Status {
     std::unique_ptr<int> ptr;
-    ASSIGN_OR_RETURN(
-        ptr, StatusOr<std::unique_ptr<int>>(absl::make_unique<int>(1)));
+    ASSIGN_OR_RETURN(ptr,
+                     StatusOr<std::unique_ptr<int>>(absl::make_unique<int>(1)));
     EXPECT_EQ(*ptr, 1);
     return Status(mpc_utils::StatusCode::kUnknown, "EXPECTED");
   };
@@ -101,7 +101,7 @@ TEST(AssignOrReturn, DoesNotAssignUniquePtrOnErrorStatus) {
   auto func = []() -> Status {
     std::unique_ptr<int> ptr;
     ASSIGN_OR_RETURN(ptr, StatusOr<std::unique_ptr<int>>(Status(
-        mpc_utils::StatusCode::kUnknown, "EXPECTED")));
+                              mpc_utils::StatusCode::kUnknown, "EXPECTED")));
     EXPECT_EQ(ptr, nullptr);
     return OkStatus();
   };
@@ -112,11 +112,11 @@ TEST(AssignOrReturn, DoesNotAssignUniquePtrOnErrorStatus) {
 TEST(AssignOrReturn, MovesUniquePtrRepeatedlyToSingleVariable) {
   auto func = []() -> Status {
     std::unique_ptr<int> ptr;
-    ASSIGN_OR_RETURN(
-        ptr, StatusOr<std::unique_ptr<int>>(absl::make_unique<int>(1)));
+    ASSIGN_OR_RETURN(ptr,
+                     StatusOr<std::unique_ptr<int>>(absl::make_unique<int>(1)));
     EXPECT_EQ(*ptr, 1);
-    ASSIGN_OR_RETURN(
-        ptr, StatusOr<std::unique_ptr<int>>(absl::make_unique<int>(2)));
+    ASSIGN_OR_RETURN(ptr,
+                     StatusOr<std::unique_ptr<int>>(absl::make_unique<int>(2)));
     EXPECT_EQ(*ptr, 2);
     return Status(mpc_utils::StatusCode::kUnknown, "EXPECTED");
   };
@@ -125,4 +125,4 @@ TEST(AssignOrReturn, MovesUniquePtrRepeatedlyToSingleVariable) {
 }
 
 }  // namespace
-} // namespace mpc_utils
+}  // namespace mpc_utils

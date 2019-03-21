@@ -114,4 +114,4 @@ bool IsUnknown(const Status& status) {
   return status.code() == StatusCode::kUnknown;
 }
 
-} // namespace mpc_utils
+}  // namespace mpc_utils
