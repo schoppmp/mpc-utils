@@ -1,82 +1,49 @@
-// Protocol Buffers - Google's data interchange format
-// Copyright 2008 Google Inc.  All rights reserved.
-// https://developers.google.com/protocol-buffers/
+// Copyright 2019 Google LLC. All Rights Reserved.
 //
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//     * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-//     * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
+//     http://www.apache.org/licenses/LICENSE-2.0
 //
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-// From: util/task/contrib/status_macros/status_macros.h
+// This file is a custom fork of util/task/status_macros.h. This will become
+// obsolete and will be replaced once Abseil releases absl::Status.
 
 #ifndef MPC_UTILS_STATUS_MACROS_H_
 #define MPC_UTILS_STATUS_MACROS_H_
 
-#include "mpc_utils/statusor.h"
+#include "mpc_utils/status.h"
 
 namespace mpc_utils {
 
-// Run a command that returns a util::Status.  If the called code returns an
-// error status, return that status up out of this method too.
-//
-// Example:
-//   RETURN_IF_ERROR(DoThings(4));
-#define RETURN_IF_ERROR(expr)                                                \
-  do {                                                                       \
-    /* Using _status below to avoid capture problems if expr is "status". */ \
-    const mpc_utils::Status _status = (expr);              \
-    if (!_status.ok()) return _status;               \
-  } while (0)
-
 // Internal helper for concatenating macro values.
-#define STATUS_MACROS_CONCAT_NAME_INNER(x, y) x##y
-#define STATUS_MACROS_CONCAT_NAME(x, y) STATUS_MACROS_CONCAT_NAME_INNER(x, y)
+#define MACROS_IMPL_CONCAT_INNER_(x, y) x##y
+#define MACROS_IMPL_CONCAT(x, y) MACROS_IMPL_CONCAT_INNER_(x, y)
 
-template<typename T>
-Status DoAssignOrReturn(T& lhs, StatusOr<T> result) {
-  if (result.ok()) {
-    lhs = result.ValueOrDie();
-  }
-  return result.status();
-}
+#define RETURN_IF_ERROR(expr)          \
+  do {                                      \
+    const auto status = (expr);             \
+    if (ABSL_PREDICT_FALSE(!status.ok())) { \
+      return status;                        \
+    }                                       \
+  } while (0);
 
-#define ASSIGN_OR_RETURN_IMPL(status, lhs, rexpr) \
-  Status status = DoAssignOrReturn(lhs, (rexpr)); \
-  if (!status.ok()) return status;
-
-// Executes an expression that returns a util::StatusOr, extracting its value
-// into the variable defined by lhs (or returning on error).
-//
-// Example: Assigning to an existing value
-//   ValueType value;
-//   ASSIGN_OR_RETURN(value, MaybeGetValue(arg));
-//
-// WARNING: ASSIGN_OR_RETURN expands into multiple statements; it cannot be used
-//  in a single statement (e.g. as the body of an if statement without {})!
 #define ASSIGN_OR_RETURN(lhs, rexpr) \
-  ASSIGN_OR_RETURN_IMPL( \
-      STATUS_MACROS_CONCAT_NAME(_status_or_value, __COUNTER__), lhs, rexpr);
+  ASSIGN_OR_RETURN_IMPL(             \
+      MACROS_IMPL_CONCAT(_statusor, __LINE__), lhs, rexpr)
+
+#define ASSIGN_OR_RETURN_IMPL(statusor, lhs, rexpr) \
+  auto statusor = (rexpr);                               \
+  if (ABSL_PREDICT_FALSE(!statusor.ok())) {              \
+    return statusor.status();                            \
+  }                                                      \
+  lhs = std::move(statusor).ValueOrDie();
 
 }  // namespace mpc_utils
 

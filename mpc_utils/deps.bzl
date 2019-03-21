@@ -55,9 +55,9 @@ def mpc_utils_deps(
     if "googletest" not in native.existing_rules():
         http_archive(
             name = "googletest",
-            url = "https://github.com/abseil/googletest/archive/6cbd3753dc195595689a0fbb99e7297128a2ed26.zip",
-            sha256 = "61598b28fda40dbe0cc0294a61fe0878d4045fa9afe6bdbaf4b3e4f6e1d9a31e",
-            strip_prefix = "googletest-6cbd3753dc195595689a0fbb99e7297128a2ed26",
+            sha256 = "70404b4a887fd8efce2179e9918e58cdac03245e575408ed87799696e816ecb8",
+            strip_prefix = "googletest-f80d6644d4b451f568a2e7aea1e01e842eb242dc",
+            urls = ["https://github.com/google/googletest/archive/f80d6644d4b451f568a2e7aea1e01e842eb242dc.zip"],
         )
 
     if "org_bitbucket_eigen" not in native.existing_rules():
@@ -84,30 +84,4 @@ def mpc_utils_deps(
             strip_prefix = "gperftools-2.7",
             urls = ["https://github.com/gperftools/gperftools/releases/download/gperftools-2.7/gperftools-2.7.tar.gz"],
             build_file_content = all_content,
-        )
-
-    if "com_google_protobuf" not in native.existing_rules():
-        http_archive(
-            name = "com_google_protobuf",
-            url = "https://github.com/schoppmp/protobuf/archive/b9824e9c45c2ddcf57d15fee89be94445e321ddb.zip",
-            sha256 = "cc7b133355ed853da872ec4c7487485df79086a5f903b91b24e3a1d052cc99c2",
-            strip_prefix = "protobuf-b9824e9c45c2ddcf57d15fee89be94445e321ddb",
-        )
-
-    if "com_github_google_glog" not in native.existing_rules():
-        http_archive(
-            name = "com_github_google_glog",
-            url = "https://github.com/google/glog/archive/5c576f78c49b28d89b23fbb1fc80f54c879ec02e.zip",
-            sha256 = "8b30f28514024d9133210ce6c3f7da17b484647e0fd6fc737931c82adc8710d5",
-            strip_prefix = "glog-5c576f78c49b28d89b23fbb1fc80f54c879ec02e",
-        )
-
-    if "com_github_gflags_gflags" not in native.existing_rules():
-        http_archive(
-            name = "com_github_gflags_gflags",
-            strip_prefix = "gflags-2.2.2",
-            urls = [
-                "https://mirror.bazel.build/github.com/gflags/gflags/archive/v2.2.2.tar.gz",
-                "https://github.com/gflags/gflags/archive/v2.2.2.tar.gz",
-            ],
         )

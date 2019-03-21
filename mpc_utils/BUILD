@@ -134,40 +134,75 @@ cc_test(
 
 cc_library(
     name = "status",
+    srcs = [
+        "canonical_errors.cc",
+        "status.cc",
+    ],
     hdrs = [
+        "canonical_errors.h",
         "status.h",
+        "status_internal.h",
+        "status_macros.h",
     ],
     deps = [
-        # We depend on Protobuf for Status.
-        # TODO: Change this once Status and StatusOr make it into Abseil.
-        "@com_google_protobuf//:protobuf_lite"
+        "@abseil//absl/base:core_headers",
+        "@abseil//absl/meta:type_traits",
+        "@abseil//absl/strings",
+    ],
+)
+
+cc_test(
+    name = "status_test",
+    srcs = ["status_test.cc"],
+    deps = [
+        ":status_matchers",
+        "//mpc_utils/testing:test_deps",
     ],
 )
 
 cc_library(
     name = "statusor",
-    hdrs = [
-        "statusor.h",
-        "statusor_internals.h",
-        "status_macros.h",
-    ],
-    srcs = [
-        "statusor.cc",
-    ],
+    hdrs = ["statusor.h"],
     deps = [
         ":status",
-        "@com_github_google_glog//:glog",
+        "@abseil//absl/base",
+        "@abseil//absl/base:core_headers",
+        "@abseil//absl/types:variant",
+    ],
+)
+
+cc_library(
+    name = "status_matchers",
+    testonly = 1,
+    hdrs = ["status_matchers.h"],
+    deps = [
+        ":status",
+        ":statusor",
+        "@abseil//absl/types:optional",
+        "@googletest//:gtest",
     ],
 )
 
 cc_test(
     name = "statusor_test",
-    size = "small",
-    srcs = [
-        "statusor_test.cc",
-    ],
+    srcs = ["statusor_test.cc"],
     deps = [
+        ":status",
+        ":status_matchers",
         ":statusor",
         "//mpc_utils/testing:test_deps",
-    ]
+    ],
+)
+
+cc_test(
+    name = "status_macros_test",
+    srcs = ["status_macros_test.cc"],
+    deps = [
+        ":status",
+        ":status_matchers",
+        ":statusor",
+        "@abseil//absl/memory",
+        "@abseil//absl/strings",
+        "//mpc_utils/testing:test_deps",
+    ],
 )
