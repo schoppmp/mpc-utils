@@ -92,6 +92,35 @@ cc_test(
 )
 
 cc_library(
+    name = "comm_channel_emp_adapter",
+    hdrs = [
+        "comm_channel_emp_adapter.hpp",
+    ],
+    deps = [
+        ":comm_channel",
+        "//third_party/emp:emp_tool"
+    ]
+)
+
+cc_test(
+    name = "comm_channel_emp_adapter_test",
+    srcs = [
+        "comm_channel_emp_adapter_test.cpp",
+    ],
+    copts = [
+        "-maes",
+        "-msse4.2"
+    ],
+    deps = [
+        ":comm_channel_emp_adapter",
+        "//mpc_utils/testing:test_deps",
+        "//mpc_utils/testing:comm_channel_test_helper",
+        "@com_github_emp_toolkit_emp_ot//:test_header",
+        "//third_party/emp:emp_ot"
+    ],
+)
+
+cc_library(
     name = "comm_channel_oblivc",
     srcs = [
         "comm_channel.cpp",

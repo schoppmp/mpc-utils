@@ -35,7 +35,7 @@ cc_library(
     name = "leak_check",
     visibility = ["//visibility:public"],
     data = [
-      "@mpc_utils//third_party/gperftools:pprof"
+      "//third_party/gperftools:pprof"
     ],
     deps = [
         "//third_party/gperftools",
