@@ -7,5 +7,6 @@ filegroup(
 cc_library(
     name = "test_header",
     hdrs = ["test/test.h"],
+    include_prefix = "emp-ot",
     visibility = ["//visibility:public"],
 )

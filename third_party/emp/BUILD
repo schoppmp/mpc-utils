@@ -22,8 +22,8 @@ cmake_external(
         "libemp-tool.so",
     ],
     deps = [
-        "//third_party/relic",
         "//third_party/gmp",
+        "//third_party/relic",
     ],
 )
 
@@ -62,7 +62,7 @@ cc_library(
     name = "emp_ot",
     visibility = ["//visibility:public"],
     deps = [
-        ":emp_tool",
         ":emp_ot_build",
+        ":emp_tool",
     ],
 )

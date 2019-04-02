@@ -96,8 +96,16 @@ cc_library(
     hdrs = [
         "comm_channel_emp_adapter.hpp",
     ],
+    srcs = [
+        "comm_channel_emp_adapter.cpp",
+    ],
+    copts = [
+        "-maes",
+        "-msse4.2"
+    ],
     deps = [
         ":comm_channel",
+        ":statusor",
         "//third_party/emp:emp_tool"
     ]
 )
@@ -112,6 +120,7 @@ cc_test(
         "-msse4.2"
     ],
     deps = [
+        ":status_matchers",
         ":comm_channel_emp_adapter",
         "//mpc_utils/testing:test_deps",
         "//mpc_utils/testing:comm_channel_test_helper",
