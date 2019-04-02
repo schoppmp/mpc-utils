@@ -75,16 +75,6 @@ def mpc_utils_deps(
                 strip_prefix = "relic-b984e901ba78c83ea4093ea96addd13628c8c2d0",
                 build_file_content = all_content,
             )
-        if "boringssl" not in native.existing_rules():
-            http_archive(
-                name = "boringssl",
-                sha256 = "1188e29000013ed6517168600fc35a010d58c5d321846d6a6dfee74e4c788b45",
-                strip_prefix = "boringssl-7f634429a04abc48e2eb041c81c5235816c96514",
-                urls = [
-                    "https://mirror.bazel.build/github.com/google/boringssl/archive/7f634429a04abc48e2eb041c81c5235816c96514.tar.gz",
-                    "https://github.com/google/boringssl/arc451f0ccd52a62e97e3f5c047bd9bf8678f50dde2.ziphive/7f634429a04abc48e2eb041c81c5235816c96514.tar.gz",
-                ],
-            )
         if "com_github_emp_toolkit_emp_tool" not in native.existing_rules():
             http_archive(
                 name = "com_github_emp_toolkit_emp_tool",
@@ -110,7 +100,6 @@ def mpc_utils_deps(
             strip_prefix = "googletest-f80d6644d4b451f568a2e7aea1e01e842eb242dc",
             urls = ["https://github.com/google/googletest/archive/f80d6644d4b451f568a2e7aea1e01e842eb242dc.zip"],
         )
-
     if "abseil" not in native.existing_rules():
         http_archive(
             name = "abseil",
@@ -118,7 +107,6 @@ def mpc_utils_deps(
             strip_prefix = "abseil-cpp-e75672f6afc7e8f23ee7b532e86d1b3b9be3984e",
             sha256 = "ecf95f0fff939cd2741cec1c7baa4bd777eb8b6b8869a47f1343fdc4db86e949",
         )
-
     if "com_github_gperftools_gperftools" not in native.existing_rules():
         http_archive(
             name = "com_github_gperftools_gperftools",
@@ -126,5 +114,22 @@ def mpc_utils_deps(
             strip_prefix = "gperftools-2.7",
             urls = ["https://github.com/gperftools/gperftools/releases/download/gperftools-2.7/gperftools-2.7.tar.gz"],
             build_file_content = all_content,
+        )
+    if "com_github_google_benchmark" not in native.existing_rules():
+        http_archive(
+            name = "com_github_google_benchmark",
+            url = "https://github.com/google/benchmark/archive/df7c7ee1d37dda0fb597586b4624515166a778d0.zip",
+            sha256 = "7f41a125c859da0115f144fb228e9b0a9ba404aeca76e5ca51e0bfe250cc0bb5",
+            strip_prefix = "benchmark-df7c7ee1d37dda0fb597586b4624515166a778d0",
+        )
+    if "boringssl" not in native.existing_rules():
+        http_archive(
+            name = "boringssl",
+            sha256 = "1188e29000013ed6517168600fc35a010d58c5d321846d6a6dfee74e4c788b45",
+            strip_prefix = "boringssl-7f634429a04abc48e2eb041c81c5235816c96514",
+            urls = [
+                "https://mirror.bazel.build/github.com/google/boringssl/archive/7f634429a04abc48e2eb041c81c5235816c96514.tar.gz",
+                "https://github.com/google/boringssl/arc451f0ccd52a62e97e3f5c047bd9bf8678f50dde2.ziphive/7f634429a04abc48e2eb041c81c5235816c96514.tar.gz",
+            ],
         )
 

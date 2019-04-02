@@ -38,9 +38,9 @@ cc_test(
     srcs = ["config_test.cpp"],
     deps = [
         ":config",
+        "//mpc_utils/testing:test_deps",
         "@boost//:filesystem",
         "@boost//:program_options",
-        "//mpc_utils/testing:test_deps",
     ],
 )
 
@@ -84,10 +84,10 @@ cc_test(
     deps = [
         ":comm_channel",
         ":mpc_config",
-        "@abseil//absl/memory",
-        "@boost//:thread",
         "//mpc_utils/testing:comm_channel_test_helper",
         "//mpc_utils/testing:test_deps",
+        "@abseil//absl/memory",
+        "@boost//:thread",
     ],
 )
 
@@ -107,7 +107,7 @@ cc_library(
         ":comm_channel",
         ":statusor",
         "//third_party/emp:emp_tool"
-    ]
+    ],
 )
 
 cc_test(
@@ -117,15 +117,15 @@ cc_test(
     ],
     copts = [
         "-maes",
-        "-msse4.2"
+        "-msse4.2",
     ],
     deps = [
         ":status_matchers",
         ":comm_channel_emp_adapter",
-        "//mpc_utils/testing:test_deps",
         "//mpc_utils/testing:comm_channel_test_helper",
+        "//mpc_utils/testing:test_deps",
+        "//third_party/emp:emp_ot",
         "@com_github_emp_toolkit_emp_ot//:test_header",
-        "//third_party/emp:emp_ot"
     ],
 )
 
@@ -163,10 +163,43 @@ cc_test(
     deps = [
         ":comm_channel_oblivc",
         ":mpc_config",
-        "@abseil//absl/memory",
-        "@boost//:thread",
         "//mpc_utils/testing:comm_channel_test_helper_oblivc",
         "//mpc_utils/testing:test_deps",
+        "@abseil//absl/memory",
+        "@boost//:thread",
+    ],
+)
+
+cc_library(
+    name = "openssl_uniform_bit_generator",
+    hdrs = [
+        "openssl_uniform_bit_generator.hpp",
+    ],
+    deps = [
+        "@boringssl//:crypto",
+    ],
+)
+
+cc_test(
+    name = "openssl_uniform_bit_generator_test",
+    size = "small",
+    srcs = [
+        "openssl_uniform_bit_generator_test.cpp",
+    ],
+    deps = [
+        ":openssl_uniform_bit_generator",
+        "//mpc_utils/testing:test_deps",
+    ],
+)
+
+cc_binary(
+    name = "openssl_uniform_bit_generator_benchmark",
+    srcs = [
+        "openssl_uniform_bit_generator_benchmark.cpp",
+    ],
+    deps = [
+        ":openssl_uniform_bit_generator",
+        "@com_github_google_benchmark//:benchmark_main",
     ],
 )
 
@@ -239,8 +272,8 @@ cc_test(
         ":status",
         ":status_matchers",
         ":statusor",
+        "//mpc_utils/testing:test_deps",
         "@abseil//absl/memory",
         "@abseil//absl/strings",
-        "//mpc_utils/testing:test_deps",
     ],
 )
