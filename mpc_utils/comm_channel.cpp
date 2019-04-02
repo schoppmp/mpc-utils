@@ -1,4 +1,4 @@
-#include "comm_channel.hpp"
+#include "mpc_utils/comm_channel.hpp"
 #include "absl/memory/memory.h"
 
 // constructor called from party::connect_to
@@ -61,29 +61,6 @@ comm_channel::comm_channel(std::unique_ptr<boost::asio::ip::tcp::iostream>&& s,
   }
   this->peer_id = peer_id;
 };
-
-// write & read functions for direct binary access
-void comm_channel::write(const char* data, size_t size) {
-  COMM_CHANNEL_WRAP_EXCEPTION(oarchive->save_binary(data, size),
-                              boost::archive::archive_exception);
-  need_flush = true;
-}
-void comm_channel::read(char* buffer, size_t size) {
-  flush_if_needed();
-  COMM_CHANNEL_WRAP_EXCEPTION(iarchive->load_binary(buffer, size),
-                              boost::archive::archive_exception);
-}
-
-#ifdef MPC_UTILS_USE_SCAPI
-// write & read functions for CommParty interface
-void comm_channel::write(const byte* data, int size) {
-  write(reinterpret_cast<const char*>(data), size);
-}
-size_t comm_channel::read(byte* buffer, int size) {
-  read(reinterpret_cast<char*>(buffer), size);
-  return size;
-}
-#endif
 
 // create a second comm_channel from this one; establishes a new connection
 comm_channel comm_channel::clone() {

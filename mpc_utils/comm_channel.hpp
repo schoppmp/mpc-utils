@@ -1,19 +1,20 @@
 #pragma once
-#include "party.hpp"
-#ifdef MPC_UTILS_USE_SCAPI
-#include "comm/Comm.hpp"
-#endif
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/iostreams/filter/counter.hpp>
-#include <boost/iostreams/filtering_stream.hpp>
-#include <boost/thread.hpp>
 #include <iostream>
+#include "absl/memory/memory.h"
+#include "boost/archive/binary_iarchive.hpp"
+#include "boost/archive/binary_oarchive.hpp"
+#include "boost/iostreams/filter/counter.hpp"
+#include "boost/iostreams/filtering_stream.hpp"
+#include "boost/thread.hpp"
+#include "mpc_utils/party.hpp"
 
-/**
- * calls `call`, catching exceptions of type `exception_type`, wrapping them
- * in a boost::exception and adding the error message of this channel's stream
- */
+// Forward declaration to avoid dependency on EMP.
+namespace mpc_utils {
+class CommChannelEMPAdapter;
+}
+
+// Calls `call`, catching exceptions of type `exception_type`, wrapping them
+// in a boost::exception and adding the error message of this channel's stream
 #define COMM_CHANNEL_WRAP_EXCEPTION(call, exception_type)                    \
   do {                                                                       \
     try {                                                                    \
@@ -24,39 +25,31 @@
     }                                                                        \
   } while (0)
 
-/**
- * A bidirectional connection that can be used both as a CommParty in libscapi
- * calls, and using the boost serialization library.
- */
-class comm_channel
-#ifdef MPC_UTILS_USE_SCAPI
-    : public CommParty
-#endif
-{
+// A bidirectional connection using the boost serialization library.
+class comm_channel {
  public:
   comm_channel(std::unique_ptr<boost::asio::ip::tcp::iostream>&& s, party& p,
                int peer_id, bool measure_communication = false);
 
-  // no copy constructor: since copying a channel means establishing a
-  // new connection, this should be done explicitly using clone()
+  // No copy constructor: since copying a channel means establishing a new
+  // connection, this should be done explicitly using clone()
   comm_channel(comm_channel& other) = delete;
 
-  // move constructor.
-  // TODO: Remove this. If a comm_channel ever needs to be moved, that should
+  // No move constructor. If a comm_channel ever needs to be moved, that should
   // happen using a std::unique_ptr.
   comm_channel(comm_channel&& other) = default;
 
-  // write & read functions for direct binary access
-  void write(const char* data, size_t size);
-  void read(char* buffer, size_t size);
-
-#ifdef MPC_UTILS_USE_SCAPI
-  // connection happens on stream construction -> do nothing on join
-  void join(int, int){};
-  // write & read functions for CommParty interface
-  void write(const byte* data, int size);
-  size_t read(byte* buffer, int size);
-#endif
+  // write and read functions for direct binary access
+  void write(const char* data, size_t size) {
+    COMM_CHANNEL_WRAP_EXCEPTION(oarchive->save_binary(data, size),
+                                boost::archive::archive_exception);
+    need_flush = true;
+  }
+  void read(char* buffer, size_t size) {
+    flush_if_needed();
+    COMM_CHANNEL_WRAP_EXCEPTION(iarchive->load_binary(buffer, size),
+                                boost::archive::archive_exception);
+  }
 
   // send and receive objects via boost serialization
   template <typename T>
@@ -75,7 +68,7 @@ class comm_channel
   template <typename S, typename T>
   void send_recv(S&& to_send, T&& to_recv) {
     if (!twin) {
-      twin = std::unique_ptr<comm_channel>(new comm_channel(clone()));
+      twin = absl::WrapUnique(new comm_channel(clone()));
     }
     comm_channel& channel2 = *twin;
     if (get_id() < get_peer_id()) {  // lower ID sends on channel2
@@ -151,6 +144,8 @@ class comm_channel
   typedef boost::error_info<struct tag_STREAM_ERROR, std::string> stream_error;
 
  private:
+  friend class mpc_utils::CommChannelEMPAdapter;
+
   party& p;
   int id;
   int peer_id;

@@ -1,11 +1,11 @@
 #pragma once
-#include <boost/asio.hpp>
-#include <boost/exception/all.hpp>
-#include <boost/thread.hpp>
-#include <boost/thread/thread_guard.hpp>
+#include "boost/asio.hpp"
+#include "boost/exception/all.hpp"
+#include "boost/thread.hpp"
+#include "boost/thread/thread_guard.hpp"
 #include <mutex>
 #include <string>
-#include "mpc_config.hpp"
+#include "mpc_utils/mpc_config.hpp"
 #ifdef MPC_UTILS_USE_OBLIVC
 extern "C" {
 #include "obliv.h"
@@ -30,11 +30,9 @@ class party {
         io_guard(io_thread),
         pending(servers.size() + 1){};
 
-  /**
-   * Establishes a connection to a party with ID party_id and returns a pointer
-   * to an object representing that connection. Suitable for passing to SCAPI
-   * calls
-   */
+  // Establishes a connection to a party with ID party_id and returns a pointer
+  // to an object representing that connection. Suitable for passing to SCAPI
+  // calls
   comm_channel connect_to(int peer_id, bool measure_communication = false,
                           bool tcp_nodelay = true,
                           int sleep_time = DEFAULT_SLEEP_TIME,
@@ -47,19 +45,13 @@ class party {
                         int num_tries = DEFAULT_NUM_TRIES);
 #endif
 
-  /**
-   * Return this party's ID
-   */
+  // Return this party's ID.
   int get_id() { return id; }
 
-  /**
-   * Return the number of servers
-   */
+  // Return the number of servers.
   int get_num_servers() { return servers.size(); }
 
-  /**
-   * Error info types for exceptions thrown from class methods
-   */
+  // Error info types for exceptions thrown from class methods
   typedef boost::error_info<struct tag_PEER_ID, int> error_peer_id;
   typedef boost::error_info<struct tag_MY_ID, int> error_my_id;
   typedef boost::error_info<struct tag_NUM_SERVERS, size_t> error_num_servers;
