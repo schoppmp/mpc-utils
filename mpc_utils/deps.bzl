@@ -78,10 +78,10 @@ def mpc_utils_deps(
         if "com_github_emp_toolkit_emp_tool" not in native.existing_rules():
             http_archive(
                 name = "com_github_emp_toolkit_emp_tool",
-                url = "https://github.com/schoppmp/emp-tool/archive/451f0ccd52a62e97e3f5c047bd9bf8678f50dde2.zip",
-                sha256 = "1aeb2444390ad622ab40c0b872e21190a65363b54a1d823e457b05cf98ba9f31",
-                strip_prefix = "emp-tool-451f0ccd52a62e97e3f5c047bd9bf8678f50dde2",
-                build_file_content = all_content,
+                url = "https://github.com/schoppmp/emp-tool/archive/581ee4a94a8b78966506c74665c4018095360bb8.zip",
+                sha256 = "1abfbacde9375d5b08bc5185c954233835ea19eff9f230323148fc973eff63c0",
+                strip_prefix = "emp-tool-581ee4a94a8b78966506c74665c4018095360bb8",
+                build_file = clean_dep("//third_party/emp:emp_tool.BUILD"),
             )
         if "com_github_emp_toolkit_emp_ot" not in native.existing_rules():
             http_archive(

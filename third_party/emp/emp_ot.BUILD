@@ -4,6 +4,12 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
+filegroup(
+    name = "headers",
+    srcs = glob(["emp-ot/**/*.h"]),
+    visibility = ["//visibility:public"],
+)
+
 cc_library(
     name = "test_header",
     hdrs = ["test/test.h"],

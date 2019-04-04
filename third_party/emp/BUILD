@@ -33,12 +33,16 @@ cmake_external(
 # https://github.com/bazelbuild/rules_foreign_cc/issues/232
 cc_library(
     name = "emp_tool",
-    visibility = ["//visibility:public"],
+    hdrs = [
+        # Include headers here so that targets that want to include them only have to depend on this target.
+        "@com_github_emp_toolkit_emp_tool//:headers",
+    ],
     deps = [
         ":emp_tool_build",
         "@boost//:system",
         "@boringssl//:crypto",
     ],
+    visibility = ["//visibility:public"],
 )
 
 cmake_external(
@@ -60,9 +64,12 @@ cmake_external(
 
 cc_library(
     name = "emp_ot",
-    visibility = ["//visibility:public"],
+    hdrs = [
+        "@com_github_emp_toolkit_emp_ot//:headers",
+    ],
     deps = [
         ":emp_ot_build",
         ":emp_tool",
     ],
+    visibility = ["//visibility:public"],
 )
