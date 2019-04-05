@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MPC_UTILS_COMM_CHANNEL_HPP_
+#define MPC_UTILS_COMM_CHANNEL_HPP_
+
 #include <iostream>
 #include "absl/memory/memory.h"
 #include "boost/archive/binary_iarchive.hpp"
@@ -8,10 +10,11 @@
 #include "boost/thread.hpp"
 #include "mpc_utils/party.hpp"
 
-// Forward declaration to avoid dependency on EMP.
 namespace mpc_utils {
+
+// Forward declarations to avoid dependencies on EMP and Obliv-C.
 class CommChannelEMPAdapter;
-}
+class CommChannelOblivCAdapter;
 
 // Calls `call`, catching exceptions of type `exception_type`, wrapping them
 // in a boost::exception and adding the error message of this channel's stream
@@ -95,19 +98,6 @@ class comm_channel {
   // create a second comm_channel from this one; establishes a new connection
   comm_channel clone();
 
-#ifdef MPC_UTILS_USE_OBLIVC
-  // Connects the given ProtocolDesc to the remote party for use with Obliv-C.
-  //
-  // TODO: Make ProtocolDesc a pointer argument instead of non-const reference.
-  int connect_to_oblivc(ProtocolDesc& pd,
-                        int sleep_time = party::DEFAULT_SLEEP_TIME,
-                        int num_tries = party::DEFAULT_NUM_TRIES) {
-    flush_if_needed();
-    return p.connect_to_oblivc(pd, peer_id, measure_communication, sleep_time,
-                               num_tries);
-  }
-#endif
-
   // Returns a blocking file descriptor of the underlying socket. Note that any
   // writes that occur directly on this file descriptor will not be measured,
   // even if measure_communication is set to true.
@@ -117,23 +107,23 @@ class comm_channel {
   }
 
   // getters for both parties' IDs
-  int get_id() { return id; }
-  int get_peer_id() { return peer_id; }
+  int get_id() const { return id; }
+  int get_peer_id() const { return peer_id; }
 
   // Returns whether this channel's communication is measured.
-  bool is_measured() { return measure_communication; }
+  bool is_measured() const { return measure_communication; }
 
   // Returns the number of bytes sent so far.
   //
   // Throws std::invalid_argument if measure_communication was not set to true
   // at construction.
-  int64_t get_num_bytes_sent();
+  int64_t get_num_bytes_sent() const;
 
   // Returns the number of bytes received so far.
   //
   // Throws std::invalid_argument if measure_communication was not set to true
   // at construction.
-  int64_t get_num_bytes_received();
+  int64_t get_num_bytes_received() const;
 
   /**
    * Error info type for exceptions thrown from class methods
@@ -144,7 +134,8 @@ class comm_channel {
   typedef boost::error_info<struct tag_STREAM_ERROR, std::string> stream_error;
 
  private:
-  friend class mpc_utils::CommChannelEMPAdapter;
+  friend class CommChannelEMPAdapter;
+  friend class CommChannelOblivCAdapter;
 
   party& p;
   int id;
@@ -174,3 +165,10 @@ class comm_channel {
     }
   }
 };
+
+}  // namespace mpc_utils
+
+// TODO: remove this from the global namespace.
+using mpc_utils::comm_channel;
+
+#endif  // MPC_UTILS_COMM_CHANNEL_HPP_

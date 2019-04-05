@@ -1,6 +1,8 @@
 #include "mpc_utils/comm_channel.hpp"
 #include "absl/memory/memory.h"
 
+namespace mpc_utils {
+
 // constructor called from party::connect_to
 comm_channel::comm_channel(std::unique_ptr<boost::asio::ip::tcp::iostream>&& s,
                            party& p, int peer_id, bool measure_communication)
@@ -84,20 +86,9 @@ void comm_channel::flush() {
 void comm_channel::sync() {
   int a = 0, b;
   send_recv(a, b);
-  // // sequentially send and receive to save the reconnection that would
-  // // occur with send_recv
-  // if(this->get_id() < this->get_peer_id()) {
-  //   send(a);
-  //   flush();
-  //   recv(b);
-  // } else {
-  //   recv(b);
-  //   send(a);
-  //   flush();
-  // }
 }
 
-int64_t comm_channel::get_num_bytes_sent() {
+int64_t comm_channel::get_num_bytes_sent() const {
   if (!measure_communication) {
     BOOST_THROW_EXCEPTION(std::invalid_argument(
         "get_num_bytes_sent may only be called if measure_communication = true "
@@ -112,7 +103,7 @@ int64_t comm_channel::get_num_bytes_sent() {
   return sent;
 }
 
-int64_t comm_channel::get_num_bytes_received() {
+int64_t comm_channel::get_num_bytes_received() const {
   if (!measure_communication) {
     BOOST_THROW_EXCEPTION(std::invalid_argument(
         "get_num_bytes_received may only be called if measure_communication = "
@@ -126,3 +117,5 @@ int64_t comm_channel::get_num_bytes_received() {
   }
   return received;
 }
+
+}  // namespace mpc_utils
