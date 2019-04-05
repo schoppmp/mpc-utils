@@ -49,7 +49,7 @@ TEST(CommChannelEMPAdapter, TestMeasured) {
             helper.GetChannel(0)->get_num_bytes_received());
 }
 
-//TODO: Add a test for EMP Garbled Circuits.
+// TODO: Add a test for EMP Garbled Circuits.
 
 TEST(CommChannelEMPAdapter, FailsIfChannelIsNull) {
   auto status = CommChannelEMPAdapter::Create(nullptr, false);

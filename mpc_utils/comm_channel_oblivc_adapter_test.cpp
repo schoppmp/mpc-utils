@@ -1,4 +1,6 @@
+#include "mpc_utils/comm_channel_oblivc_adapter.hpp"
 #include "gtest/gtest.h"
+#include "mpc_utils/status_matchers.h"
 #include "mpc_utils/testing/comm_channel_test_helper.hpp"
 
 extern "C" {
@@ -22,18 +24,18 @@ TEST(CommChannelOblivc, SendSingleInteger) {
 
   boost::thread thread1([&helper] {
     int x1 = 42;
-    ProtocolDesc pd1;
+    ASSERT_OK_AND_ASSIGN(ProtocolDesc pd1, CommChannelOblivCAdapter::Connect(
+                                               *helper.GetChannel(1)));
     setCurrentParty(&pd1, 2);
-    helper.GetChannel(1)->connect_to_oblivc(pd1);
     execYaoProtocol(&pd1, &DummyCircuit, &x1);
     cleanupProtocol(&pd1);
   });
   boost::thread_guard<> g(thread1);
 
   int x0 = 23;
-  ProtocolDesc pd0;
+  ASSERT_OK_AND_ASSIGN(ProtocolDesc pd0, CommChannelOblivCAdapter::Connect(
+                                             *helper.GetChannel(0)));
   setCurrentParty(&pd0, 1);
-  helper.GetChannel(0)->connect_to_oblivc(pd0);
   execYaoProtocol(&pd0, &DummyCircuit, &x0);
   cleanupProtocol(&pd0);
   EXPECT_EQ(x0, 42);
@@ -45,18 +47,18 @@ TEST(CommChannelOblivc, SendSingleIntegerMeasured) {
 
   boost::thread thread1([&helper] {
     int x1 = 42;
-    ProtocolDesc pd1;
+    ASSERT_OK_AND_ASSIGN(ProtocolDesc pd1, CommChannelOblivCAdapter::Connect(
+                                               *helper.GetChannel(1)));
     setCurrentParty(&pd1, 2);
-    helper.GetChannel(1)->connect_to_oblivc(pd1);
     execYaoProtocol(&pd1, &DummyCircuit, &x1);
     cleanupProtocol(&pd1);
   });
   boost::thread_guard<> g(thread1);
 
   int x0 = 23;
-  ProtocolDesc pd0;
+  ASSERT_OK_AND_ASSIGN(ProtocolDesc pd0, CommChannelOblivCAdapter::Connect(
+                                             *helper.GetChannel(0)));
   setCurrentParty(&pd0, 1);
-  helper.GetChannel(0)->connect_to_oblivc(pd0);
   execYaoProtocol(&pd0, &DummyCircuit, &x0);
   cleanupProtocol(&pd0);
   EXPECT_EQ(x0, 42);

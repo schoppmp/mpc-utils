@@ -1,16 +1,15 @@
-#pragma once
+#ifndef MPC_UTILS_PARTY_HPP_
+#define MPC_UTILS_PARTY_HPP_
+
+#include <mutex>
+#include <string>
 #include "boost/asio.hpp"
 #include "boost/exception/all.hpp"
 #include "boost/thread.hpp"
 #include "boost/thread/thread_guard.hpp"
-#include <mutex>
-#include <string>
 #include "mpc_utils/mpc_config.hpp"
-#ifdef MPC_UTILS_USE_OBLIVC
-extern "C" {
-#include "obliv.h"
-}
-#endif
+
+namespace mpc_utils {
 
 // forward_declaration to resolve circular reference between party and
 // comm_channel comm_channel.h gets included after declaration of class party
@@ -22,7 +21,7 @@ class party {
  public:
   static const int DEFAULT_SLEEP_TIME = 500;
   static const int DEFAULT_NUM_TRIES = -1;
-  party(mpc_config& conf)
+  party(mpc_config &conf)
       : servers(conf.servers),
         id(conf.party_id),
         io_thread(boost::bind(&boost::asio::io_service::run, &io_service)),
@@ -37,13 +36,6 @@ class party {
                           bool tcp_nodelay = true,
                           int sleep_time = DEFAULT_SLEEP_TIME,
                           int num_tries = DEFAULT_NUM_TRIES);
-
-#ifdef MPC_UTILS_USE_OBLIVC
-  int connect_to_oblivc(ProtocolDesc& pd, int peer_id,
-                        bool measure_communication = false,
-                        int sleep_time = DEFAULT_SLEEP_TIME,
-                        int num_tries = DEFAULT_NUM_TRIES);
-#endif
 
   // Return this party's ID.
   int get_id() { return id; }
@@ -69,4 +61,9 @@ class party {
   std::vector<std::vector<comm_channel>> pending;
 };
 
-#include "comm_channel.hpp"
+}  // namespace mpc_utils
+
+// TODO: remove this from the global namespace.
+using mpc_utils::party;
+
+#endif  // MPC_UTILS_PARTY_HPP_

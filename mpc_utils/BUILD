@@ -130,40 +130,32 @@ cc_test(
 )
 
 cc_library(
-    name = "comm_channel_oblivc",
+    name = "comm_channel_oblivc_adapter",
     srcs = [
-        "comm_channel.cpp",
-        "party.cpp",
+        "comm_channel_oblivc_adapter.cpp",
     ],
     hdrs = [
-        "comm_channel.hpp",
-        "party.hpp",
-    ],
-    defines = [
-        "MPC_UTILS_USE_OBLIVC",
+        "comm_channel_oblivc_adapter.hpp",
     ],
     deps = [
-        ":mpc_config",
-        "@abseil//absl/memory",
-        "@boost//:asio",
-        "@boost//:exception",
-        "@boost//:iostreams",
-        "@boost//:serialization",
-        "@boost//:thread",
+        ":statusor",
+        ":comm_channel",
         "@oblivc//:runtime",
+        "@abseil//absl/strings",
     ],
 )
 
 cc_test(
-    name = "comm_channel_oblivc_test",
+    name = "comm_channel_oblivc_adapter_test",
     size = "small",
     srcs = [
-        "comm_channel_oblivc_test.cpp",
+        "comm_channel_oblivc_adapter_test.cpp",
     ],
     deps = [
-        ":comm_channel_oblivc",
+        ":comm_channel_oblivc_adapter",
         ":mpc_config",
-        "//mpc_utils/testing:comm_channel_test_helper_oblivc",
+        ":status_matchers",
+        "//mpc_utils/testing:comm_channel_test_helper",
         "//mpc_utils/testing:test_deps",
         "@abseil//absl/memory",
         "@boost//:thread",

@@ -1,8 +1,8 @@
 // Addapter for the comm_channel class to use with functions in EMP that require
 // an IOChannel.
 
-#ifndef MPC_UTILS_COMM_CHANNEL_EMP_H
-#define MPC_UTILS_COMM_CHANNEL_EMP_H
+#ifndef MPC_UTILS_COMM_CHANNEL_EMP_ADAPTER_HPP_
+#define MPC_UTILS_COMM_CHANNEL_EMP_ADAPTER_HPP_
 
 #include "emp-tool/io/io_channel.h"
 #include "emp-tool/io/net_io_channel.h"
@@ -69,4 +69,4 @@ class CommChannelEMPAdapter : public emp::IOChannel<CommChannelEMPAdapter> {
 
 }  // namespace mpc_utils
 
-#endif  // MPC_UTILS_COMM_CHANNEL_EMP_H
+#endif  // MPC_UTILS_COMM_CHANNEL_EMP_ADAPTER_HPP_
