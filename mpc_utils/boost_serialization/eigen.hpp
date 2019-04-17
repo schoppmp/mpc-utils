@@ -1,8 +1,10 @@
-#pragma once
+#ifndef MPC_UTILS_BOOST_SERIALIZATION_EIGEN_HPP_
+#define MPC_UTILS_BOOST_SERIALIZATION_EIGEN_HPP_
 
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
-#include <boost/serialization/vector.hpp>
+#include "Eigen/Dense"
+#include "Eigen/Sparse"
+#include "boost/serialization/split_free.hpp"
+#include "boost/serialization/vector.hpp"
 
 namespace boost {
 namespace serialization {
@@ -108,3 +110,5 @@ inline void serialize(Archive& ar,
 
 }  // namespace serialization
 }  // namespace boost
+
+#endif  // MPC_UTILS_BOOST_SERIALIZATION_EIGEN_HPP_

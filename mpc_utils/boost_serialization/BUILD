@@ -45,3 +45,26 @@ cc_test(
         "@googletest//:gtest_main",
     ],
 )
+
+cc_library(
+    name = "abseil",
+    hdrs = [
+        "abseil.hpp",
+    ],
+    deps = [
+        "@abseil//absl/numeric:int128",
+        "@boost//:serialization",
+    ],
+)
+
+cc_test(
+    name = "abseil_test",
+    size = "small",
+    srcs = [
+        "abseil_test.cpp",
+    ],
+    deps = [
+        ":abseil",
+        "@googletest//:gtest_main",
+    ],
+)

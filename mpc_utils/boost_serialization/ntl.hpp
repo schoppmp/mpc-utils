@@ -1,9 +1,11 @@
-#pragma once
+#ifndef MPC_UTILS_BOOST_SERIALIZATION_NTL_HPP_
+#define MPC_UTILS_BOOST_SERIALIZATION_NTL_HPP_
 
-#include <NTL/ZZ.h>
-#include <NTL/ZZ_p.h>
-#include <NTL/ZZ_pX.h>
-#include <boost/serialization/vector.hpp>
+#include "NTL/ZZ.h"
+#include "NTL/ZZ_p.h"
+#include "NTL/ZZ_pX.h"
+#include "boost/serialization/split_free.hpp"
+#include "boost/serialization/vector.hpp"
 
 namespace boost {
 namespace serialization {
@@ -74,3 +76,5 @@ inline void serialize(Archive& ar, NTL::Vec<T>& v,
 // register optional splits
 BOOST_SERIALIZATION_SPLIT_FREE(NTL::ZZ)
 BOOST_SERIALIZATION_SPLIT_FREE(NTL::ZZ_p)
+
+#endif  // MPC_UTILS_BOOST_SERIALIZATION_NTL_HPP_
