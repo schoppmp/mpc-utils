@@ -6,6 +6,7 @@ configure_make(
     name = "ntl",
     configure_options = [
         "GMP_PREFIX=\"$EXT_BUILD_DEPS/gmp/\"",
+        "NTL_THREAD_BOOST=on",
     ],
     lib_source = "@net_shoup_ntl//:all",
     make_commands = [
