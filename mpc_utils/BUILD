@@ -106,7 +106,7 @@ cc_library(
     deps = [
         ":comm_channel",
         ":statusor",
-        "//third_party/emp:emp_tool"
+        "@com_github_emp_toolkit_emp_tool//:emp_tool"
     ],
 )
 
@@ -124,7 +124,7 @@ cc_test(
         ":comm_channel_emp_adapter",
         "//mpc_utils/testing:comm_channel_test_helper",
         "//mpc_utils/testing:test_deps",
-        "//third_party/emp:emp_ot",
+        "@com_github_emp_toolkit_emp_ot//:emp_ot",
         "@com_github_emp_toolkit_emp_ot//:test_header",
     ],
 )

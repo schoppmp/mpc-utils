@@ -24,12 +24,14 @@ StatusOr<std::unique_ptr<CommChannelEMPAdapter>> CommChannelEMPAdapter::Create(
     // Party with lower ID accepts, higher ID connects.
     if (channel->get_id() < channel->get_peer_id()) {
       const auto& endpoint = channel->tcp_stream->socket().local_endpoint();
-      net_io = absl::make_unique<emp::NetIO>(nullptr, endpoint.port());
+      net_io = absl::make_unique<emp::NetIO>(nullptr, endpoint.port(),
+                                             /*quiet=*/true);
     } else {
       const auto& endpoint = channel->tcp_stream->socket().remote_endpoint();
       uint16_t port = endpoint.port();
       std::string address = endpoint.address().to_string();
-      net_io = absl::make_unique<emp::NetIO>(address.c_str(), port);
+      net_io =
+          absl::make_unique<emp::NetIO>(address.c_str(), port, /*quiet=*/true);
     }
   }
   return absl::WrapUnique(

@@ -81,15 +81,15 @@ def mpc_utils_deps(
                 url = "https://github.com/schoppmp/emp-tool/archive/581ee4a94a8b78966506c74665c4018095360bb8.zip",
                 sha256 = "1abfbacde9375d5b08bc5185c954233835ea19eff9f230323148fc973eff63c0",
                 strip_prefix = "emp-tool-581ee4a94a8b78966506c74665c4018095360bb8",
-                build_file = clean_dep("//third_party/emp:emp_tool.BUILD"),
+                build_file = clean_dep("//third_party:emp_tool.BUILD"),
             )
         if "com_github_emp_toolkit_emp_ot" not in native.existing_rules():
             http_archive(
                 name = "com_github_emp_toolkit_emp_ot",
-                url = "https://github.com/schoppmp/emp-ot/archive/be98e893687585317581e4083aec48ae1e2b0236.zip",
-                sha256 = "f00f5b72b56ff166709d9f4a2e7d299a419b19ea9dafe070daf5d3e4b42f4abe",
-                strip_prefix = "emp-ot-be98e893687585317581e4083aec48ae1e2b0236",
-                build_file = clean_dep("//third_party/emp:emp_ot.BUILD"),
+                url = "https://github.com/schoppmp/emp-ot/archive/23b4cc6997718ba1b2c45932079f6de9f5470c33.zip",
+                sha256 = "78231d701fc970b768e873ce1be26c5bcce65c16942bec3fea8899e8ccd68222",
+                strip_prefix = "emp-ot-23b4cc6997718ba1b2c45932079f6de9f5470c33",
+                build_file = clean_dep("//third_party:emp_ot.BUILD"),
             )
 
     # Other dependencies.

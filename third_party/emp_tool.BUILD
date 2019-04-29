@@ -3,6 +3,11 @@ load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
 
 licenses(["notice"])  # MIT
 
+filegroup(
+    name = "all",
+    srcs = glob(["**"]),
+)
+
 cmake_external(
     name = "emp_tool_build",
     cache_entries = {
@@ -13,7 +18,7 @@ cmake_external(
     defines = [
         "EMP_USE_RANDOM_DEVICE=1",
     ],
-    lib_source = "@com_github_emp_toolkit_emp_tool//:all",
+    lib_source = ":all",
     make_commands = [
         "make emp-tool",
         "make install/fast",
@@ -22,9 +27,10 @@ cmake_external(
         "libemp-tool.so",
     ],
     deps = [
-        "//third_party/gmp",
-        "//third_party/relic",
+        "@mpc_utils//third_party/gmp",
+        "@mpc_utils//third_party/relic",
     ],
+    visibility = ["//visibility:public"],
 )
 
 # We need libcrypto, but we can't include it in the deps to cmake_external due
@@ -33,43 +39,11 @@ cmake_external(
 # https://github.com/bazelbuild/rules_foreign_cc/issues/232
 cc_library(
     name = "emp_tool",
-    hdrs = [
-        # Include headers here so that targets that want to include them only have to depend on this target.
-        "@com_github_emp_toolkit_emp_tool//:headers",
-    ],
+    hdrs = glob(["emp-tool/**/*.h"]),
     deps = [
         ":emp_tool_build",
         "@boost//:system",
         "@boringssl//:crypto",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-cmake_external(
-    name = "emp_ot_build",
-    cache_entries = {
-        "CMAKE_PREFIX_PATH": "$EXT_BUILD_DEPS/emp_tool_build",
-        "RELIC_INCLUDE_DIR": "$EXT_BUILD_DEPS/relic/include",
-        "EMP_USE_RANDOM_DEVICE": "1",
-    },
-    headers_only = True,
-    lib_source = "@com_github_emp_toolkit_emp_ot//:all",
-    make_commands = [
-        "make install/fast",
-    ],
-    deps = [
-        ":emp_tool_build",
-    ],
-)
-
-cc_library(
-    name = "emp_ot",
-    hdrs = [
-        "@com_github_emp_toolkit_emp_ot//:headers",
-    ],
-    deps = [
-        ":emp_ot_build",
-        ":emp_tool",
     ],
     visibility = ["//visibility:public"],
 )
