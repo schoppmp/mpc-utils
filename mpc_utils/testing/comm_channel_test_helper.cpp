@@ -16,7 +16,7 @@ CommChannelTestHelper::CommChannelTestHelper(bool measure_communication) {
   uint16_t port;
   while (true) {
     try {
-      port = 12337; // dis(rd);
+      port = dis(rd);
       conf.servers = {server_info("127.0.0.23", port),
                       server_info("127.0.0.42", port)};
       conf.party_id = 0;
