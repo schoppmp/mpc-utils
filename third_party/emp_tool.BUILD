@@ -28,7 +28,7 @@ cmake_external(
     ],
     deps = [
         "@mpc_utils//third_party/gmp",
-        "@mpc_utils//third_party/relic",
+        "@com_github_relic_toolkit_relic//:relic",
     ],
     visibility = ["//visibility:public"],
 )

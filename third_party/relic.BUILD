@@ -2,6 +2,11 @@ load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 
 licenses(["notice"])  # Apache
 
+filegroup(
+    name = "all",
+    srcs = glob(["**"]),
+)
+
 cmake_external(
     name = "relic",
     cache_entries = {
@@ -26,12 +31,12 @@ cmake_external(
         "STBIN": "on",
         "CMAKE_PREFIX_PATH": "$EXT_BUILD_DEPS/gmp/",
     },
-    lib_source = "@com_github_relic_toolkit_relic//:all",
+    lib_source = ":all",
     static_libraries = [
         "librelic_s.a",
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "//third_party/gmp",
+        "@mpc_utils//third_party/gmp",
     ],
 )

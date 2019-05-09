@@ -24,8 +24,7 @@ def clean_dep(dep):
 def mpc_utils_deps(
         enable_oblivc = True,
         enable_serialization = True,
-        enable_emp = True,
-):
+        enable_emp = True):
     # Initialize transitive dependencies.
     boost_deps()
 
@@ -70,25 +69,25 @@ def mpc_utils_deps(
         if "com_github_relic_toolkit_relic" not in native.existing_rules():
             http_archive(
                 name = "com_github_relic_toolkit_relic",
-                url = "https://github.com/relic-toolkit/relic/archive/b984e901ba78c83ea4093ea96addd13628c8c2d0.zip",
-                sha256 = "34d66ea3e08e7b9496452c32941b7bc0e4c620d11f3f373d07e9ba1a2606f6ad",
-                strip_prefix = "relic-b984e901ba78c83ea4093ea96addd13628c8c2d0",
-                build_file_content = all_content,
+                url = "https://github.com/relic-toolkit/relic/archive/cb266746e410b4c00b3439f293194334a57b79aa.zip",
+                sha256 = "8f400d3b2e993b2d8340707a278a4e87c22c20c0d83cacbfc93e1720c48242d1",
+                strip_prefix = "relic-cb266746e410b4c00b3439f293194334a57b79aa",
+                build_file = clean_dep("//third_party:relic.BUILD"),
             )
         if "com_github_emp_toolkit_emp_tool" not in native.existing_rules():
             http_archive(
                 name = "com_github_emp_toolkit_emp_tool",
-                url = "https://github.com/schoppmp/emp-tool/archive/581ee4a94a8b78966506c74665c4018095360bb8.zip",
-                sha256 = "1abfbacde9375d5b08bc5185c954233835ea19eff9f230323148fc973eff63c0",
-                strip_prefix = "emp-tool-581ee4a94a8b78966506c74665c4018095360bb8",
+                url = "https://github.com/emp-toolkit/emp-tool/archive/91e4fc8b2fce83e406a32b3d5b4e36592dd99654.zip",
+                sha256 = "344fd11e7ccec5ba2b161c6612965280b05aeddb3f7ba20ea35279e5ab972aa2",
+                strip_prefix = "emp-tool-91e4fc8b2fce83e406a32b3d5b4e36592dd99654",
                 build_file = clean_dep("//third_party:emp_tool.BUILD"),
             )
         if "com_github_emp_toolkit_emp_ot" not in native.existing_rules():
             http_archive(
                 name = "com_github_emp_toolkit_emp_ot",
-                url = "https://github.com/schoppmp/emp-ot/archive/23b4cc6997718ba1b2c45932079f6de9f5470c33.zip",
-                sha256 = "78231d701fc970b768e873ce1be26c5bcce65c16942bec3fea8899e8ccd68222",
-                strip_prefix = "emp-ot-23b4cc6997718ba1b2c45932079f6de9f5470c33",
+                url = "https://github.com/emp-toolkit/emp-ot/archive/15fb731e528974bcfe5aa09c18bb16376e949283.zip",
+                sha256 = "aa8b4f773c0e7297709453283a4744a47907762fcdd122b26c594410b1c50ce6",
+                strip_prefix = "emp-ot-15fb731e528974bcfe5aa09c18bb16376e949283",
                 build_file = clean_dep("//third_party:emp_ot.BUILD"),
             )
 
@@ -132,4 +131,3 @@ def mpc_utils_deps(
                 "https://github.com/google/boringssl/arc451f0ccd52a62e97e3f5c047bd9bf8678f50dde2.ziphive/7f634429a04abc48e2eb041c81c5235816c96514.tar.gz",
             ],
         )
-
