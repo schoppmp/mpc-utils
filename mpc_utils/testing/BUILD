@@ -9,6 +9,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "//mpc_utils:comm_channel",
+        "//mpc_utils:openssl_uniform_bit_generator",
         "@abseil//absl/memory",
         "@boost//:thread",
     ],
@@ -16,10 +17,10 @@ cc_library(
 
 cc_library(
     name = "leak_check",
-    visibility = ["//visibility:public"],
     data = [
-      "//third_party/gperftools:pprof"
+        "//third_party/gperftools:pprof",
     ],
+    visibility = ["//visibility:public"],
     deps = [
         "//third_party/gperftools",
     ],
@@ -29,7 +30,7 @@ cc_library(
     name = "test_deps",
     visibility = ["//visibility:public"],
     deps = [
-        "@googletest//:gtest_main",
         ":leak_check",
+        "@googletest//:gtest_main",
     ],
 )

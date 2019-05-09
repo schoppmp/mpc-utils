@@ -18,14 +18,21 @@ class CommChannelOblivCAdapter;
 
 // Calls `call`, catching exceptions of type `exception_type`, wrapping them
 // in a boost::exception and adding the error message of this channel's stream
-#define COMM_CHANNEL_WRAP_EXCEPTION(call, exception_type)                    \
-  do {                                                                       \
-    try {                                                                    \
-      call;                                                                  \
-    } catch (exception_type & ex) {                                          \
-      BOOST_THROW_EXCEPTION(boost::enable_error_info(ex)                     \
-                            << stream_error(tcp_stream->error().message())); \
-    }                                                                        \
+#define COMM_CHANNEL_WRAP_EXCEPTION(call, exception_type)                      \
+  do {                                                                         \
+    while (true) {                                                             \
+      try {                                                                    \
+        call;                                                                  \
+        break;                                                                 \
+      } catch (exception_type & ex) {                                          \
+        if (tcp_stream->error().value() == boost::system::errc::interrupted) { \
+          continue; /* Retry on EINTR */                                       \
+        } else {                                                               \
+          BOOST_THROW_EXCEPTION(boost::enable_error_info(ex) << stream_error(  \
+                                    tcp_stream->error().message()));           \
+        }                                                                      \
+      }                                                                        \
+    }                                                                          \
   } while (0)
 
 // A bidirectional connection using the boost serialization library.

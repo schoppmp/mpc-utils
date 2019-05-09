@@ -24,7 +24,7 @@ def mpc_utils_deps_preload():
     if "rules_foreign_cc" not in native.existing_rules():
         http_archive(
             name = "rules_foreign_cc",
-            url = "https://github.com/bazelbuild/rules_foreign_cc/archive/8648b0446092ef2a34d45b02c8dc4c35c3a8df79.zip",
-            strip_prefix = "rules_foreign_cc-8648b0446092ef2a34d45b02c8dc4c35c3a8df79",
-            sha256 = "20b47a5828d742715e1a03a99036efc5acca927700840a893abc74480e91d4f9",
+            url = "https://github.com/bazelbuild/rules_foreign_cc/archive/3831409fd50e77a4c029bc42b2c77eb294f5e0f5.zip",
+            strip_prefix = "rules_foreign_cc-3831409fd50e77a4c029bc42b2c77eb294f5e0f5",
+            sha256 = "2573cee302935fb7de01a2b766ac808ba6cc2e3f318ea48bf398bf51299b344b",
         )
