@@ -15,6 +15,7 @@ CommChannelTestHelper::CommChannelTestHelper(bool measure_communication) {
                                       std::numeric_limits<uint16_t>::max());
   uint16_t port;
   while (true) {
+    // Try connecting to random ports until successful.
     try {
       port = dis(rd);
       conf.servers = {server_info("127.0.0.23", port),
@@ -23,18 +24,29 @@ CommChannelTestHelper::CommChannelTestHelper(bool measure_communication) {
       party0_ = absl::make_unique<party>(conf);
       conf.party_id = 1;
       party1_ = absl::make_unique<party>(conf);
-      boost::thread thread1([this, measure_communication] {
-        channel1_ = absl::WrapUnique(new comm_channel(party1_->connect_to(
-            0, measure_communication, true, party::DEFAULT_SLEEP_TIME,
-            /*num_tries=*/2)));
+
+      // Catch any exceptions thrown by thread1.
+      std::exception_ptr thread_eptr = nullptr;
+      boost::thread thread1([this, measure_communication, &thread_eptr] {
+        try {
+          channel1_ = absl::WrapUnique(new comm_channel(party1_->connect_to(
+              0, measure_communication, true, /*sleep_time=*/500,
+              /*num_tries=*/20)));  // Try connecting for 10s.
+        } catch (boost::system::system_error& ex) {
+          if (ex.code().value() == boost::system::errc::connection_refused) {
+            thread_eptr = std::current_exception();
+          }
+        }
       });
-      boost::thread_guard<> g(thread1);
       channel0_ = absl::WrapUnique(
           new comm_channel(party0_->connect_to(1, measure_communication)));
+      thread1.join();
+      if (thread_eptr) {
+        continue;
+      }
     } catch (boost::system::system_error& ex) {
-      if (ex.code().value() == boost::system::errc::address_in_use ||
-          ex.code().value() == boost::system::errc::connection_refused) {
-        continue;  // Choose a different port.
+      if (ex.code().value() == boost::system::errc::address_in_use) {
+        continue;
       }
     }
     break;
