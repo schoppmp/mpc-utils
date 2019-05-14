@@ -1,5 +1,6 @@
 #include "mpc_utils/comm_channel.hpp"
 #include "absl/memory/memory.h"
+#include "mpc_utils/counter.hpp"
 
 namespace mpc_utils {
 
@@ -19,7 +20,7 @@ comm_channel::comm_channel(std::unique_ptr<boost::asio::ip::tcp::iostream>&& s,
         *tcp_stream, boost::archive::no_codecvt);
   } else {
     ostream = absl::make_unique<boost::iostreams::filtering_ostream>();
-    ostream->push(boost::iostreams::counter(), 0, 0);
+    ostream->push(counter(), 0, 0);
     ostream->push(*tcp_stream, 0, 0);
     oarchive = absl::make_unique<boost::archive::binary_oarchive>(
         *ostream, boost::archive::no_codecvt);
@@ -35,7 +36,7 @@ comm_channel::comm_channel(std::unique_ptr<boost::asio::ip::tcp::iostream>&& s,
         *tcp_stream, boost::archive::no_codecvt);
   } else {
     istream = absl::make_unique<boost::iostreams::filtering_istream>();
-    istream->push(boost::iostreams::counter(), 0, 0);
+    istream->push(counter(), 0, 0);
     istream->push(*tcp_stream, 0, 0);
     iarchive = absl::make_unique<boost::archive::binary_iarchive>(
         *istream, boost::archive::no_codecvt);
@@ -49,10 +50,8 @@ comm_channel::comm_channel(std::unique_ptr<boost::asio::ip::tcp::iostream>&& s,
   }
 
   if (measure_communication) {
-    sent_header_size =
-        ostream->component<boost::iostreams::counter>(0)->characters();
-    received_header_size =
-        istream->component<boost::iostreams::counter>(0)->characters();
+    sent_header_size = ostream->component<counter>(0)->characters();
+    received_header_size = istream->component<counter>(0)->characters();
   }
 
   if (peer_id < 0 || peer_id == id) {
@@ -95,8 +94,7 @@ int64_t comm_channel::get_num_bytes_sent() const {
         "was passed at construction"));
   }
   int64_t sent =
-      ostream->component<boost::iostreams::counter>(0)->characters() -
-      sent_header_size;
+      ostream->component<counter>(0)->characters() - sent_header_size;
   if (twin) {
     sent += twin->get_num_bytes_sent();
   }
@@ -110,8 +108,7 @@ int64_t comm_channel::get_num_bytes_received() const {
         "true was passed at construction"));
   }
   int64_t received =
-      istream->component<boost::iostreams::counter>(0)->characters() -
-      received_header_size;
+      istream->component<counter>(0)->characters() - received_header_size;
   if (twin) {
     received += twin->get_num_bytes_received();
   }
