@@ -5,7 +5,6 @@
 #include "absl/memory/memory.h"
 #include "boost/archive/binary_iarchive.hpp"
 #include "boost/archive/binary_oarchive.hpp"
-#include "boost/iostreams/filter/counter.hpp"
 #include "boost/iostreams/filtering_stream.hpp"
 #include "boost/thread.hpp"
 #include "mpc_utils/party.hpp"
@@ -155,7 +154,7 @@ class comm_channel {
   std::unique_ptr<comm_channel>
       twin;  // used for sending and receiving simultaneously;
   // TODO: somehow allow for simultaneous reading and writing on the _same_
-  // socket
+  //   socket
   bool need_flush;
   // If set to true, all send and receive operations will count the number of
   // bytes sent or received, which can be retrieved using

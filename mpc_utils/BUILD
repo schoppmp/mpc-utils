@@ -65,6 +65,7 @@ cc_library(
         "party.hpp",
     ],
     deps = [
+        ":counter",
         ":mpc_config",
         "@abseil//absl/memory",
         "@boost//:asio",
@@ -93,20 +94,20 @@ cc_test(
 
 cc_library(
     name = "comm_channel_emp_adapter",
-    hdrs = [
-        "comm_channel_emp_adapter.hpp",
-    ],
     srcs = [
         "comm_channel_emp_adapter.cpp",
     ],
+    hdrs = [
+        "comm_channel_emp_adapter.hpp",
+    ],
     copts = [
         "-maes",
-        "-msse4.2"
+        "-msse4.2",
     ],
     deps = [
         ":comm_channel",
         ":statusor",
-        "@com_github_emp_toolkit_emp_tool//:emp_tool"
+        "@com_github_emp_toolkit_emp_tool//:emp_tool",
     ],
 )
 
@@ -120,8 +121,8 @@ cc_test(
         "-msse4.2",
     ],
     deps = [
-        ":status_matchers",
         ":comm_channel_emp_adapter",
+        ":status_matchers",
         "//mpc_utils/testing:comm_channel_test_helper",
         "//mpc_utils/testing:test_deps",
         "@com_github_emp_toolkit_emp_ot//:emp_ot",
@@ -138,10 +139,10 @@ cc_library(
         "comm_channel_oblivc_adapter.hpp",
     ],
     deps = [
-        ":statusor",
         ":comm_channel",
-        "@oblivc//:runtime",
+        ":statusor",
         "@abseil//absl/strings",
+        "@oblivc//:runtime",
     ],
 )
 
@@ -267,5 +268,15 @@ cc_test(
         "//mpc_utils/testing:test_deps",
         "@abseil//absl/memory",
         "@abseil//absl/strings",
+    ],
+)
+
+cc_library(
+    name = "counter",
+    hdrs = [
+        "counter.hpp",
+    ],
+    deps = [
+        "@boost//:iostreams",
     ],
 )
