@@ -52,7 +52,7 @@ cc_library(
         "abseil.hpp",
     ],
     deps = [
-        "@abseil//absl/numeric:int128",
+        "@com_google_absl//absl/numeric:int128",
         "@boost//:serialization",
     ],
 )

@@ -5,7 +5,6 @@
 #include "absl/memory/memory.h"
 #include "boost/archive/binary_iarchive.hpp"
 #include "boost/archive/binary_oarchive.hpp"
-#include "boost/iostreams/filter/counter.hpp"
 #include "boost/iostreams/filtering_stream.hpp"
 #include "boost/thread.hpp"
 #include "mpc_utils/party.hpp"
@@ -18,14 +17,21 @@ class CommChannelOblivCAdapter;
 
 // Calls `call`, catching exceptions of type `exception_type`, wrapping them
 // in a boost::exception and adding the error message of this channel's stream
-#define COMM_CHANNEL_WRAP_EXCEPTION(call, exception_type)                    \
-  do {                                                                       \
-    try {                                                                    \
-      call;                                                                  \
-    } catch (exception_type & ex) {                                          \
-      BOOST_THROW_EXCEPTION(boost::enable_error_info(ex)                     \
-                            << stream_error(tcp_stream->error().message())); \
-    }                                                                        \
+#define COMM_CHANNEL_WRAP_EXCEPTION(call, exception_type)                      \
+  do {                                                                         \
+    while (true) {                                                             \
+      try {                                                                    \
+        call;                                                                  \
+        break;                                                                 \
+      } catch (exception_type & ex) {                                          \
+        if (tcp_stream->error().value() == boost::system::errc::interrupted) { \
+          continue; /* Retry on EINTR */                                       \
+        } else {                                                               \
+          BOOST_THROW_EXCEPTION(boost::enable_error_info(ex) << stream_error(  \
+                                    tcp_stream->error().message()));           \
+        }                                                                      \
+      }                                                                        \
+    }                                                                          \
   } while (0)
 
 // A bidirectional connection using the boost serialization library.
@@ -148,7 +154,7 @@ class comm_channel {
   std::unique_ptr<comm_channel>
       twin;  // used for sending and receiving simultaneously;
   // TODO: somehow allow for simultaneous reading and writing on the _same_
-  // socket
+  //   socket
   bool need_flush;
   // If set to true, all send and receive operations will count the number of
   // bytes sent or received, which can be retrieved using

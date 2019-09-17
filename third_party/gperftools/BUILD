@@ -8,13 +8,13 @@ configure_make(
         "pprof",
     ],
     configure_options = [
-        "--enable-shared=no",
+        "--enable-shared=yes",
         "--enable-frame-pointers",
         "--disable-libunwind",
     ],
     lib_source = "@com_github_gperftools_gperftools//:all",
-    static_libraries = [
-        "libtcmalloc_and_profiler.a",
+    shared_libraries = [
+        "libtcmalloc_and_profiler.so.4",
     ],
     visibility = ["//visibility:public"],
 )

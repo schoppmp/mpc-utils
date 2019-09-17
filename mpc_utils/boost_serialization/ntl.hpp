@@ -4,6 +4,7 @@
 #include "NTL/ZZ.h"
 #include "NTL/ZZ_p.h"
 #include "NTL/ZZ_pX.h"
+#include "NTL/lzz_p.h"
 #include "boost/serialization/split_free.hpp"
 #include "boost/serialization/vector.hpp"
 
@@ -26,20 +27,20 @@ inline void load(Archive& ar, NTL::ZZ& z, const unsigned int /* file_version */
   NTL::ZZFromBytes(z, buf.data(), buf.size());
 }
 
-// NTL::ZZ_p
-template <class Archive>
-inline void save(Archive& ar, const NTL::ZZ_p& zp,
-                 const unsigned int /* file_version */
+// NTL::ZZ_p, NTL::zz_p
+template <typename T, typename Archive, typename R = typename T::rep_type>
+inline void save(Archive& ar, const T& zp, const unsigned int /* file_version */
 ) {
-  ar& NTL::conv<NTL::ZZ>(zp);
+  R rep;
+  NTL::conv(rep, zp);
+  ar& rep;
 }
-template <class Archive>
-inline void load(Archive& ar, NTL::ZZ_p& zp,
-                 const unsigned int /* file_version */
+template <typename T, typename Archive, typename R = typename T::rep_type>
+inline void load(Archive& ar, T& zp, const unsigned int /* file_version */
 ) {
-  NTL::ZZ z;
-  ar& z;
-  NTL::conv(zp, z);
+  R rep;
+  ar& rep;
+  NTL::conv(zp, rep);
 }
 
 // NTL::ZZ_pX
@@ -76,5 +77,6 @@ inline void serialize(Archive& ar, NTL::Vec<T>& v,
 // register optional splits
 BOOST_SERIALIZATION_SPLIT_FREE(NTL::ZZ)
 BOOST_SERIALIZATION_SPLIT_FREE(NTL::ZZ_p)
+BOOST_SERIALIZATION_SPLIT_FREE(NTL::zz_p)
 
 #endif  // MPC_UTILS_BOOST_SERIALIZATION_NTL_HPP_

@@ -31,6 +31,15 @@ TEST_F(NTLTest, SerializeZZ_p) {
   EXPECT_EQ(x, y);
 }
 
+TEST_F(NTLTest, Serializezz_p) {
+  NTL::zz_p::init(123);
+  NTL::zz_p x(5);
+  oarchive& x;
+  NTL::zz_p y;
+  iarchive& y;
+  EXPECT_EQ(x, y);
+}
+
 TEST_F(NTLTest, SerializeZZ_pX) {
   NTL::ZZ_p::init(NTL::ZZ(123));
   NTL::ZZ_pX p1;

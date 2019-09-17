@@ -65,8 +65,9 @@ cc_library(
         "party.hpp",
     ],
     deps = [
+        ":counter",
         ":mpc_config",
-        "@abseil//absl/memory",
+        "@com_google_absl//absl/memory",
         "@boost//:asio",
         "@boost//:exception",
         "@boost//:iostreams",
@@ -86,27 +87,27 @@ cc_test(
         ":mpc_config",
         "//mpc_utils/testing:comm_channel_test_helper",
         "//mpc_utils/testing:test_deps",
-        "@abseil//absl/memory",
+        "@com_google_absl//absl/memory",
         "@boost//:thread",
     ],
 )
 
 cc_library(
     name = "comm_channel_emp_adapter",
-    hdrs = [
-        "comm_channel_emp_adapter.hpp",
-    ],
     srcs = [
         "comm_channel_emp_adapter.cpp",
     ],
+    hdrs = [
+        "comm_channel_emp_adapter.hpp",
+    ],
     copts = [
         "-maes",
-        "-msse4.2"
+        "-msse4.2",
     ],
     deps = [
         ":comm_channel",
         ":statusor",
-        "//third_party/emp:emp_tool"
+        "@com_github_emp_toolkit_emp_tool//:emp_tool",
     ],
 )
 
@@ -120,11 +121,11 @@ cc_test(
         "-msse4.2",
     ],
     deps = [
-        ":status_matchers",
         ":comm_channel_emp_adapter",
+        ":status_matchers",
         "//mpc_utils/testing:comm_channel_test_helper",
         "//mpc_utils/testing:test_deps",
-        "//third_party/emp:emp_ot",
+        "@com_github_emp_toolkit_emp_ot//:emp_ot",
         "@com_github_emp_toolkit_emp_ot//:test_header",
     ],
 )
@@ -138,10 +139,10 @@ cc_library(
         "comm_channel_oblivc_adapter.hpp",
     ],
     deps = [
-        ":statusor",
         ":comm_channel",
+        ":statusor",
+        "@com_google_absl//absl/strings",
         "@oblivc//:runtime",
-        "@abseil//absl/strings",
     ],
 )
 
@@ -157,7 +158,7 @@ cc_test(
         ":status_matchers",
         "//mpc_utils/testing:comm_channel_test_helper",
         "//mpc_utils/testing:test_deps",
-        "@abseil//absl/memory",
+        "@com_google_absl//absl/memory",
         "@boost//:thread",
     ],
 )
@@ -208,9 +209,9 @@ cc_library(
         "status_macros.h",
     ],
     deps = [
-        "@abseil//absl/base:core_headers",
-        "@abseil//absl/meta:type_traits",
-        "@abseil//absl/strings",
+        "@com_google_absl//absl/base:core_headers",
+        "@com_google_absl//absl/meta:type_traits",
+        "@com_google_absl//absl/strings",
     ],
 )
 
@@ -228,9 +229,9 @@ cc_library(
     hdrs = ["statusor.h"],
     deps = [
         ":status",
-        "@abseil//absl/base",
-        "@abseil//absl/base:core_headers",
-        "@abseil//absl/types:variant",
+        "@com_google_absl//absl/base",
+        "@com_google_absl//absl/base:core_headers",
+        "@com_google_absl//absl/types:variant",
     ],
 )
 
@@ -241,7 +242,7 @@ cc_library(
     deps = [
         ":status",
         ":statusor",
-        "@abseil//absl/types:optional",
+        "@com_google_absl//absl/types:optional",
         "@googletest//:gtest",
     ],
 )
@@ -265,7 +266,17 @@ cc_test(
         ":status_matchers",
         ":statusor",
         "//mpc_utils/testing:test_deps",
-        "@abseil//absl/memory",
-        "@abseil//absl/strings",
+        "@com_google_absl//absl/memory",
+        "@com_google_absl//absl/strings",
+    ],
+)
+
+cc_library(
+    name = "counter",
+    hdrs = [
+        "counter.hpp",
+    ],
+    deps = [
+        "@boost//:iostreams",
     ],
 )
