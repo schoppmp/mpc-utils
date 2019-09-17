@@ -85,7 +85,7 @@ class StatusOr {
   T ValueOrDie() && {
     EnsureOk();
     T tmp(std::move(absl::get<T>(variant_)));
-    return std::move(tmp);
+    return tmp;
   }
 
  private:
