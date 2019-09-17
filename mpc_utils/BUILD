@@ -67,7 +67,7 @@ cc_library(
     deps = [
         ":counter",
         ":mpc_config",
-        "@abseil//absl/memory",
+        "@com_google_absl//absl/memory",
         "@boost//:asio",
         "@boost//:exception",
         "@boost//:iostreams",
@@ -87,7 +87,7 @@ cc_test(
         ":mpc_config",
         "//mpc_utils/testing:comm_channel_test_helper",
         "//mpc_utils/testing:test_deps",
-        "@abseil//absl/memory",
+        "@com_google_absl//absl/memory",
         "@boost//:thread",
     ],
 )
@@ -141,7 +141,7 @@ cc_library(
     deps = [
         ":comm_channel",
         ":statusor",
-        "@abseil//absl/strings",
+        "@com_google_absl//absl/strings",
         "@oblivc//:runtime",
     ],
 )
@@ -158,7 +158,7 @@ cc_test(
         ":status_matchers",
         "//mpc_utils/testing:comm_channel_test_helper",
         "//mpc_utils/testing:test_deps",
-        "@abseil//absl/memory",
+        "@com_google_absl//absl/memory",
         "@boost//:thread",
     ],
 )
@@ -209,9 +209,9 @@ cc_library(
         "status_macros.h",
     ],
     deps = [
-        "@abseil//absl/base:core_headers",
-        "@abseil//absl/meta:type_traits",
-        "@abseil//absl/strings",
+        "@com_google_absl//absl/base:core_headers",
+        "@com_google_absl//absl/meta:type_traits",
+        "@com_google_absl//absl/strings",
     ],
 )
 
@@ -229,9 +229,9 @@ cc_library(
     hdrs = ["statusor.h"],
     deps = [
         ":status",
-        "@abseil//absl/base",
-        "@abseil//absl/base:core_headers",
-        "@abseil//absl/types:variant",
+        "@com_google_absl//absl/base",
+        "@com_google_absl//absl/base:core_headers",
+        "@com_google_absl//absl/types:variant",
     ],
 )
 
@@ -242,7 +242,7 @@ cc_library(
     deps = [
         ":status",
         ":statusor",
-        "@abseil//absl/types:optional",
+        "@com_google_absl//absl/types:optional",
         "@googletest//:gtest",
     ],
 )
@@ -266,8 +266,8 @@ cc_test(
         ":status_matchers",
         ":statusor",
         "//mpc_utils/testing:test_deps",
-        "@abseil//absl/memory",
-        "@abseil//absl/strings",
+        "@com_google_absl//absl/memory",
+        "@com_google_absl//absl/strings",
     ],
 )
 

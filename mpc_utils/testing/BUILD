@@ -10,7 +10,7 @@ cc_library(
     deps = [
         "//mpc_utils:comm_channel",
         "//mpc_utils:openssl_uniform_bit_generator",
-        "@abseil//absl/memory",
+        "@com_google_absl//absl/memory",
         "@boost//:thread",
     ],
 )

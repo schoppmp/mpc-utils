@@ -99,13 +99,6 @@ def mpc_utils_deps(
             strip_prefix = "googletest-f80d6644d4b451f568a2e7aea1e01e842eb242dc",
             urls = ["https://github.com/google/googletest/archive/f80d6644d4b451f568a2e7aea1e01e842eb242dc.zip"],
         )
-    if "abseil" not in native.existing_rules():
-        http_archive(
-            name = "abseil",
-            url = "https://github.com/abseil/abseil-cpp/archive/e75672f6afc7e8f23ee7b532e86d1b3b9be3984e.zip",
-            strip_prefix = "abseil-cpp-e75672f6afc7e8f23ee7b532e86d1b3b9be3984e",
-            sha256 = "ecf95f0fff939cd2741cec1c7baa4bd777eb8b6b8869a47f1343fdc4db86e949",
-        )
     if "com_github_gperftools_gperftools" not in native.existing_rules():
         http_archive(
             name = "com_github_gperftools_gperftools",
