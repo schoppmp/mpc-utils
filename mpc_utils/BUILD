@@ -45,14 +45,6 @@ cc_test(
 )
 
 cc_library(
-    name = "fix_emp",
-    textual_hdrs = ["fix_emp.inc"],
-    deps = [
-        "@com_github_emp_toolkit_emp_tool//:emp_tool",
-    ]
-)
-
-cc_library(
     name = "mpc_config",
     srcs = ["mpc_config.cpp"],
     hdrs = ["mpc_config.hpp"],
@@ -111,7 +103,6 @@ cc_library(
     deps = [
         ":comm_channel",
         ":statusor",
-        ":fix_emp",
         "@com_github_emp_toolkit_emp_tool//:emp_tool",
     ],
 )
@@ -121,16 +112,11 @@ cc_test(
     srcs = [
         "comm_channel_emp_adapter_test.cpp",
     ],
-    copts = [
-        "-maes",
-        "-msse4.2",
-    ],
     deps = [
         ":comm_channel_emp_adapter",
         ":status_matchers",
         "//mpc_utils/testing:comm_channel_test_helper",
         "//mpc_utils/testing:test_deps",
-        ":fix_emp",
         "@com_github_emp_toolkit_emp_ot//:emp_ot",
         "@com_github_emp_toolkit_emp_ot//:test_header",
     ],
