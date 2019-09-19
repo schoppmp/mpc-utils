@@ -20,7 +20,7 @@ cmake_external(
     ],
     lib_source = ":all",
     make_commands = [
-        "make emp-tool",
+        "make emp-tool -j $(nproc)",
         "make install/fast",
     ],
     shared_libraries = [
