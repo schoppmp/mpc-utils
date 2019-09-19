@@ -4,7 +4,7 @@
 #ifndef MPC_UTILS_COMM_CHANNEL_EMP_ADAPTER_HPP_
 #define MPC_UTILS_COMM_CHANNEL_EMP_ADAPTER_HPP_
 
-#include "mpc_utils/fix_emp.ipp"
+#include "mpc_utils/fix_emp.inc"
 
 #include "emp-tool/io/io_channel.h"
 #include "emp-tool/io/net_io_channel.h"

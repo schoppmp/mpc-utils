@@ -1,5 +1,5 @@
-#ifndef MPC_UTILS_EMP_WRAPPER_H_
-#define MPC_UTILS_EMP_WRAPPER_H_
+#ifndef MPC_UTILS_FIX_EMP_INC_
+#define MPC_UTILS_FIX_EMP_INC_
 
 // This header includes EMP headers (currently only aes.h) and ensures they
 // work correctly without needing to set special COPTS. Note that if EMP is
@@ -21,4 +21,4 @@
 #undef __AES__
 #endif
 
-#endif  // MPC_UTILS_EMP_WRAPPER_H_
+#endif  // MPC_UTILS_FIX_EMP_INC_

@@ -46,7 +46,7 @@ cc_test(
 
 cc_library(
     name = "fix_emp",
-    textual_hdrs = ["fix_emp.ipp"],
+    textual_hdrs = ["fix_emp.inc"],
     deps = [
         "@com_github_emp_toolkit_emp_tool//:emp_tool",
     ]
