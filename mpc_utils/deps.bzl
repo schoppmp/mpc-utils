@@ -55,9 +55,9 @@ def mpc_utils_deps(
         if "net_shoup_ntl" not in native.existing_rules():
             third_party_http_archive(
                 name = "net_shoup_ntl",
-                urls = ["https://shoup.net/ntl/ntl-11.3.2.tar.gz"],
-                sha256 = "84ba3145abf8d5f3be6832a14c60b3368eb920719ee96e5774587e71ecd66e9d",
-                strip_prefix = "ntl-11.3.2",
+                urls = ["https://shoup.net/ntl/ntl-11.3.4.tar.gz"],
+                sha256 = "2d93baa2a1c6c7477113dc71413dedf74bcc8d9477427c3d1097be68fa30be39",
+                strip_prefix = "ntl-11.3.4",
                 # We have to patch  NTL's build file in order to link GMP statically.
                 patch_file = clean_dep("//third_party/ntl:static_gmp.patch"),
                 link_files = {
@@ -69,17 +69,17 @@ def mpc_utils_deps(
         if "com_github_relic_toolkit_relic" not in native.existing_rules():
             http_archive(
                 name = "com_github_relic_toolkit_relic",
-                url = "https://github.com/relic-toolkit/relic/archive/cb266746e410b4c00b3439f293194334a57b79aa.zip",
-                sha256 = "8f400d3b2e993b2d8340707a278a4e87c22c20c0d83cacbfc93e1720c48242d1",
-                strip_prefix = "relic-cb266746e410b4c00b3439f293194334a57b79aa",
+                url = "https://github.com/relic-toolkit/relic/archive/f6fe4bad7739e67d1de6ec308f350678cbe5746f.zip",
+                sha256 = "e6e75e077006b169d25af44c7e2f00b6e43495c7259a0433ba8cd786a55060fe",
+                strip_prefix = "relic-f6fe4bad7739e67d1de6ec308f350678cbe5746f",
                 build_file = clean_dep("//third_party:relic.BUILD"),
             )
         if "com_github_emp_toolkit_emp_tool" not in native.existing_rules():
             http_archive(
                 name = "com_github_emp_toolkit_emp_tool",
-                url = "https://github.com/schoppmp/emp-tool/archive/c21093864565544582e86006a5a67ca9aa31be16.zip",
-                sha256 = "5824adcdd8d310e465b13bf24ca78b70feb86da2ae01146a68d5b56b1e0a40fc",
-                strip_prefix = "emp-tool-c21093864565544582e86006a5a67ca9aa31be16",
+                url = "https://github.com/emp-toolkit/emp-tool/archive/50c01ba99e5d257de05ef0e74ce6a0294a9ff471.zip",
+                sha256 = "6f90e194a2f709f51c5082a333fa070983c822236bb6a48c046fdd8b84cc80fe",
+                strip_prefix = "emp-tool-50c01ba99e5d257de05ef0e74ce6a0294a9ff471",
                 build_file = clean_dep("//third_party:emp_tool.BUILD"),
             )
         if "com_github_emp_toolkit_emp_ot" not in native.existing_rules():
@@ -95,9 +95,9 @@ def mpc_utils_deps(
     if "googletest" not in native.existing_rules():
         http_archive(
             name = "googletest",
-            sha256 = "70404b4a887fd8efce2179e9918e58cdac03245e575408ed87799696e816ecb8",
-            strip_prefix = "googletest-f80d6644d4b451f568a2e7aea1e01e842eb242dc",
-            urls = ["https://github.com/google/googletest/archive/f80d6644d4b451f568a2e7aea1e01e842eb242dc.zip"],
+            sha256 = "89e98c265b80181d902b1a19c10c29b3a22d804b207214d8104ad42905fbae87",
+            strip_prefix = "googletest-f2fb48c3b3d79a75a88a99fba6576b25d42ec528",
+            urls = ["https://github.com/google/googletest/archive/f2fb48c3b3d79a75a88a99fba6576b25d42ec528.zip"],
         )
     if "com_github_gperftools_gperftools" not in native.existing_rules():
         http_archive(
@@ -110,17 +110,16 @@ def mpc_utils_deps(
     if "com_github_google_benchmark" not in native.existing_rules():
         http_archive(
             name = "com_github_google_benchmark",
-            url = "https://github.com/google/benchmark/archive/bf4f2ea0bd1180b34718ac26eb79b170a4f6290e.zip",
-            sha256 = "e474a7f0112b9f2cd7e26ccd03c39d1c68114d3cad8f292021143b548fb00db7",
-            strip_prefix = "benchmark-bf4f2ea0bd1180b34718ac26eb79b170a4f6290e",
+            url = "https://github.com/google/benchmark/archive/b874e72208b6e21b62287942e5e3b11f6630107f.zip",
+            sha256 = "25f331d18e1f3065dbfac5b1aae4c55480e556f801259130be0d8fdd158a6b46",
+            strip_prefix = "benchmark-b874e72208b6e21b62287942e5e3b11f6630107f",
         )
     if "boringssl" not in native.existing_rules():
         http_archive(
             name = "boringssl",
-            sha256 = "1188e29000013ed6517168600fc35a010d58c5d321846d6a6dfee74e4c788b45",
-            strip_prefix = "boringssl-7f634429a04abc48e2eb041c81c5235816c96514",
+            sha256 = "641bc564e98467dcef96a5089ece9ac22728ed03695def77722cc41b8997a660",
+            strip_prefix = "boringssl-532d22c4b4f6a13fa9bcf0be9510b3b7a4685898",
             urls = [
-                "https://mirror.bazel.build/github.com/google/boringssl/archive/7f634429a04abc48e2eb041c81c5235816c96514.tar.gz",
-                "https://github.com/google/boringssl/arc451f0ccd52a62e97e3f5c047bd9bf8678f50dde2.ziphive/7f634429a04abc48e2eb041c81c5235816c96514.tar.gz",
+                "https://github.com/google/boringssl/archive/532d22c4b4f6a13fa9bcf0be9510b3b7a4685898.zip",
             ],
         )
