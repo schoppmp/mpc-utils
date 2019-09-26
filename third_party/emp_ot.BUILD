@@ -18,9 +18,9 @@ cc_library(
 cmake_external(
     name = "emp_ot_build",
     cache_entries = {
-        "CMAKE_PREFIX_PATH": "$EXT_BUILD_DEPS/emp_tool_build",
-        "RELIC_INCLUDE_DIR": "$EXT_BUILD_DEPS/relic/include",
-        "EMP_USE_RANDOM_DEVICE": "1",
+        "CMAKE_PREFIX_PATH": "$EXT_BUILD_DEPS/emp_tool_build;$EXT_BUILD_DEPS/gmp",
+        "GMP_INCLUDE_DIR": "$EXT_BUILD_DEPS/gmp/include",
+        "OPENSSL_INCLUDE_DIR": "$EXT_BUILD_DEPS/include",
     },
     headers_only = True,
     lib_source = ":all",
@@ -28,16 +28,18 @@ cmake_external(
         "make install/fast",
     ],
     deps = [
+        "@boringssl//:ssl",
         "@com_github_emp_toolkit_emp_tool//:emp_tool_build",
+        "@mpc_utils//third_party/gmp",
     ],
 )
 
 cc_library(
     name = "emp_ot",
     hdrs = glob(["emp-ot/**/*.h"]),
+    visibility = ["//visibility:public"],
     deps = [
         ":emp_ot_build",
         "@com_github_emp_toolkit_emp_tool//:emp_tool",
     ],
-    visibility = ["//visibility:public"],
 )
