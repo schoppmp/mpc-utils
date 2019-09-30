@@ -9,7 +9,7 @@ filegroup(
 )
 
 cmake_external(
-    name = "emp_tool_build",
+    name = "emp_tool",
     cache_entries = {
         "CMAKE_PREFIX_PATH": "$EXT_BUILD_DEPS/relic;$EXT_BUILD_DEPS/gmp",
         "RELIC_INCLUDE_DIR": "$EXT_BUILD_DEPS/relic/include",
@@ -33,18 +33,6 @@ cmake_external(
         "@boringssl//:ssl",
         "@com_github_relic_toolkit_relic//:relic",
         "@mpc_utils//third_party/gmp",
-    ],
-)
-
-# We need boost, but we can't include it in the deps to cmake_external due
-# to a limitation of rules_foreign_cc. So we wrap both in a cc_library that
-# depends on EMP and boost.
-cc_library(
-    name = "emp_tool",
-    hdrs = glob(["emp-tool/**/*.h"]),
-    visibility = ["//visibility:public"],
-    deps = [
-        ":emp_tool_build",
         "@boost//:system",
     ],
 )
