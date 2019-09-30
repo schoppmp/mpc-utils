@@ -15,6 +15,7 @@ cmake_external(
         "RELIC_INCLUDE_DIR": "$EXT_BUILD_DEPS/relic/include",
         "GMP_INCLUDE_DIR": "$EXT_BUILD_DEPS/gmp/include",
         "OPENSSL_INCLUDE_DIR": "$EXT_BUILD_DEPS/include",
+        "BOOST_INCLUDEDIR": "$EXT_BUILD_DEPS/include",
         "EMP_USE_RANDOM_DEVICE": "1",
     },
     defines = [
