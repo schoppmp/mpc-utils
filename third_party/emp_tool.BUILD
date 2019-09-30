@@ -11,11 +11,10 @@ filegroup(
 cmake_external(
     name = "emp_tool",
     cache_entries = {
-        "CMAKE_PREFIX_PATH": "$EXT_BUILD_DEPS/relic;$EXT_BUILD_DEPS/gmp",
+        "CMAKE_PREFIX_PATH": "$EXT_BUILD_DEPS;$EXT_BUILD_DEPS/relic;$EXT_BUILD_DEPS/gmp",
         "RELIC_INCLUDE_DIR": "$EXT_BUILD_DEPS/relic/include",
         "GMP_INCLUDE_DIR": "$EXT_BUILD_DEPS/gmp/include",
         "OPENSSL_INCLUDE_DIR": "$EXT_BUILD_DEPS/include",
-        "BOOST_INCLUDEDIR": "$EXT_BUILD_DEPS/include",
         "EMP_USE_RANDOM_DEVICE": "1",
     },
     defines = [
