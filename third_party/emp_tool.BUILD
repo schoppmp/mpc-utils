@@ -1,5 +1,6 @@
 load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
 load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
+load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
 
 licenses(["notice"])  # MIT
 
@@ -15,6 +16,7 @@ cmake_external(
         "RELIC_INCLUDE_DIR": "$EXT_BUILD_DEPS/relic/include",
         "GMP_INCLUDE_DIR": "$EXT_BUILD_DEPS/gmp/include",
         "OPENSSL_INCLUDE_DIR": "$EXT_BUILD_DEPS/include",
+        #        "Boost_INCLUDE_DIR": "$EXT_BUILD_DEPS/include",
         "EMP_USE_RANDOM_DEVICE": "1",
     },
     defines = [
@@ -31,8 +33,10 @@ cmake_external(
     visibility = ["//visibility:public"],
     deps = [
         "@boringssl//:ssl",
+        "@boringssl//:crypto",
         "@com_github_relic_toolkit_relic//:relic",
         "@mpc_utils//third_party/gmp",
         "@boost//:system",
+        #        ":boost_system",
     ],
 )

@@ -75,12 +75,15 @@ def mpc_utils_deps(
                 build_file = clean_dep("//third_party:relic.BUILD"),
             )
         if "com_github_emp_toolkit_emp_tool" not in native.existing_rules():
-            http_archive(
+            third_party_http_archive(
                 name = "com_github_emp_toolkit_emp_tool",
                 url = "https://github.com/emp-toolkit/emp-tool/archive/50c01ba99e5d257de05ef0e74ce6a0294a9ff471.zip",
                 sha256 = "6f90e194a2f709f51c5082a333fa070983c822236bb6a48c046fdd8b84cc80fe",
                 strip_prefix = "emp-tool-50c01ba99e5d257de05ef0e74ce6a0294a9ff471",
                 build_file = clean_dep("//third_party:emp_tool.BUILD"),
+                link_files = {
+                    clean_dep("//third_party/emp-tool:FindBoost.cmake"): "cmake/FindBoost.cmake",
+                },
             )
         if "com_github_emp_toolkit_emp_ot" not in native.existing_rules():
             http_archive(
