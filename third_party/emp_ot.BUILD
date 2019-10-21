@@ -20,7 +20,6 @@ cmake_external(
     cache_entries = {
         "CMAKE_PREFIX_PATH": "$EXT_BUILD_DEPS/emp_tool;$EXT_BUILD_DEPS/gmp",
         "GMP_INCLUDE_DIR": "$EXT_BUILD_DEPS/gmp/include",
-        "OPENSSL_INCLUDE_DIR": "$EXT_BUILD_DEPS/include",
     },
     headers_only = True,
     lib_source = ":all",

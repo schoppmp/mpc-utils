@@ -86,12 +86,15 @@ def mpc_utils_deps(
                 },
             )
         if "com_github_emp_toolkit_emp_ot" not in native.existing_rules():
-            http_archive(
+            third_party_http_archive(
                 name = "com_github_emp_toolkit_emp_ot",
                 url = "https://github.com/emp-toolkit/emp-ot/archive/15fb731e528974bcfe5aa09c18bb16376e949283.zip",
                 sha256 = "aa8b4f773c0e7297709453283a4744a47907762fcdd122b26c594410b1c50ce6",
                 strip_prefix = "emp-ot-15fb731e528974bcfe5aa09c18bb16376e949283",
                 build_file = clean_dep("//third_party:emp_ot.BUILD"),
+                link_files = {
+                    clean_dep("//third_party/emp-tool:FindBoost.cmake"): "cmake/FindBoost.cmake",
+                },
             )
 
     # Other dependencies.
