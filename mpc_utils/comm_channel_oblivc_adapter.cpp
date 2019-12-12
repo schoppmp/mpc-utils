@@ -9,7 +9,7 @@ namespace mpc_utils {
 
 StatusOr<ProtocolDesc> CommChannelOblivCAdapter::Connect(
     const comm_channel& channel, int sleep_time, int num_tries) {
-  ProtocolDesc pd;
+  ProtocolDesc pd = {0};
   int peer_id = channel.get_peer_id();
   int id = channel.get_id();
   bool measure_communication = channel.is_measured();
