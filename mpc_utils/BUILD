@@ -184,7 +184,7 @@ cc_binary(
     ],
     deps = [
         ":openssl_uniform_bit_generator",
-        "@com_github_google_benchmark//:benchmark_main",
+        "@com_google_benchmark//:benchmark_main",
     ],
 )
 

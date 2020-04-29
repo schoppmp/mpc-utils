@@ -113,12 +113,12 @@ def mpc_utils_deps(
             urls = ["https://github.com/gperftools/gperftools/releases/download/gperftools-2.7/gperftools-2.7.tar.gz"],
             build_file_content = all_content,
         )
-    if "com_github_google_benchmark" not in native.existing_rules():
+    if "com_google_benchmark" not in native.existing_rules():
         http_archive(
-            name = "com_github_google_benchmark",
-            url = "https://github.com/google/benchmark/archive/b874e72208b6e21b62287942e5e3b11f6630107f.zip",
-            sha256 = "25f331d18e1f3065dbfac5b1aae4c55480e556f801259130be0d8fdd158a6b46",
-            strip_prefix = "benchmark-b874e72208b6e21b62287942e5e3b11f6630107f",
+            name = "com_google_benchmark",
+            sha256 = "a9d41abe1bd45a707d39fdfd46c01b92e340923bc5972c0b54a48002a9a7cfa3",
+            strip_prefix = "benchmark-8cead007830bdbe94b7cc259e873179d0ef84da6",
+            url = "https://github.com/google/benchmark/archive/8cead007830bdbe94b7cc259e873179d0ef84da6.zip",
         )
     if "boringssl" not in native.existing_rules():
         http_archive(
