@@ -14,7 +14,7 @@ cmake_external(
         "CMAKE_PREFIX_PATH": "$EXT_BUILD_DEPS;$EXT_BUILD_DEPS/relic;$EXT_BUILD_DEPS/gmp",
         "RELIC_INCLUDE_DIR": "$EXT_BUILD_DEPS/relic/include",
         "GMP_INCLUDE_DIR": "$EXT_BUILD_DEPS/gmp/include",
-        "OPENSSL_INCLUDE_DIR": "$EXT_BUILD_DEPS/include/boringssl/src/include",
+        "OPENSSL_INCLUDE_DIR": "$EXT_BUILD_DEPS/include",
         "EMP_USE_RANDOM_DEVICE": "1",
     },
     defines = [
