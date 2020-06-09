@@ -2,7 +2,6 @@
 #define MPC_UTILS_PARTY_HPP_
 
 #include <mutex>
-#include <string>
 #include "boost/asio.hpp"
 #include "boost/exception/all.hpp"
 #include "boost/thread.hpp"

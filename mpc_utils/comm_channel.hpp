@@ -2,6 +2,7 @@
 #define MPC_UTILS_COMM_CHANNEL_HPP_
 
 #include <iostream>
+#include <string>
 #include "absl/memory/memory.h"
 #include "boost/archive/binary_iarchive.hpp"
 #include "boost/archive/binary_oarchive.hpp"

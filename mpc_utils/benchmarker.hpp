@@ -8,6 +8,7 @@
 #pragma once
 #include <chrono>
 #include <functional>
+#include <string>
 #include <unordered_map>
 
 namespace mpc_utils {
