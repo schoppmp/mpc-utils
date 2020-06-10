@@ -1,6 +1,8 @@
 #include "mpc_utils/comm_channel_emp_adapter.hpp"
+
 #include <iostream>
 #include <random>
+
 #include "boost/thread.hpp"
 #include "boost/thread/thread_guard.hpp"
 #include "emp-ot/test/test.h"

@@ -1,4 +1,5 @@
 #include "config.hpp"
+
 #include <boost/program_options/errors.hpp>
 #include <boost/throw_exception.hpp>
 #include <cstdlib>

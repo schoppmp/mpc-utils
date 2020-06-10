@@ -1,4 +1,5 @@
 #include "mpc_utils/comm_channel_emp_adapter.hpp"
+
 #include "absl/memory/memory.h"
 #include "emp-tool/io/net_io_channel.h"
 #include "mpc_utils/canonical_errors.h"

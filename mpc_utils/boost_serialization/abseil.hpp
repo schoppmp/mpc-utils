@@ -2,6 +2,7 @@
 #define MPC_UTILS_BOOST_SERIALIZATION_ABSEIL_HPP_
 
 #include <cstdint>
+
 #include "absl/numeric/int128.h"
 #include "boost/serialization/split_free.hpp"
 

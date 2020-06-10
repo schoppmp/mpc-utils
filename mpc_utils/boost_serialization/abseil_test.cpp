@@ -1,5 +1,7 @@
 #include "mpc_utils/boost_serialization/abseil.hpp"
+
 #include <sstream>
+
 #include "boost/archive/binary_iarchive.hpp"
 #include "boost/archive/binary_oarchive.hpp"
 #include "gtest/gtest.h"
@@ -15,7 +17,7 @@ class AbseilTest : public ::testing::Test {
 
 TEST_F(AbseilTest, SerializeValue) {
   absl::uint128 x = absl::MakeUint128(23, 42);
-  oarchive & x;
+  oarchive& x;
   absl::uint128 y = 0;
   iarchive& y;
   EXPECT_EQ(x, y);

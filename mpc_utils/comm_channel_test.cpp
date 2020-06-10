@@ -1,4 +1,5 @@
 #include "comm_channel.hpp"
+
 #include "absl/memory/memory.h"
 #include "gtest/gtest.h"
 #include "mpc_utils/testing/comm_channel_test_helper.hpp"

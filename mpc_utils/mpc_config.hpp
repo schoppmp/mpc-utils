@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+
 #include "config.hpp"
 
 class mpc_config : public virtual config {

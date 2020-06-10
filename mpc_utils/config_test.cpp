@@ -1,5 +1,7 @@
 #include "config.hpp"
+
 #include <cstdlib>
+
 #include "boost/filesystem.hpp"
 #include "boost/program_options.hpp"
 #include "gtest/gtest.h"

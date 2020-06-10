@@ -1,5 +1,7 @@
 #include "benchmarker.hpp"
+
 #include <thread>
+
 #include "gtest/gtest.h"
 
 namespace mpc_utils {

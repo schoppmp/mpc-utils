@@ -1,4 +1,5 @@
 #include "server_info.hpp"
+
 #include <ostream>
 
 int server_info::compare(const server_info& other) const {

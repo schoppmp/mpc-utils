@@ -1,5 +1,7 @@
 #include "benchmarker.hpp"
 
+#include <stdexcept>
+
 namespace mpc_utils {
 
 Benchmarker::time_point Benchmarker::StartTimer() const {

@@ -1,6 +1,8 @@
 #include "mpc_utils/testing/comm_channel_test_helper.hpp"
+
 #include <limits>
 #include <random>
+
 #include "absl/memory/memory.h"
 #include "boost/thread.hpp"
 #include "mpc_utils/openssl_uniform_bit_generator.hpp"
@@ -43,16 +45,18 @@ CommChannelTestHelper::CommChannelTestHelper(bool measure_communication) {
         channel1_ = absl::WrapUnique(new comm_channel(party1_->connect_to(
             0, measure_communication, true, /*sleep_time=*/500,
             /*num_tries=*/10)));  // Try connecting for 5s.
-        keep_trying = false; // Connection successful!
+        keep_trying = false;      // Connection successful!
         thread1.join();
       } catch (boost::system::system_error& ex) {
         if (ex.code().value() == boost::system::errc::connection_refused) {
           if (thread_eptr) {
-            // Server could not accept -> Retry with both parties and different port.
+            // Server could not accept -> Retry with both parties and different
+            // port.
             thread1.join();
             break;
           } else {
-            // Couldn't connect, but server does not seem to have a problem -> Only client retries.
+            // Couldn't connect, but server does not seem to have a problem ->
+            // Only client retries.
             continue;
           }
         }

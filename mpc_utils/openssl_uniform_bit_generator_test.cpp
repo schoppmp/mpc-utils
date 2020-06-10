@@ -1,5 +1,7 @@
 #include "mpc_utils/openssl_uniform_bit_generator.hpp"
+
 #include <random>
+
 #include "gtest/gtest.h"
 
 namespace mpc_utils {
