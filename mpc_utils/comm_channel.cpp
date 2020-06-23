@@ -6,15 +6,11 @@
 namespace mpc_utils {
 
 // constructor called from party::connect_to
-comm_channel::comm_channel(std::unique_ptr<boost::asio::ip::tcp::iostream>&& s,
-                           party& p, int peer_id, bool measure_communication)
-    : p(p),
-      id(p.get_id()),
-      tcp_stream(std::move(s)),
-      need_flush(false),
-      measure_communication(measure_communication),
-      sent_header_size(-1),
-      received_header_size(-1) {
+comm_channel::comm_channel(std::unique_ptr<boost::asio::ip::tcp::iostream> &&s,
+                           party &p, int peer_id, bool measure_communication)
+    : p(p), id(p.get_id()), tcp_stream(std::move(s)), need_flush(false),
+      measure_communication(measure_communication), sent_byte_count(0),
+      received_byte_count(0) {
   // Build output archive, optionally measuring communication.
   if (!measure_communication) {
     oarchive = absl::make_unique<boost::archive::binary_oarchive>(
@@ -44,15 +40,16 @@ comm_channel::comm_channel(std::unique_ptr<boost::asio::ip::tcp::iostream>&& s,
   }
 
   if (peer_id == -1) {
-    recv(peer_id);  // read id of remote
+    recv(peer_id); // read id of remote
   } else {
-    send(this->id);  // send own ID to remote
+    send(this->id); // send own ID to remote
     flush();
   }
 
   if (measure_communication) {
-    sent_header_size = ostream->component<counter>(0)->characters();
-    received_header_size = istream->component<counter>(0)->characters();
+    // Subtract header from bytes sent/received.
+    sent_byte_count = -ostream->component<counter>(0)->characters();
+    received_byte_count = -istream->component<counter>(0)->characters();
   }
 
   if (peer_id < 0 || peer_id == id) {
@@ -94,8 +91,7 @@ int64_t comm_channel::get_num_bytes_sent() const {
         "get_num_bytes_sent may only be called if measure_communication = true "
         "was passed at construction"));
   }
-  int64_t sent =
-      ostream->component<counter>(0)->characters() - sent_header_size;
+  int64_t sent = ostream->component<counter>(0)->characters() + sent_byte_count;
   if (twin) {
     sent += twin->get_num_bytes_sent();
   }
@@ -109,11 +105,21 @@ int64_t comm_channel::get_num_bytes_received() const {
         "true was passed at construction"));
   }
   int64_t received =
-      istream->component<counter>(0)->characters() - received_header_size;
+      istream->component<counter>(0)->characters() + received_byte_count;
   if (twin) {
     received += twin->get_num_bytes_received();
   }
   return received;
 }
 
-}  // namespace mpc_utils
+void comm_channel::add_bytes_sent(int64_t n) { sent_byte_count += n; }
+
+void comm_channel::add_bytes_received(int64_t n) { received_byte_count += n; }
+
+server_info comm_channel::get_local_info() const { return p.get_servers()[id]; }
+
+server_info comm_channel::get_peer_info() const {
+  return p.get_servers()[peer_id];
+}
+
+} // namespace mpc_utils

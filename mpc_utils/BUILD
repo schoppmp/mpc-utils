@@ -68,6 +68,7 @@ cc_library(
         ":counter",
         ":mpc_config",
         "@com_google_absl//absl/memory",
+        "@com_google_absl//absl/types:span",
         "@boost//:asio",
         "@boost//:exception",
         "@boost//:iostreams",

@@ -6,8 +6,8 @@
 
 namespace mpc_utils {
 
-StatusOr<std::unique_ptr<CommChannelEMPAdapter>> CommChannelEMPAdapter::Create(
-    comm_channel* channel, bool direct) {
+StatusOr<std::unique_ptr<CommChannelEMPAdapter>>
+CommChannelEMPAdapter::Create(comm_channel *channel, bool direct) {
   if (channel == nullptr) {
     return InvalidArgumentError("`channel` must not be NULL");
   }
@@ -24,23 +24,20 @@ StatusOr<std::unique_ptr<CommChannelEMPAdapter>> CommChannelEMPAdapter::Create(
     // Connect directly using EMP for performance.
     // Party with lower ID accepts, higher ID connects.
     if (channel->get_id() < channel->get_peer_id()) {
-      const auto& endpoint = channel->tcp_stream->socket().local_endpoint();
-      net_io = absl::make_unique<emp::NetIO>(nullptr, endpoint.port(),
-                                             /*quiet=*/true);
+      net_io = absl::make_unique<emp::NetIO>(
+          nullptr, channel->get_local_info().port, /*quiet=*/true);
     } else {
-      const auto& endpoint = channel->tcp_stream->socket().remote_endpoint();
-      uint16_t port = endpoint.port();
-      std::string address = endpoint.address().to_string();
-      net_io =
-          absl::make_unique<emp::NetIO>(address.c_str(), port, /*quiet=*/true);
+      server_info info = channel->get_peer_info();
+      net_io = absl::make_unique<emp::NetIO>(info.host.c_str(), info.port,
+                                             /*quiet=*/true);
     }
   }
   return absl::WrapUnique(
       new CommChannelEMPAdapter(channel, std::move(net_io)));
 };
 
-CommChannelEMPAdapter::CommChannelEMPAdapter(comm_channel* channel,
+CommChannelEMPAdapter::CommChannelEMPAdapter(comm_channel *channel,
                                              std::unique_ptr<emp::NetIO> net_io)
     : channel_(channel), net_io_(std::move(net_io)){};
 
-}  // namespace mpc_utils
+} // namespace mpc_utils

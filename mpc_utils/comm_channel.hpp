@@ -38,60 +38,57 @@ class CommChannelOblivCAdapter;
 
 // A bidirectional connection using the boost serialization library.
 class comm_channel {
- public:
-  comm_channel(std::unique_ptr<boost::asio::ip::tcp::iostream>&& s, party& p,
+public:
+  comm_channel(std::unique_ptr<boost::asio::ip::tcp::iostream> &&s, party &p,
                int peer_id, bool measure_communication = false);
 
   // No copy constructor: since copying a channel means establishing a new
   // connection, this should be done explicitly using clone()
-  comm_channel(comm_channel& other) = delete;
+  comm_channel(comm_channel &other) = delete;
 
   // No move constructor. If a comm_channel ever needs to be moved, that should
   // happen using a std::unique_ptr.
-  comm_channel(comm_channel&& other) = default;
+  comm_channel(comm_channel &&other) = default;
 
   // write and read functions for direct binary access
-  void write(const char* data, size_t size) {
+  void write(const char *data, size_t size) {
     COMM_CHANNEL_WRAP_EXCEPTION(oarchive->save_binary(data, size),
                                 boost::archive::archive_exception);
     need_flush = true;
   }
-  void read(char* buffer, size_t size) {
+  void read(char *buffer, size_t size) {
     flush_if_needed();
     COMM_CHANNEL_WRAP_EXCEPTION(iarchive->load_binary(buffer, size),
                                 boost::archive::archive_exception);
   }
 
   // send and receive objects via boost serialization
-  template <typename T>
-  void send(T&& obj) {
+  template <typename T> void send(T &&obj) {
     need_flush = true;
     COMM_CHANNEL_WRAP_EXCEPTION(*oarchive & obj,
                                 boost::archive::archive_exception);
   }
-  template <typename T>
-  void recv(T&& obj) {
+  template <typename T> void recv(T &&obj) {
     flush_if_needed();
     COMM_CHANNEL_WRAP_EXCEPTION(*iarchive & obj,
                                 boost::archive::archive_exception);
   }
   // send from `to_send` and receive into `to_recv` simultaneously
-  template <typename S, typename T>
-  void send_recv(S&& to_send, T&& to_recv) {
+  template <typename S, typename T> void send_recv(S &&to_send, T &&to_recv) {
     if (!twin) {
       twin = absl::WrapUnique(new comm_channel(clone()));
     }
-    comm_channel& channel2 = *twin;
-    if (get_id() < get_peer_id()) {  // lower ID sends on channel2
+    comm_channel &channel2 = *twin;
+    if (get_id() < get_peer_id()) { // lower ID sends on channel2
       boost::thread t([&to_send, &channel2]() {
         channel2.send(to_send);
         channel2.flush();
       });
-      boost::thread_guard<> g(t);  // join t when leaving scope
+      boost::thread_guard<> g(t); // join t when leaving scope
       recv(to_recv);
-    } else {  // higher ID receives on channel2
+    } else { // higher ID receives on channel2
       boost::thread t([&to_recv, &channel2]() { channel2.recv(to_recv); });
-      boost::thread_guard<> g(t);  // join t when leaving scope
+      boost::thread_guard<> g(t); // join t when leaving scope
       send(to_send);
       flush();
     }
@@ -133,6 +130,24 @@ class comm_channel {
   // at construction.
   int64_t get_num_bytes_received() const;
 
+  // Adds a given number of bytes to the internal counter that is returned by
+  // get_num_bytes_sent().
+  // Should be used to accurately count data sent for example by a cloned
+  // channel.
+  void add_bytes_sent(int64_t n);
+
+  // Adds a given number of bytes to the internal counter that is returned by
+  // get_num_bytes_received().
+  // Should be used to accurately count data sent for example by a cloned
+  // channel.
+  void add_bytes_received(int64_t n);
+
+  // Returns the server_info for the local endpoint.
+  server_info get_local_info() const;
+
+  // Returns the server_infor for the remote endpoint.
+  server_info get_peer_info() const;
+
   /**
    * Error info type for exceptions thrown from class methods
    */
@@ -141,11 +156,11 @@ class comm_channel {
   typedef party::error_num_servers error_num_servers;
   typedef boost::error_info<struct tag_STREAM_ERROR, std::string> stream_error;
 
- private:
+private:
   friend class CommChannelEMPAdapter;
   friend class CommChannelOblivCAdapter;
 
-  party& p;
+  party &p;
   int id;
   int peer_id;
   std::unique_ptr<boost::asio::ip::tcp::iostream> tcp_stream;
@@ -154,7 +169,7 @@ class comm_channel {
   std::unique_ptr<boost::archive::binary_oarchive> oarchive;
   std::unique_ptr<boost::archive::binary_iarchive> iarchive;
   std::unique_ptr<comm_channel>
-      twin;  // used for sending and receiving simultaneously;
+      twin; // used for sending and receiving simultaneously;
   // TODO: somehow allow for simultaneous reading and writing on the _same_
   //   socket
   bool need_flush;
@@ -165,7 +180,7 @@ class comm_channel {
   // Number of bytes for archive headers. Has to be saved for accurate
   // communication measurements. We count both directions to account for
   // possible differences due to boost versions.
-  int sent_header_size, received_header_size;
+  int sent_byte_count, received_byte_count;
 
   void flush_if_needed() {
     if (need_flush) {
@@ -174,9 +189,9 @@ class comm_channel {
   }
 };
 
-}  // namespace mpc_utils
+} // namespace mpc_utils
 
 // TODO: remove this from the global namespace.
 using mpc_utils::comm_channel;
 
-#endif  // MPC_UTILS_COMM_CHANNEL_HPP_
+#endif // MPC_UTILS_COMM_CHANNEL_HPP_
