@@ -180,7 +180,7 @@ private:
   // Number of bytes for archive headers. Has to be saved for accurate
   // communication measurements. We count both directions to account for
   // possible differences due to boost versions.
-  int sent_byte_count, received_byte_count;
+  int64_t sent_byte_count, received_byte_count;
 
   void flush_if_needed() {
     if (need_flush) {

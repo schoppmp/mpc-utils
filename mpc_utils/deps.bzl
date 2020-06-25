@@ -33,13 +33,13 @@ def mpc_utils_deps(
         oblivc_deps()
     if enable_serialization:
         rules_foreign_cc_dependencies()
-        if "org_bitbucket_eigen" not in native.existing_rules():
+        if "org_tuxfamily_eigen" not in native.existing_rules():
             http_archive(
-                name = "org_bitbucket_eigen",
+                name = "org_tuxfamily_eigen",
                 build_file_content = all_content,
-                strip_prefix = "eigen-eigen-323c052e1731",
-                urls = ["https://bitbucket.org/eigen/eigen/get/3.3.7.tar.gz"],
-                sha256 = "7e84ef87a07702b54ab3306e77cea474f56a40afa1c0ab245bb11725d006d0da",
+                strip_prefix = "eigen-7222f0b6b58759b2207e6ec3224adb246fd23349",
+                url = "https://gitlab.com/libeigen/eigen/-/archive/7222f0b6b58759b2207e6ec3224adb246fd23349/eigen-7222f0b6b58759b2207e6ec3224adb246fd23349.zip",
+                sha256 = "905f7279a5872d289f1a3702fd145c8a424ace95052b5cc6ecd0aaabbd922541",
             )
         if "org_gmplib" not in native.existing_rules():
             http_archive(
