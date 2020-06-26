@@ -1,14 +1,9 @@
-load(
-    "@bazel_tools//tools/build_defs/repo:http.bzl",
-    "http_archive",
-)
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "new_git_repository")
 load("@mpc_utils//third_party:repo.bzl", "third_party_http_archive")
 load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_deps")
 load("@com_github_schoppmp_rules_oblivc//oblivc:deps.bzl", "oblivc_deps")
-load(
-    "@rules_foreign_cc//:workspace_definitions.bzl",
-    "rules_foreign_cc_dependencies",
-)
+load("@rules_foreign_cc//:workspace_definitions.bzl", "rules_foreign_cc_dependencies")
 
 all_content = """
 filegroup(
@@ -34,12 +29,12 @@ def mpc_utils_deps(
     if enable_serialization:
         rules_foreign_cc_dependencies()
         if "org_tuxfamily_eigen" not in native.existing_rules():
-            http_archive(
+            new_git_repository(
                 name = "org_tuxfamily_eigen",
                 build_file_content = all_content,
-                strip_prefix = "eigen-7222f0b6b58759b2207e6ec3224adb246fd23349",
-                url = "https://gitlab.com/libeigen/eigen/-/archive/7222f0b6b58759b2207e6ec3224adb246fd23349/eigen-7222f0b6b58759b2207e6ec3224adb246fd23349.zip",
-                sha256 = "905f7279a5872d289f1a3702fd145c8a424ace95052b5cc6ecd0aaabbd922541",
+                remote = "https://gitlab.com/libeigen/eigen.git",
+                commit = "7222f0b6b58759b2207e6ec3224adb246fd23349",
+                shallow_since = "1593032615 -0700",
             )
         if "org_gmplib" not in native.existing_rules():
             http_archive(
