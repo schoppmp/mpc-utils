@@ -108,7 +108,7 @@ public:
   // even if measure_communication is set to true.
   int get_blocking_fd() {
     tcp_stream->rdbuf()->native_non_blocking(false);
-    return tcp_stream->rdbuf()->native_handle();
+    return static_cast<int>(tcp_stream->rdbuf()->native_handle());
   }
 
   // getters for both parties' IDs

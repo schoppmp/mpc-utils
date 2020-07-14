@@ -7,6 +7,10 @@
 
 #include "mpc_utils/comm_channel.hpp"
 #include "mpc_utils/statusor.h"
+
+#ifdef MPC_ENABLE_OBLVC_ADAPTER
+
+
 extern "C" {
 #include "obliv.h"
 };
@@ -24,5 +28,6 @@ class CommChannelOblivCAdapter {
 };
 
 }  // namespace mpc_utils
+#endif
 
 #endif  // MPC_UTILS_COMM_CHANNEL_OBLIVC_ADAPTER_HPP_

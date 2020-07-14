@@ -1,4 +1,5 @@
 #include "mpc_utils/comm_channel_oblivc_adapter.hpp"
+#ifdef MPC_ENABLE_OBLVC_ADAPTER
 
 #include "gtest/gtest.h"
 #include "mpc_utils/status_matchers.h"
@@ -124,3 +125,4 @@ TEST(CommChannelOblivc, SendSingleIntegerCircuitMeasured) {
 
 }  // namespace
 }  // namespace mpc_utils
+#endif

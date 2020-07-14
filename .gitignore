@@ -33,7 +33,15 @@
 
 # Bazel
 bazel-*
+packages/
 
 # Editors
 .clwb
 .idea
+
+#visual studio
+x64/
+*.user
+*.filters
+.vs/
+Debug/

@@ -1,4 +1,5 @@
 #include "mpc_utils/comm_channel_emp_adapter.hpp"
+#ifdef MPC_ENABLE_EMP_ADAPTER
 
 #include <iostream>
 #include <random>
@@ -70,3 +71,5 @@ TEST(CommChannelEMPAdapter, FailsIfMeasuredAndDirect) {
 }  // namespace
 
 }  // namespace mpc_utils
+
+#endif

@@ -1,5 +1,7 @@
 #include "mpc_utils/comm_channel_emp_adapter.hpp"
 
+#ifdef MPC_ENABLE_EMP_ADAPTER
+
 #include "absl/memory/memory.h"
 #include "emp-tool/io/net_io_channel.h"
 #include "mpc_utils/canonical_errors.h"
@@ -41,3 +43,4 @@ CommChannelEMPAdapter::CommChannelEMPAdapter(comm_channel *channel,
     : channel_(channel), net_io_(std::move(net_io)){};
 
 } // namespace mpc_utils
+#endif

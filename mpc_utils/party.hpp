@@ -40,7 +40,7 @@ public:
   int get_id() { return id; }
 
   // Return the number of servers.
-  int get_num_servers() { return servers.size(); }
+  int get_num_servers() { return static_cast<int>(servers.size()); }
 
   // Returns a view of the servers.
   absl::Span<const server_info> get_servers() const;
