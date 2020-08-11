@@ -75,10 +75,7 @@ public:
   }
   // send from `to_send` and receive into `to_recv` simultaneously
   template <typename S, typename T> void send_recv(S &&to_send, T &&to_recv) {
-    if (!twin) {
-      twin = absl::WrapUnique(new comm_channel(clone()));
-    }
-    comm_channel &channel2 = *twin;
+    comm_channel &channel2 = *get_twin();
     if (get_id() < get_peer_id()) { // lower ID sends on channel2
       boost::thread t([&to_send, &channel2]() {
         channel2.send(to_send);
@@ -147,6 +144,16 @@ public:
 
   // Returns the server_infor for the remote endpoint.
   server_info get_peer_info() const;
+
+  // Returns twin comm_channel if one exists. If one does not exists 
+  // then it is created.
+  comm_channel* get_twin() { 
+      if (!twin) {
+          twin = absl::WrapUnique(new comm_channel(clone()));
+      }
+      return twin.get();
+  }
+
 
   /**
    * Error info type for exceptions thrown from class methods
