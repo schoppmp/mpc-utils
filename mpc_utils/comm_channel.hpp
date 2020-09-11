@@ -38,9 +38,10 @@ class CommChannelOblivCAdapter;
 
 // A bidirectional connection using the boost serialization library.
 class comm_channel {
-public:
+ public:
   comm_channel(std::unique_ptr<boost::asio::ip::tcp::iostream> &&s, party &p,
-               int peer_id, bool measure_communication = false, std::unique_ptr<comm_channel> twin = nullptr);
+               int peer_id, bool measure_communication = false,
+               std::unique_ptr<comm_channel> twin = nullptr);
 
   // No copy constructor: since copying a channel means establishing a new
   // connection, this should be done explicitly using clone()
@@ -62,29 +63,32 @@ public:
   }
 
   // send and receive objects via boost serialization
-  template <typename T> void send(T &&obj) {
+  template <typename T>
+  void send(T &&obj) {
     need_flush = true;
     COMM_CHANNEL_WRAP_EXCEPTION(*oarchive & obj,
                                 boost::archive::archive_exception);
   }
-  template <typename T> void recv(T &&obj) {
+  template <typename T>
+  void recv(T &&obj) {
     flush_if_needed();
     COMM_CHANNEL_WRAP_EXCEPTION(*iarchive & obj,
                                 boost::archive::archive_exception);
   }
   // send from `to_send` and receive into `to_recv` simultaneously
-  template <typename S, typename T> void send_recv(S &&to_send, T &&to_recv) {
+  template <typename S, typename T>
+  void send_recv(S &&to_send, T &&to_recv) {
     comm_channel &channel2 = *get_twin();
-    if (get_id() < get_peer_id()) { // lower ID sends on channel2
+    if (get_id() < get_peer_id()) {  // lower ID sends on channel2
       boost::thread t([&to_send, &channel2]() {
         channel2.send(to_send);
         channel2.flush();
       });
-      boost::thread_guard<> g(t); // join t when leaving scope
+      boost::thread_guard<> g(t);  // join t when leaving scope
       recv(to_recv);
-    } else { // higher ID receives on channel2
+    } else {  // higher ID receives on channel2
       boost::thread t([&to_recv, &channel2]() { channel2.recv(to_recv); });
-      boost::thread_guard<> g(t); // join t when leaving scope
+      boost::thread_guard<> g(t);  // join t when leaving scope
       send(to_send);
       flush();
     }
@@ -144,16 +148,16 @@ public:
   // Returns the server_infor for the remote endpoint.
   server_info get_peer_info() const;
 
-  // Returns twin comm_channel if one exists. If one does not exists 
-  // then it is created. 
+  // Returns twin comm_channel if one exists. If one does not exists
+  // then it is created.
   // Throws std::logic_error if called on a channel that doesn't have a twin.
-  comm_channel* get_twin() {
-      if (!twin) {
-        BOOST_THROW_EXCEPTION(std::logic_error("comm_channel does not have a twin"));
-      }
-      return twin.get();
+  comm_channel *get_twin() {
+    if (!twin) {
+      BOOST_THROW_EXCEPTION(
+          std::logic_error("comm_channel does not have a twin"));
+    }
+    return twin.get();
   }
-
 
   /**
    * Error info type for exceptions thrown from class methods
@@ -163,7 +167,7 @@ public:
   typedef party::error_num_servers error_num_servers;
   typedef boost::error_info<struct tag_STREAM_ERROR, std::string> stream_error;
 
-private:
+ private:
   friend class CommChannelEMPAdapter;
   friend class CommChannelOblivCAdapter;
 
@@ -178,8 +182,7 @@ private:
   // Used for sending and receiving simultaneously;
   // TODO: somehow allow for simultaneous reading and writing on the _same_
   //   socket
-  std::unique_ptr<comm_channel>
-      twin;
+  std::unique_ptr<comm_channel> twin;
   bool need_flush;
   // If set to true, all send and receive operations will count the number of
   // bytes sent or received, which can be retrieved using
@@ -197,9 +200,9 @@ private:
   }
 };
 
-} // namespace mpc_utils
+}  // namespace mpc_utils
 
 // TODO: remove this from the global namespace.
 using mpc_utils::comm_channel;
 
-#endif // MPC_UTILS_COMM_CHANNEL_HPP_
+#endif  // MPC_UTILS_COMM_CHANNEL_HPP_

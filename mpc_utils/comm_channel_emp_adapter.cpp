@@ -8,8 +8,8 @@
 
 namespace mpc_utils {
 
-StatusOr<std::unique_ptr<CommChannelEMPAdapter>>
-CommChannelEMPAdapter::Create(comm_channel *channel, bool direct) {
+StatusOr<std::unique_ptr<CommChannelEMPAdapter>> CommChannelEMPAdapter::Create(
+    comm_channel *channel, bool direct) {
   if (channel == nullptr) {
     return InvalidArgumentError("`channel` must not be NULL");
   }
@@ -42,5 +42,5 @@ CommChannelEMPAdapter::CommChannelEMPAdapter(comm_channel *channel,
                                              std::unique_ptr<emp::NetIO> net_io)
     : channel_(channel), net_io_(std::move(net_io)){};
 
-} // namespace mpc_utils
+}  // namespace mpc_utils
 #endif

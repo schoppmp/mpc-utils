@@ -6,31 +6,27 @@
 #include "boost/program_options.hpp"
 #include "gtest/gtest.h"
 
-
 #ifdef _MSC_VER
 #pragma warning(disable : 4996)
 #include "windows.h"
 
-std::wstring GetWC(const char* c)
-{
-    const size_t cSize = strlen(c);
-    std::wstring wc; wc.resize(cSize);
-    mbstowcs((wchar_t*)wc.data(), c, cSize);
-    return wc;
+std::wstring GetWC(const char* c) {
+  const size_t cSize = strlen(c);
+  std::wstring wc;
+  wc.resize(cSize);
+  mbstowcs((wchar_t*)wc.data(), c, cSize);
+  return wc;
 }
 
-void setenv(const char* name, const wchar_t* val, int overwrite)
-{
-    auto nl = strlen(name);
-    std::wstring nn;
+void setenv(const char* name, const wchar_t* val, int overwrite) {
+  auto nl = strlen(name);
+  std::wstring nn;
 
-    SetEnvironmentVariable(GetWC(name).c_str(), val);
+  SetEnvironmentVariable(GetWC(name).c_str(), val);
 }
 
-
-void unsetenv(const char* name)
-{
-    SetEnvironmentVariable(GetWC(name).c_str(), NULL);
+void unsetenv(const char* name) {
+  SetEnvironmentVariable(GetWC(name).c_str(), NULL);
 }
 
 #endif

@@ -11,7 +11,6 @@
 // Disable this adapter unless built by Bazel (which defines this macro).
 #ifdef MPC_ENABLE_OBLIVC_ADAPTER
 
-
 extern "C" {
 #include "obliv.h"
 };
