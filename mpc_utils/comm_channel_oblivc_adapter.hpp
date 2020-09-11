@@ -8,7 +8,8 @@
 #include "mpc_utils/comm_channel.hpp"
 #include "mpc_utils/statusor.h"
 
-#ifdef MPC_ENABLE_OBLVC_ADAPTER
+// Disable this adapter unless built by Bazel (which defines this macro).
+#ifdef MPC_ENABLE_OBLIVC_ADAPTER
 
 
 extern "C" {

@@ -40,14 +40,13 @@ class CommChannelOblivCAdapter;
 class comm_channel {
 public:
   comm_channel(std::unique_ptr<boost::asio::ip::tcp::iostream> &&s, party &p,
-               int peer_id, bool measure_communication = false);
+               int peer_id, bool measure_communication = false, std::unique_ptr<comm_channel> twin = nullptr);
 
   // No copy constructor: since copying a channel means establishing a new
   // connection, this should be done explicitly using clone()
   comm_channel(comm_channel &other) = delete;
 
-  // No move constructor. If a comm_channel ever needs to be moved, that should
-  // happen using a std::unique_ptr.
+  // Allow move constructor.
   comm_channel(comm_channel &&other) = default;
 
   // write and read functions for direct binary access
@@ -146,10 +145,11 @@ public:
   server_info get_peer_info() const;
 
   // Returns twin comm_channel if one exists. If one does not exists 
-  // then it is created.
-  comm_channel* get_twin() { 
+  // then it is created. 
+  // Throws std::logic_error if called on a channel that doesn't have a twin.
+  comm_channel* get_twin() {
       if (!twin) {
-          twin = absl::WrapUnique(new comm_channel(clone()));
+        BOOST_THROW_EXCEPTION(std::logic_error("comm_channel does not have a twin"));
       }
       return twin.get();
   }
@@ -175,10 +175,11 @@ private:
   std::unique_ptr<boost::iostreams::filtering_istream> istream;
   std::unique_ptr<boost::archive::binary_oarchive> oarchive;
   std::unique_ptr<boost::archive::binary_iarchive> iarchive;
-  std::unique_ptr<comm_channel>
-      twin; // used for sending and receiving simultaneously;
+  // Used for sending and receiving simultaneously;
   // TODO: somehow allow for simultaneous reading and writing on the _same_
   //   socket
+  std::unique_ptr<comm_channel>
+      twin;
   bool need_flush;
   // If set to true, all send and receive operations will count the number of
   // bytes sent or received, which can be retrieved using

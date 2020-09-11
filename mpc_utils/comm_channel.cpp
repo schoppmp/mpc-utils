@@ -7,8 +7,8 @@ namespace mpc_utils {
 
 // constructor called from party::connect_to
 comm_channel::comm_channel(std::unique_ptr<boost::asio::ip::tcp::iostream> &&s,
-                           party &p, int peer_id, bool measure_communication)
-    : p(p), id(p.get_id()), tcp_stream(std::move(s)), need_flush(false),
+                           party &p, int peer_id, bool measure_communication, std::unique_ptr<comm_channel> twin)
+    : p(p), id(p.get_id()), tcp_stream(std::move(s)), twin(std::move(twin)), need_flush(false),
       measure_communication(measure_communication), sent_byte_count(0),
       received_byte_count(0) {
   // Build output archive, optionally measuring communication.

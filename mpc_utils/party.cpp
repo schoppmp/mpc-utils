@@ -6,9 +6,8 @@ namespace mpc_utils {
 
 comm_channel party::connect_to(int peer_id, bool measure_communication,
                                bool tcp_nodelay, int sleep_time,
-                               int num_tries) {
+                               int num_tries, bool create_twin) {
   using tcp = boost::asio::ip::tcp;
-  std::unique_lock<std::mutex> lock(connection_mutex);
   try {
     if (peer_id == ANY_PEER) {
       peer_id = servers.size(); // accept any connection
@@ -27,17 +26,24 @@ comm_channel party::connect_to(int peer_id, bool measure_communication,
     // lower ID listens, higher ID connects.
     if (id < peer_id || peer_id == static_cast<int>(servers.size())) {
       try {
-        tcp::endpoint endpoint(tcp::v6(), servers[id].port);
-        tcp::acceptor acceptor(io_service, endpoint);
-        acceptor.set_option(boost::asio::socket_base::reuse_address(true));
         for (;;) {
           std::unique_ptr<tcp::iostream> stream(new tcp::iostream());
-          acceptor.accept(*(stream->rdbuf()));
+          { // Keep acceptor around for only one accept call to allow for recursive calls to connect_to. Needed for twin channel.
+            tcp::endpoint endpoint(tcp::v6(), servers[id].port);
+            tcp::acceptor acceptor(io_service, endpoint);
+            acceptor.set_option(boost::asio::socket_base::reuse_address(true));
+              acceptor.accept(*(stream->rdbuf()));
+          }
           if (tcp_nodelay) {
             stream->rdbuf()->set_option(tcp::no_delay(true)); // disable nagle
           }
+          // Create twin channel if required.
+          std::unique_ptr<comm_channel> twin = nullptr;
+          if(create_twin) {
+            twin = absl::WrapUnique(new comm_channel(connect_to(peer_id, measure_communication, tcp_nodelay, sleep_time, num_tries, false)));
+          } 
           comm_channel chan(std::move(stream), *this, -1,
-                            measure_communication);
+                            measure_communication, std::move(twin));
           int current_id = chan.get_peer_id();
           if (current_id > static_cast<int>(servers.size())) {
             current_id = servers.size(); // not a server -> put into last queue
@@ -75,8 +81,13 @@ comm_channel party::connect_to(int peer_id, bool measure_communication,
             if (tcp_nodelay) {
               stream->rdbuf()->set_option(tcp::no_delay(true)); // disable nagle
             }
+            // Create twin channel if required.
+            std::unique_ptr<comm_channel> twin = nullptr;
+            if(create_twin) {
+              twin = absl::WrapUnique(new comm_channel(connect_to(peer_id, measure_communication, tcp_nodelay, sleep_time, num_tries, false)));
+            }
             return comm_channel(std::move(stream), *this, peer_id,
-                                measure_communication);
+                                measure_communication, std::move(twin));
             // wrap exceptions in a boost::exception
           } catch (boost::system::system_error &ex) {
             BOOST_THROW_EXCEPTION(ex);

@@ -1,6 +1,6 @@
 #include "mpc_utils/comm_channel_oblivc_adapter.hpp"
 
-#ifdef MPC_ENABLE_OBLVC_ADAPTER
+#ifdef MPC_ENABLE_OBLIVC_ADAPTER
 #include <cerrno>
 #include <cstring>
 

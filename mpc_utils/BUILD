@@ -101,6 +101,10 @@ cc_library(
     hdrs = [
         "comm_channel_emp_adapter.hpp",
     ],
+    defines = [
+        # Needed for Visual Studio compatibility.
+        "MPC_ENABLE_EMP_ADAPTER",
+    ],
     deps = [
         ":comm_channel",
         ":statusor",
@@ -130,6 +134,10 @@ cc_library(
     ],
     hdrs = [
         "comm_channel_oblivc_adapter.hpp",
+    ],
+    defines = [
+        # Needed for Visual Studio compatibility.
+        "MPC_ENABLE_OBLIVC_ADAPTER",
     ],
     deps = [
         ":comm_channel",

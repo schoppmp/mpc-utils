@@ -29,12 +29,12 @@ public:
         pending(servers.size() + 1){};
 
   // Establishes a connection to a party with ID party_id and returns a pointer
-  // to an object representing that connection. Suitable for passing to SCAPI
-  // calls
+  // to an object representing that connection.
   comm_channel connect_to(int peer_id, bool measure_communication = false,
                           bool tcp_nodelay = true,
                           int sleep_time = DEFAULT_SLEEP_TIME,
-                          int num_tries = DEFAULT_NUM_TRIES);
+                          int num_tries = DEFAULT_NUM_TRIES,
+                          bool create_twin = true);
 
   // Return this party's ID.
   int get_id() { return id; }
@@ -59,7 +59,6 @@ private:
   boost::thread io_thread;            // runs io.run()
   boost::asio::ip::tcp::resolver resolver;
   boost::thread_guard<> io_guard; // joins io_thread whend destroyed
-  std::mutex connection_mutex; // allow only one concurrent call to connect_to
   std::vector<std::vector<comm_channel>> pending;
 };
 
