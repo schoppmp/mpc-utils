@@ -16,7 +16,7 @@ inline void save(Archive& ar, const NTL::ZZ& z,
                  const unsigned int /* file_version */
 ) {
   std::vector<unsigned char> buf(NTL::NumBytes(z));
-  NTL::BytesFromZZ(buf.data(), z, buf.size());
+  NTL::BytesFromZZ(buf.data(), z, static_cast<long>(buf.size()));
   ar& buf;
 }
 template <class Archive>
@@ -24,7 +24,7 @@ inline void load(Archive& ar, NTL::ZZ& z, const unsigned int /* file_version */
 ) {
   std::vector<unsigned char> buf;
   ar& buf;
-  NTL::ZZFromBytes(z, buf.data(), buf.size());
+  NTL::ZZFromBytes(z, buf.data(), static_cast<long>(buf.size()));
 }
 
 // NTL::ZZ_p, NTL::zz_p

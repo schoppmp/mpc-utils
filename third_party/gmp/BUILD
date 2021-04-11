@@ -1,4 +1,4 @@
-load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
+load("@rules_foreign_cc//foreign_cc:configure.bzl", "configure_make")
 
 licenses(["restricted"])
 
@@ -9,7 +9,7 @@ configure_make(
       "--enable-cxx",
       "CXX=g++",  #Needed presumably because of a bug in GMP's configure script.
     ],
-    static_libraries = [
+    out_static_libs = [
         "libgmp.a",
         "libgmpxx.a",
     ],

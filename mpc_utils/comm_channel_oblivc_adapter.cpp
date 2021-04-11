@@ -1,5 +1,6 @@
 #include "mpc_utils/comm_channel_oblivc_adapter.hpp"
 
+#ifdef MPC_ENABLE_OBLIVC_ADAPTER
 #include <cerrno>
 #include <cstring>
 
@@ -63,3 +64,4 @@ StatusOr<ProtocolDesc> CommChannelOblivCAdapter::Connect(
 }
 
 }  // namespace mpc_utils
+#endif

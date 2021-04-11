@@ -7,9 +7,15 @@ namespace mpc_utils {
 
 // constructor called from party::connect_to
 comm_channel::comm_channel(std::unique_ptr<boost::asio::ip::tcp::iostream> &&s,
-                           party &p, int peer_id, bool measure_communication)
-    : p(p), id(p.get_id()), tcp_stream(std::move(s)), need_flush(false),
-      measure_communication(measure_communication), sent_byte_count(0),
+                           party &p, int peer_id, bool measure_communication,
+                           std::unique_ptr<comm_channel> twin)
+    : p(p),
+      id(p.get_id()),
+      tcp_stream(std::move(s)),
+      twin(std::move(twin)),
+      need_flush(false),
+      measure_communication(measure_communication),
+      sent_byte_count(0),
       received_byte_count(0) {
   // Build output archive, optionally measuring communication.
   if (!measure_communication) {
@@ -40,9 +46,9 @@ comm_channel::comm_channel(std::unique_ptr<boost::asio::ip::tcp::iostream> &&s,
   }
 
   if (peer_id == -1) {
-    recv(peer_id); // read id of remote
+    recv(peer_id);  // read id of remote
   } else {
-    send(this->id); // send own ID to remote
+    send(this->id);  // send own ID to remote
     flush();
   }
 
@@ -122,4 +128,4 @@ server_info comm_channel::get_peer_info() const {
   return p.get_servers()[peer_id];
 }
 
-} // namespace mpc_utils
+}  // namespace mpc_utils

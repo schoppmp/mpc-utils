@@ -4,6 +4,9 @@
 #ifndef MPC_UTILS_COMM_CHANNEL_EMP_ADAPTER_HPP_
 #define MPC_UTILS_COMM_CHANNEL_EMP_ADAPTER_HPP_
 
+// Disable this adapter unless built by Bazel (which defines this macro).
+#ifdef MPC_ENABLE_EMP_ADAPTER
+
 #include "emp-tool/io/io_channel.h"
 #include "emp-tool/io/net_io_channel.h"
 #include "mpc_utils/comm_channel.hpp"
@@ -69,4 +72,5 @@ class CommChannelEMPAdapter : public emp::IOChannel<CommChannelEMPAdapter> {
 
 }  // namespace mpc_utils
 
+#endif
 #endif  // MPC_UTILS_COMM_CHANNEL_EMP_ADAPTER_HPP_

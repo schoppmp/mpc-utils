@@ -1,5 +1,4 @@
-load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
-load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
+load("@rules_foreign_cc//foreign_cc:cmake.bzl", "cmake")
 
 licenses(["notice"])  # MIT
 
@@ -15,13 +14,13 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
-cmake_external(
+cmake(
     name = "emp_ot",
     cache_entries = {
         "CMAKE_PREFIX_PATH": "$EXT_BUILD_DEPS/emp_tool;$EXT_BUILD_DEPS/gmp",
         "GMP_INCLUDE_DIR": "$EXT_BUILD_DEPS/gmp/include",
     },
-    headers_only = True,
+    out_headers_only = True,
     lib_source = ":all",
     make_commands = [
         "make install/fast",

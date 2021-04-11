@@ -1,4 +1,4 @@
-load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
+load("@rules_foreign_cc//foreign_cc:cmake.bzl", "cmake")
 
 licenses(["notice"])  # Apache
 
@@ -7,7 +7,7 @@ filegroup(
     srcs = glob(["**"]),
 )
 
-cmake_external(
+cmake(
     name = "relic",
     cache_entries = {
         # Needed for EMP.
@@ -32,7 +32,7 @@ cmake_external(
         "CMAKE_PREFIX_PATH": "$EXT_BUILD_DEPS/gmp/",
     },
     lib_source = ":all",
-    static_libraries = [
+    out_static_libs = [
         "librelic_s.a",
     ],
     visibility = ["//visibility:public"],

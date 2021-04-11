@@ -31,7 +31,7 @@ struct server_info {
   };
 };
 
-} // namespace mpc_utils
+}  // namespace mpc_utils
 
 using mpc_utils::server_info;
 
