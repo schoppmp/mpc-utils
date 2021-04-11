@@ -1,4 +1,4 @@
-load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
+load("@rules_foreign_cc//foreign_cc:configure.bzl", "configure_make")
 
 licenses(["restricted"])
 
@@ -14,7 +14,7 @@ configure_make(
         "make",
         "make install",
     ],
-    static_libraries = ["libntl.a"],
+    out_static_libs = ["libntl.a"],
     visibility = ["//visibility:public"],
     deps = [
         "//third_party/gmp",

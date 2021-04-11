@@ -1,10 +1,10 @@
-load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
+load("@rules_foreign_cc//foreign_cc:cmake.bzl", "cmake")
 
 licenses(["restricted"])
 
-cmake_external(
+cmake(
     name = "eigen",
-    headers_only = True,
+    out_headers_only = True,
     lib_source = "@org_tuxfamily_eigen//:all",
     out_include_dir = "include/eigen3",
     visibility = ["//visibility:public"],

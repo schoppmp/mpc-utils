@@ -1,5 +1,4 @@
-load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
-load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
+load("@rules_foreign_cc//foreign_cc:cmake.bzl", "cmake")
 
 licenses(["notice"])  # MIT
 
@@ -8,7 +7,7 @@ filegroup(
     srcs = glob(["**"]),
 )
 
-cmake_external(
+cmake(
     name = "emp_tool",
     cache_entries = {
         "CMAKE_PREFIX_PATH": "$EXT_BUILD_DEPS;$EXT_BUILD_DEPS/relic;$EXT_BUILD_DEPS/gmp",
@@ -25,7 +24,7 @@ cmake_external(
         "make emp-tool -j $(nproc)",
         "make install/fast",
     ],
-    shared_libraries = [
+    out_shared_libs = [
         "libemp-tool.so",
     ],
     visibility = ["//visibility:public"],

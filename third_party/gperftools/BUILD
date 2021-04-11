@@ -1,10 +1,10 @@
-load("@rules_foreign_cc//tools/build_defs:configure.bzl", "configure_make")
+load("@rules_foreign_cc//foreign_cc:configure.bzl", "configure_make")
 
 licenses(["notice"])  # BSD 3-clause
 
 configure_make(
     name = "gperftools",
-    binaries = [
+    out_binaries = [
         "pprof",
     ],
     configure_options = [
@@ -13,7 +13,7 @@ configure_make(
         "--disable-libunwind",
     ],
     lib_source = "@com_github_gperftools_gperftools//:all",
-    shared_libraries = [
+    out_shared_libs = [
         "libtcmalloc_and_profiler.so.4",
     ],
     visibility = ["//visibility:public"],
