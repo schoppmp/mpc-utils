@@ -2,6 +2,7 @@ load(
     "@bazel_tools//tools/build_defs/repo:http.bzl",
     "http_archive",
 )
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "new_git_repository")
 load("@mpc_utils//third_party:repo.bzl", "third_party_http_archive")
 load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_deps")
 load("@com_github_schoppmp_rules_oblivc//oblivc:deps.bzl", "oblivc_deps")
@@ -34,12 +35,11 @@ def mpc_utils_deps(
     if enable_serialization:
         rules_foreign_cc_dependencies()
         if "org_bitbucket_eigen" not in native.existing_rules():
-            http_archive(
+            new_git_repository(
                 name = "org_bitbucket_eigen",
                 build_file_content = all_content,
-                strip_prefix = "eigen-3.3.7",
-                urls = ["https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip"],
-                sha256 = "e09b89aae054e9778ee3f606192ee76d645eec82c402c01c648b1fe46b6b9857",
+                remote = "https://gitlab.com/libeigen/eigen.git",
+                commit = "21ae2afd4edaa1b69782c67a54182d34efe43f9c",
             )
         if "org_gmplib" not in native.existing_rules():
             http_archive(
