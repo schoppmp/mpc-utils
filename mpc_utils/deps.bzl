@@ -38,8 +38,8 @@ def mpc_utils_deps(
                 name = "org_bitbucket_eigen",
                 build_file_content = all_content,
                 strip_prefix = "eigen-eigen-323c052e1731",
-                urls = ["https://bitbucket.org/eigen/eigen/get/3.3.7.tar.gz"],
-                sha256 = "7e84ef87a07702b54ab3306e77cea474f56a40afa1c0ab245bb11725d006d0da",
+                urls = ["https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip"],
+                sha256 = "e09b89aae054e9778ee3f606192ee76d645eec82c402c01c648b1fe46b6b9857",
             )
         if "org_gmplib" not in native.existing_rules():
             http_archive(
